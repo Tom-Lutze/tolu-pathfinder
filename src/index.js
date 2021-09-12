@@ -1,19 +1,14 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import { Button, DatePicker, version } from "antd";
-import "antd/dist/antd.css";
-import "./index.css";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './index.css';
+import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
-  <div className="App">
-    <h1>antd version: {version}</h1>
-    <DatePicker />
-    <Button type="primary" style={{ marginLeft: 8 }}>
-      Primary Button
-    </Button>
-  </div>,
-  document.getElementById("root")
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+  document.getElementById('root')
 );
 
 // If you want to start measuring performance in your app, pass a function
