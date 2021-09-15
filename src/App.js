@@ -1,21 +1,31 @@
-import React, { useState } from 'react';
-import { DatePicker, message } from 'antd';
+import './App.css'
 import 'antd/dist/antd.css';
-import './index.css';
+import { Layout, Menu, Breadcrumb } from 'antd';
+// import React, { useState } from 'react';
 
 const App = () => {
-  const [date, setDate] = useState(null);
-  const handleChange = value => {
-    message.info(`Selected Date: ${value ? value.format('YYYY-MM-DD') : 'None'}`);
-    setDate(value);
-  };
+  const { Header, Content, Footer } = Layout;
   return (
-    <div style={{ width: 400, margin: '100px auto' }}>
-      <DatePicker onChange={handleChange} />
-      <div style={{ marginTop: 16 }}>
-        Selected Date: {date ? date.format('YYYY-MM-DD') : 'None'}
-      </div>
-    </div>
+    <Layout className="layout">
+      <Header>
+        <div className="logo" />
+        <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']}>
+          {new Array(3).fill(null).map((_, index) => {
+            const key = index + 1;
+            return <Menu.Item key={key}>{`nav ${key}`}</Menu.Item>;
+          })}
+        </Menu>
+      </Header>
+      <Content style={{ padding: '0 50px' }}>
+        <Breadcrumb style={{ margin: '16px 0' }}>
+          <Breadcrumb.Item>Home</Breadcrumb.Item>
+          <Breadcrumb.Item>List</Breadcrumb.Item>
+          <Breadcrumb.Item>App</Breadcrumb.Item>
+        </Breadcrumb>
+        <div className="site-layout-content">Content</div>
+      </Content>
+      <Footer style={{ textAlign: 'center' }}>Tom ©2021</Footer>
+    </Layout>
   );
 };
 
