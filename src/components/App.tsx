@@ -1,6 +1,7 @@
 import './App.css';
 import 'antd/dist/antd.css';
 import { Layout, Menu, Breadcrumb } from 'antd';
+import MapGrid from './grid';
 // import React, { useState } from 'react';
 
 const App = () => {
@@ -22,7 +23,9 @@ const App = () => {
           <Breadcrumb.Item>List</Breadcrumb.Item>
           <Breadcrumb.Item>App</Breadcrumb.Item>
         </Breadcrumb>
-        <div className="site-layout-content">Content</div>
+        <div className="site-layout-content">
+          <MapGrid />
+        </div>
       </Content>
       <Footer style={{ textAlign: 'center' }}>Tom ©2021</Footer>
     </Layout>
