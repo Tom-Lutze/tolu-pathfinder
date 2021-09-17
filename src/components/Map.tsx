@@ -28,23 +28,14 @@ const polyline: [number, number][] = [
 ];
 const limeOptions = { color: 'lime' };
 
-const LocationMarker = () => {
-  const [position, setPosition]: any = useState(null);
-  const map = useMapEvents({
-    click() {
-      map.locate();
-    },
-    locationfound(e) {
-      setPosition(e.latlng);
-      map.flyTo(e.latlng, map.getZoom());
+const MapEvents = () => {
+  useMapEvents({
+    click(e) {
+      console.log(e.latlng);
     },
   });
 
-  return position === null ? null : (
-    <Marker position={position}>
-      <Popup>You are here</Popup>
-    </Marker>
-  );
+  return null;
 };
 
 const Map = () => {
@@ -60,7 +51,7 @@ const Map = () => {
         </Popup>
       </Marker>
       <Polyline pathOptions={limeOptions} positions={polyline} />
-      <LocationMarker />
+      <MapEvents />
     </MapContainer>
   );
 };
