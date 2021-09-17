@@ -1,5 +1,11 @@
 import Leaflet from 'leaflet';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  Popup,
+  Polyline,
+} from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import './Map.css';
 
@@ -13,6 +19,13 @@ let DefaultIcon = Leaflet.icon({
 
 Leaflet.Marker.prototype.options.icon = DefaultIcon;
 
+const polyline: [number, number][] = [
+  [51.505, -0.09],
+  [51.51, -0.1],
+  [51.51, -0.12],
+];
+const limeOptions = { color: 'lime' };
+
 const Map = () => {
   return (
     <MapContainer center={[51.505, -0.09]} zoom={13} scrollWheelZoom={false}>
@@ -25,6 +38,7 @@ const Map = () => {
           A pretty CSS3 popup. <br /> Easily customizable.
         </Popup>
       </Marker>
+      <Polyline pathOptions={limeOptions} positions={polyline} />
     </MapContainer>
   );
 };
