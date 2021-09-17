@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
 import Leaflet from 'leaflet';
 import {
   MapContainer,
@@ -38,6 +38,44 @@ const MapEvents = () => {
   return null;
 };
 
+const DraggableMarker = () => {
+  const [draggable, setDraggable] = useState(false);
+  const [position, setPosition]: any = useState([51.5, -0.07]);
+  const markerRef = useRef(null);
+  const eventHandlers = useMemo(
+    () => ({
+      dragend() {
+        const marker: any = markerRef.current;
+        if (marker != null) {
+          setPosition(marker.getLatLng());
+        }
+      },
+    }),
+    []
+  );
+
+  const toggleDraggable = useCallback(() => {
+    setDraggable((d) => !d);
+  }, []);
+
+  return (
+    <Marker
+      draggable={true}
+      eventHandlers={eventHandlers}
+      position={position}
+      ref={markerRef}
+    >
+      <Popup minWidth={90}>
+        <span onClick={toggleDraggable}>
+          {draggable
+            ? 'Marker is draggable'
+            : 'Click here to make marker draggable'}
+        </span>
+      </Popup>
+    </Marker>
+  );
+};
+
 const Map = () => {
   return (
     <MapContainer center={[51.505, -0.09]} zoom={13} scrollWheelZoom={false}>
@@ -52,6 +90,7 @@ const Map = () => {
       </Marker>
       <Polyline pathOptions={limeOptions} positions={polyline} />
       <MapEvents />
+      <DraggableMarker />
     </MapContainer>
   );
 };
