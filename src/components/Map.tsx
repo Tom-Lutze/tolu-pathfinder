@@ -22,23 +22,20 @@ let DefaultIcon = Leaflet.icon({
 Leaflet.Marker.prototype.options.icon = DefaultIcon;
 
 const polyline: [number, number][] = [
-  [51.505, -0.09],
-  [51.51, -0.1],
-  [51.51, -0.12],
+  [0.01, 0.015],
+  [0.015, 0.02],
+  [0.02, 0.025],
 ];
 const limeOptions = { color: 'lime' };
 
 const DynamicMarkers = () => {
-  const [markers, setMarkers] = useState([
-    { lat: 51.49388910878061, lng: -0.17114639282226562 },
-    { lat: 51.485, lng: -0.17 },
-  ]);
+  const [markers, setMarkers] = useState([[0.01, 0.015]]);
 
   useMapEvents({
     click(e) {
       console.log(JSON.stringify(markers));
       console.log(e.latlng);
-      setMarkers([...markers, e.latlng]);
+      setMarkers([...markers, [e.latlng.lat, e.latlng.lng]]);
     },
   });
 
@@ -59,7 +56,7 @@ const DynamicMarkers = () => {
 
 const DraggableMarker = () => {
   const [draggable, setDraggable] = useState(false);
-  const [position, setPosition]: any = useState([51.5, -0.07]);
+  const [position, setPosition]: any = useState([0.03, 0]);
   const markerRef = useRef(null);
   const eventHandlers = useMemo(
     () => ({
@@ -97,12 +94,12 @@ const DraggableMarker = () => {
 
 const Map = () => {
   return (
-    <MapContainer center={[51.505, -0.09]} zoom={13} scrollWheelZoom={false}>
+    <MapContainer center={[0, 0]} zoom={13} scrollWheelZoom={false}>
       <TileLayer
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         url={`${process.env.PUBLIC_URL}/map-tile.png`}
       />
-      <Marker position={[51.505, -0.09]}>
+      <Marker position={[0.0, 0.0]}>
         <Popup>
           A pretty CSS3 popup. <br /> Easily customizable.
         </Popup>
