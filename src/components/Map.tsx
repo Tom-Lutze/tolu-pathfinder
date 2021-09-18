@@ -23,7 +23,7 @@ Leaflet.Marker.prototype.options.icon = DefaultIcon;
 
 const polyline: [number, number][] = [
   [0.01, 0.015],
-  [0.015, 0.02],
+  [0.015, 0.025],
   [0.02, 0.025],
 ];
 const limeOptions = { color: 'lime' };
