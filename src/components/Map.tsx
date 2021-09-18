@@ -60,7 +60,7 @@ const DraggableMarker = () => {
 
   return (
     <Marker
-      draggable={true}
+      draggable={draggable}
       eventHandlers={eventHandlers}
       position={position}
       ref={markerRef}
