@@ -28,14 +28,33 @@ const polyline: [number, number][] = [
 ];
 const limeOptions = { color: 'lime' };
 
-const MapEvents = () => {
+const DynamicMarkers = () => {
+  const [markers, setMarkers] = useState([
+    { lat: 51.49388910878061, lng: -0.17114639282226562 },
+    { lat: 51.485, lng: -0.17 },
+  ]);
+
   useMapEvents({
     click(e) {
+      console.log(JSON.stringify(markers));
       console.log(e.latlng);
+      setMarkers([...markers, e.latlng]);
     },
   });
 
-  return null;
+  return (
+    <>
+      {markers.map((position: any, idx) => (
+        <Marker key={`marker-${idx}`} position={position}>
+          <Popup>
+            <span>
+              A pretty CSS3 popup. <br /> Easily customizable.
+            </span>
+          </Popup>
+        </Marker>
+      ))}
+    </>
+  );
 };
 
 const DraggableMarker = () => {
@@ -88,8 +107,8 @@ const Map = () => {
           A pretty CSS3 popup. <br /> Easily customizable.
         </Popup>
       </Marker>
+      <DynamicMarkers />
       <Polyline pathOptions={limeOptions} positions={polyline} />
-      <MapEvents />
       <DraggableMarker />
     </MapContainer>
   );
