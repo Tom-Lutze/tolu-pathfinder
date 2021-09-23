@@ -6,6 +6,7 @@ import {
   Marker,
   Popup,
   useMapEvents,
+  Polyline,
 } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import './Map.css';
@@ -24,13 +25,15 @@ let DefaultIcon = Leaflet.icon({
 Leaflet.Marker.prototype.options.icon = DefaultIcon;
 
 const MapLayers = () => {
-  const [markers, setMarkers] = useState<number[][]>([]);
+  const [markers, setMarkers] = useState<[number, number][]>([]);
+  const [polyline, setPolyline] = useState<[number, number][]>([]);
 
   useMapEvents({
     click(e) {
       console.log(JSON.stringify(markers));
       console.log(e.latlng);
       setMarkers([...markers, [e.latlng.lat, e.latlng.lng]]);
+      setPolyline([...polyline, [e.latlng.lat, e.latlng.lng]]);
     },
   });
 
@@ -45,6 +48,7 @@ const MapLayers = () => {
           </Popup>
         </Marker>
       ))}
+      <Polyline pathOptions={{ color: 'lime' }} positions={polyline} />
     </>
   );
 };
