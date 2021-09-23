@@ -24,7 +24,7 @@ let DefaultIcon = Leaflet.icon({
 Leaflet.Marker.prototype.options.icon = DefaultIcon;
 
 const MapLayers = () => {
-  const [markers, setMarkers] = useState([[0.01, 0.015]]);
+  const [markers, setMarkers] = useState<number[][]>([]);
 
   useMapEvents({
     click(e) {
