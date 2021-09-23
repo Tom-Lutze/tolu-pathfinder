@@ -5,7 +5,6 @@ import {
   TileLayer,
   Marker,
   Popup,
-  Polyline,
   useMapEvents,
 } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -24,14 +23,7 @@ let DefaultIcon = Leaflet.icon({
 
 Leaflet.Marker.prototype.options.icon = DefaultIcon;
 
-const polyline: [number, number][] = [
-  [0.01, 0.015],
-  [0.015, 0.025],
-  [0.02, 0.025],
-];
-const limeOptions = { color: 'lime' };
-
-const DynamicMarkers = () => {
+const MapLayers = () => {
   const [markers, setMarkers] = useState([[0.01, 0.015]]);
 
   useMapEvents({
@@ -57,44 +49,6 @@ const DynamicMarkers = () => {
   );
 };
 
-const DraggableMarker = () => {
-  const [draggable, setDraggable] = useState(false);
-  const [position, setPosition]: any = useState([0.03, 0]);
-  const markerRef = useRef(null);
-  const eventHandlers = useMemo(
-    () => ({
-      dragend() {
-        const marker: any = markerRef.current;
-        if (marker != null) {
-          setPosition(marker.getLatLng());
-        }
-      },
-    }),
-    []
-  );
-
-  const toggleDraggable = useCallback(() => {
-    setDraggable((d) => !d);
-  }, []);
-
-  return (
-    <Marker
-      draggable={draggable}
-      eventHandlers={eventHandlers}
-      position={position}
-      ref={markerRef}
-    >
-      <Popup minWidth={90}>
-        <span onClick={toggleDraggable}>
-          {draggable
-            ? 'Marker is draggable'
-            : 'Click here to make marker draggable'}
-        </span>
-      </Popup>
-    </Marker>
-  );
-};
-
 const Map = () => {
   return (
     <MapContainer center={[0, 0]} zoom={13} scrollWheelZoom={false}>
@@ -102,14 +56,7 @@ const Map = () => {
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         url={`${process.env.PUBLIC_URL}/map-tile.png`}
       />
-      <Marker position={[0.0, 0.0]}>
-        <Popup>
-          A pretty CSS3 popup. <br /> Easily customizable.
-        </Popup>
-      </Marker>
-      <DynamicMarkers />
-      <Polyline pathOptions={limeOptions} positions={polyline} />
-      <DraggableMarker />
+      <MapLayers />
     </MapContainer>
   );
 };
