@@ -27,6 +27,7 @@ Leaflet.Marker.prototype.options.icon = DefaultIcon;
 const MapLayers = () => {
   const [markers, setMarkers] = useState<[number, number][]>([]);
   const [polyline, setPolyline] = useState<[number, number][]>([]);
+  const [selectedMarker, setSelectedMarker] = useState(null);
 
   useMapEvents({
     click(e) {
@@ -40,7 +41,15 @@ const MapLayers = () => {
   return (
     <>
       {markers.map((position: any, idx) => (
-        <Marker key={`marker-${idx}`} position={position}>
+        <Marker
+          key={`marker-${idx}`}
+          position={position}
+          eventHandlers={{
+            click: (e) => {
+              console.log('marker clicked', e);
+            },
+          }}
+        >
           <Popup>
             <span>
               A pretty CSS3 popup. <br /> Easily customizable.
