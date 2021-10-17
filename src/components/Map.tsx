@@ -1,18 +1,17 @@
-import React, { useCallback, useMemo, useRef, useState } from 'react';
 import Leaflet from 'leaflet';
-import {
-  MapContainer,
-  TileLayer,
-  Marker,
-  Popup,
-  useMapEvents,
-  Polyline,
-} from 'react-leaflet';
-import 'leaflet/dist/leaflet.css';
-import './Map.css';
-
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
+import 'leaflet/dist/leaflet.css';
+import React, { useState } from 'react';
+import {
+  MapContainer,
+  Marker,
+  Polyline,
+  Popup,
+  TileLayer,
+  useMapEvents,
+} from 'react-leaflet';
+import './Map.css';
 
 let DefaultIcon = Leaflet.icon({
   iconUrl: icon,
@@ -40,23 +39,27 @@ const MapLayers = () => {
 
   return (
     <>
-      {markers.map((position: any, idx) => (
-        <Marker
-          key={`marker-${idx}`}
-          position={position}
-          eventHandlers={{
-            click: (e) => {
-              console.log('marker clicked', e);
-            },
-          }}
-        >
-          <Popup>
-            <span>
-              A pretty CSS3 popup. <br /> Easily customizable.
-            </span>
-          </Popup>
-        </Marker>
-      ))}
+      {markers.map((position: any, idx) => {
+        return (
+          <Marker
+            key={`marker-${idx}`}
+            position={position}
+            eventHandlers={{
+              click: (e) => {
+                console.log('marker clicked', e);
+                console.log(e.sourceTarget);
+              },
+            }}
+            {...{ test: idx }}
+          >
+            <Popup>
+              <span>
+                A pretty CSS3 popup. <br /> Easily customizable.
+              </span>
+            </Popup>
+          </Marker>
+        );
+      })}
       <Polyline pathOptions={{ color: 'lime' }} positions={polyline} />
     </>
   );
