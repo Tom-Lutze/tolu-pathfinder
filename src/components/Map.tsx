@@ -42,11 +42,11 @@ const MapLayers = () => {
 
   return (
     <>
-      {mapGraph.getNodes().map((position: any, idx: number) => {
+      {mapGraph.getNodes().map((node: any) => {
         return (
           <Marker
-            key={`marker-${idx}`}
-            position={position}
+            key={`marker-${node.idx}`}
+            position={node.position}
             eventHandlers={{
               click: (e) => {
                 console.log('marker clicked', e);
