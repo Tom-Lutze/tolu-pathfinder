@@ -1,12 +1,31 @@
 let nodeIndex = 0;
 
-const Graph = function ([getGraph, setGraph]: any) {
+const Graph = function ([graph, setGraph]: any) {
   return {
     addNode(node: any) {
-      setGraph([...getGraph, { ...node, idx: nodeIndex++ }]);
+      nodeIndex++;
+      setGraph({
+        ...graph,
+        [nodeIndex]: node,
+        state: { ...(graph.state ?? {}), activeNode: nodeIndex },
+      });
     },
-    getNodes() {
-      return getGraph;
+    getNodesIdx() {
+      return Object.keys(graph).filter((key) => key !== 'state');
+    },
+    getGraph() {
+      return graph;
+    },
+    setActiveNode(idx: number) {
+      if (idx && graph[idx]) {
+        setGraph({
+          ...graph,
+          state: { ...(graph.state ?? {}), activeNode: idx },
+        });
+      }
+    },
+    getActiveNode() {
+      return graph.state?.activeNode ?? false;
     },
   };
 };
