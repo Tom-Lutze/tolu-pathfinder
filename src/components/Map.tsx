@@ -11,6 +11,7 @@ import {
   TileLayer,
   useMapEvents,
 } from 'react-leaflet';
+import Graph from './util/Graph';
 import './Map.css';
 
 let DefaultIcon = Leaflet.icon({
@@ -24,22 +25,24 @@ let DefaultIcon = Leaflet.icon({
 Leaflet.Marker.prototype.options.icon = DefaultIcon;
 
 const MapLayers = () => {
-  const [markers, setMarkers] = useState<[number, number][]>([]);
-  const [polyline, setPolyline] = useState<[number, number][]>([]);
-  const [selectedMarker, setSelectedMarker] = useState(null);
+  // const [markers, setMarkers] = useState<[number, number][]>([]);
+  // const [polyline, setPolyline] = useState<[number, number][]>([]);
+  // const [selectedMarker, setSelectedMarker] = useState(null);
+  const mapGraph = Graph(useState([]));
 
   useMapEvents({
     click(e) {
-      console.log(JSON.stringify(markers));
+      // console.log(JSON.stringify(markers));
       console.log(e.latlng);
-      setMarkers([...markers, [e.latlng.lat, e.latlng.lng]]);
-      setPolyline([...polyline, [e.latlng.lat, e.latlng.lng]]);
+      // setMarkers([...markers, [e.latlng.lat, e.latlng.lng]]);
+      // setPolyline([...polyline, [e.latlng.lat, e.latlng.lng]]);
+      mapGraph.addNode({ position: e.latlng });
     },
   });
 
   return (
     <>
-      {markers.map((position: any, idx) => {
+      {mapGraph.getNodes().map((position: any, idx: number) => {
         return (
           <Marker
             key={`marker-${idx}`}
@@ -50,7 +53,6 @@ const MapLayers = () => {
                 console.log(e.sourceTarget);
               },
             }}
-            {...{ test: idx }}
           >
             <Popup>
               <span>
@@ -60,7 +62,7 @@ const MapLayers = () => {
           </Marker>
         );
       })}
-      <Polyline pathOptions={{ color: 'lime' }} positions={polyline} />
+      {/* <Polyline pathOptions={{ color: 'lime' }} positions={polyline} /> */}
     </>
   );
 };
