@@ -46,25 +46,38 @@ const MapLayers = () => {
         const node = mapGraph.getGraph()[nodeIdx];
         const activeNode = mapGraph.getActiveNode();
         return (
-          <Marker
-            key={`marker-${nodeIdx}`}
-            position={node.position}
-            opacity={activeNode && activeNode == nodeIdx ? 1 : 0.5}
-            eventHandlers={{
-              click: (e) => {
-                console.log('marker clicked', e);
-                console.log(e.sourceTarget);
-                mapGraph.setActiveNode(e.target.options.nodeIdx);
-              },
-            }}
-            {...{ nodeIdx: nodeIdx }}
-          >
-            <Popup>
-              <span>
-                A pretty CSS3 popup. <br /> Easily customizable.
-              </span>
-            </Popup>
-          </Marker>
+          <React.Fragment key={`marker-${nodeIdx}`}>
+            <Marker
+              position={node.position}
+              opacity={activeNode && activeNode == nodeIdx ? 1 : 0.5}
+              eventHandlers={{
+                click: (e) => {
+                  // console.log('marker clicked', e);
+                  // console.log(e.sourceTarget);
+                  mapGraph.setActiveNode(e.target.options.nodeIdx);
+                  console.log(mapGraph.getGraph());
+                },
+              }}
+              {...{ nodeIdx: nodeIdx }}
+            >
+              <Popup>
+                <span>
+                  A pretty CSS3 popup. <br /> Easily customizable.
+                </span>
+              </Popup>
+            </Marker>
+            {node.edges && node.edges.size > 0 && (
+              <Polyline
+                pathOptions={{ color: 'lime' }}
+                positions={[
+                  node.position,
+                  ...[...node.edges].map(
+                    (edgeIdx: string) => mapGraph.getNode(edgeIdx).position
+                  ),
+                ]}
+              />
+            )}
+          </React.Fragment>
         );
       })}
       {/* <Polyline pathOptions={{ color: 'lime' }} positions={polyline} /> */}
