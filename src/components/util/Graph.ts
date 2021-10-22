@@ -44,8 +44,30 @@ const Graph = function ([graph, setGraph]: any) {
         });
       }
     },
+    setStartNode(idx: number) {
+      if (idx && graph[idx]) {
+        setGraph({
+          ...graph,
+          state: { ...(graph.state ?? {}), startNode: idx },
+        });
+      }
+    },
+    setEndNode(idx: number) {
+      if (idx && graph[idx]) {
+        setGraph({
+          ...graph,
+          state: { ...(graph.state ?? {}), endNode: idx },
+        });
+      }
+    },
     getActiveNode() {
       return graph.state?.activeNode ?? false;
+    },
+    getStartNode() {
+      return graph.state?.startNode ?? false;
+    },
+    getEndNode() {
+      return graph.state?.endNode ?? false;
     },
   };
 };
