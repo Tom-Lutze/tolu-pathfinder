@@ -36,7 +36,7 @@ const Graph = function ([graph, setGraph]: any) {
     getGraph() {
       return graph;
     },
-    setActiveNode(idx: number) {
+    setActiveNode(idx: string) {
       if (idx && graph[idx]) {
         setGraph({
           ...graph,
@@ -44,7 +44,7 @@ const Graph = function ([graph, setGraph]: any) {
         });
       }
     },
-    setStartNode(idx: number) {
+    setStartNode(idx: string) {
       if (idx && graph[idx]) {
         setGraph({
           ...graph,
@@ -52,7 +52,7 @@ const Graph = function ([graph, setGraph]: any) {
         });
       }
     },
-    setEndNode(idx: number) {
+    setEndNode(idx: string) {
       if (idx && graph[idx]) {
         setGraph({
           ...graph,
