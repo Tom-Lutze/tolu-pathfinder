@@ -41,12 +41,20 @@ const MapLayers = () => {
         return (
           <React.Fragment key={`marker-${nodeIdx}`}>
             <Marker
+              draggable={true}
               position={node.position}
               opacity={activeNode && activeNode == nodeIdx ? 1 : 0.5}
               eventHandlers={{
                 click: (e) => {
                   mapGraph.setActiveNode(e.target.options.nodeIdx);
-                  console.log(mapGraph.getGraph());
+                  // console.log(mapGraph.getGraph());
+                },
+                dragend: (e) => {
+                  // console.log(e.target.getLatLng());
+                  mapGraph.setNodePosition(
+                    e.target.options.nodeIdx,
+                    e.target.getLatLng()
+                  );
                 },
               }}
               {...{ nodeIdx: nodeIdx }}
@@ -61,6 +69,7 @@ const MapLayers = () => {
               node.edges.size > 0 &&
               [...node.edges].map((edgeIdx: string) => (
                 <Polyline
+                  key={`polyline-${nodeIdx}-${edgeIdx}`}
                   pathOptions={{ color: 'lime' }}
                   positions={[
                     node.position,

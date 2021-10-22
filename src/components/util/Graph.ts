@@ -27,6 +27,12 @@ const Graph = function ([graph, setGraph]: any) {
     getNode(idx: string) {
       return graph[idx];
     },
+    setNodePosition(idx: string, latlng: any) {
+      setGraph({
+        ...graph,
+        [idx]: { ...graph[idx], position: latlng },
+      });
+    },
     getGraph() {
       return graph;
     },
