@@ -1,5 +1,5 @@
 import Leaflet from 'leaflet';
-import icon from 'leaflet/dist/images/marker-icon.png';
+import MarkerIcon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 import 'leaflet/dist/leaflet.css';
 import React, { useState } from 'react';
@@ -14,15 +14,31 @@ import {
 import Graph from './util/Graph';
 import './Map.css';
 
-let DefaultIcon = Leaflet.icon({
-  iconUrl: icon,
+const MarkerIconDefault = Leaflet.icon({
+  iconUrl: MarkerIcon,
   shadowUrl: iconShadow,
   iconSize: [25, 41],
   iconAnchor: [13, 41],
   popupAnchor: [2, -40],
 });
 
-Leaflet.Marker.prototype.options.icon = DefaultIcon;
+const getMarkerIconPath = (color: string) =>
+  `${process.env.PUBLIC_URL}/marker/marker-icon-${color}.png`;
+
+const MarkerIconGreen = Leaflet.icon({
+  ...MarkerIconDefault.options,
+  iconUrl: getMarkerIconPath('green'),
+});
+const MarkerIconRed = Leaflet.icon({
+  ...MarkerIconDefault.options,
+  iconUrl: getMarkerIconPath('red'),
+});
+const MarkerIconYellow = Leaflet.icon({
+  ...MarkerIconDefault.options,
+  iconUrl: getMarkerIconPath('yellow'),
+});
+
+Leaflet.Marker.prototype.options.icon = MarkerIconDefault;
 
 const MapLayers = () => {
   const mapGraph = Graph(useState({}));
@@ -44,6 +60,11 @@ const MapLayers = () => {
               draggable={true}
               position={node.position}
               opacity={activeNode && activeNode == nodeIdx ? 1 : 0.5}
+              icon={
+                activeNode && activeNode != nodeIdx
+                  ? MarkerIconDefault
+                  : MarkerIconGreen
+              }
               eventHandlers={{
                 click: (e) => {
                   mapGraph.setActiveNode(e.target.options.nodeIdx);
@@ -57,7 +78,9 @@ const MapLayers = () => {
                   );
                 },
               }}
-              {...{ nodeIdx: nodeIdx }}
+              {...{
+                nodeIdx: nodeIdx,
+              }}
             >
               <Popup>
                 <span>
