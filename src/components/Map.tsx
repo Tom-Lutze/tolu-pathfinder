@@ -88,7 +88,9 @@ const MapLayers = () => {
             >
               <Popup>
                 <span>
-                  A pretty CSS3 popup. <br /> Easily customizable.
+                  <a onClick={() => mapGraph.setStartNode(nodeIdx)}>Start</a>
+                  {' | '}
+                  <a onClick={() => mapGraph.setEndNode(nodeIdx)}>End</a>
                 </span>
               </Popup>
             </Marker>
