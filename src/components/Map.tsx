@@ -54,6 +54,8 @@ const MapLayers = () => {
       {mapGraph.getNodesIdx().map((nodeIdx: string) => {
         const node = mapGraph.getGraph()[nodeIdx];
         const activeNode = mapGraph.getActiveNode();
+        const startNode = mapGraph.getStartNode();
+        const endNode = mapGraph.getEndNode();
         return (
           <React.Fragment key={`marker-${nodeIdx}`}>
             <Marker
@@ -61,9 +63,11 @@ const MapLayers = () => {
               position={node.position}
               opacity={activeNode && activeNode == nodeIdx ? 1 : 0.5}
               icon={
-                activeNode && activeNode != nodeIdx
-                  ? MarkerIconDefault
-                  : MarkerIconGreen
+                nodeIdx === startNode
+                  ? MarkerIconRed
+                  : nodeIdx === endNode
+                  ? MarkerIconGreen
+                  : MarkerIconDefault
               }
               eventHandlers={{
                 click: (e) => {
