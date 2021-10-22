@@ -66,21 +66,20 @@ const MapLayers = () => {
                 </span>
               </Popup>
             </Marker>
-            {node.edges && node.edges.size > 0 && (
-              <Polyline
-                pathOptions={{ color: 'lime' }}
-                positions={[
-                  node.position,
-                  ...[...node.edges].map(
-                    (edgeIdx: string) => mapGraph.getNode(edgeIdx).position
-                  ),
-                ]}
-              />
-            )}
+            {node.edges &&
+              node.edges.size > 0 &&
+              [...node.edges].map((edgeIdx: string) => (
+                <Polyline
+                  pathOptions={{ color: 'lime' }}
+                  positions={[
+                    node.position,
+                    mapGraph.getNode(edgeIdx).position,
+                  ]}
+                />
+              ))}
           </React.Fragment>
         );
       })}
-      {/* <Polyline pathOptions={{ color: 'lime' }} positions={polyline} /> */}
     </>
   );
 };
