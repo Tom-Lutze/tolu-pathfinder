@@ -25,17 +25,10 @@ let DefaultIcon = Leaflet.icon({
 Leaflet.Marker.prototype.options.icon = DefaultIcon;
 
 const MapLayers = () => {
-  // const [markers, setMarkers] = useState<[number, number][]>([]);
-  // const [polyline, setPolyline] = useState<[number, number][]>([]);
-  // const [selectedMarker, setSelectedMarker] = useState(null);
   const mapGraph = Graph(useState({}));
 
   useMapEvents({
     click(e) {
-      // console.log(JSON.stringify(markers));
-      // console.log(e.latlng);
-      // setMarkers([...markers, [e.latlng.lat, e.latlng.lng]]);
-      // setPolyline([...polyline, [e.latlng.lat, e.latlng.lng]]);
       mapGraph.addNode({ position: e.latlng });
     },
   });
@@ -52,8 +45,6 @@ const MapLayers = () => {
               opacity={activeNode && activeNode == nodeIdx ? 1 : 0.5}
               eventHandlers={{
                 click: (e) => {
-                  // console.log('marker clicked', e);
-                  // console.log(e.sourceTarget);
                   mapGraph.setActiveNode(e.target.options.nodeIdx);
                   console.log(mapGraph.getGraph());
                 },
