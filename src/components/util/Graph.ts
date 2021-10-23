@@ -43,7 +43,12 @@ const Graph = function ([graph, setGraph]: any) {
       if (idx && graph[idx]) {
         setGraph({
           ...graph,
-          state: { ...(graph.state ?? {}), startNode: idx },
+          state: {
+            ...(graph.state ?? {}),
+            startNode: idx,
+            endNode:
+              graph.state.endNode != idx ? graph.state.endNode : undefined,
+          },
         });
       }
     },
@@ -51,7 +56,12 @@ const Graph = function ([graph, setGraph]: any) {
       if (idx && graph[idx]) {
         setGraph({
           ...graph,
-          state: { ...(graph.state ?? {}), endNode: idx },
+          state: {
+            ...(graph.state ?? {}),
+            endNode: idx,
+            startNode:
+              graph.state.startNode != idx ? graph.state.startNode : undefined,
+          },
         });
       }
     },
