@@ -1,38 +1,40 @@
+import { LatLng } from 'leaflet';
+import { GraphInterface, NodeInterface } from '../interfaces/interfaces';
+
 let nodeIndex = 0;
 
-const Graph = function ([graph, setGraph]: any) {
+const Graph = function ([graph, setGraph]: [GraphInterface, any]) {
   return {
-    addNode(node: any) {
+    addNode(node: NodeInterface) {
       nodeIndex++;
       const newGraph = { ...graph };
-      if (!newGraph.state) newGraph.state = {};
       if (newGraph.state.activeNode !== undefined) {
-        const prevNode = newGraph[newGraph.state.activeNode];
+        const prevNode = newGraph.nodes[newGraph.state.activeNode];
         if (!prevNode.edges) prevNode.edges = new Set();
-        prevNode.edges.add(nodeIndex);
-        newGraph[newGraph.state.activeNode] = prevNode; //todo
+        prevNode.edges.add(nodeIndex.toString());
+        newGraph.nodes[newGraph.state.activeNode] = prevNode; //todo
       }
-      newGraph[nodeIndex] = node;
-      newGraph.state.activeNode = nodeIndex;
+      newGraph.nodes[nodeIndex] = node;
+      newGraph.state.activeNode = nodeIndex.toString();
       setGraph(newGraph);
     },
     getNodesIdx() {
-      return Object.keys(graph).filter((key) => key !== 'state');
+      return Object.keys(graph.nodes);
     },
     getNode(idx: string) {
-      return graph[idx];
+      return graph.nodes[idx];
     },
-    setNodePosition(idx: string, latlng: any) {
+    setNodePosition(idx: string, latlng: LatLng) {
       setGraph({
         ...graph,
-        [idx]: { ...graph[idx], position: latlng },
+        [idx]: { ...graph.nodes[idx], position: latlng },
       });
     },
     getGraph() {
       return graph;
     },
     setActiveNode(idx: string) {
-      if (idx && graph[idx]) {
+      if (idx && graph.nodes[idx]) {
         setGraph({
           ...graph,
           state: { ...(graph.state ?? {}), activeNode: idx },
@@ -40,7 +42,7 @@ const Graph = function ([graph, setGraph]: any) {
       }
     },
     setStartNode(idx: string) {
-      if (idx && graph[idx]) {
+      if (idx && graph.nodes[idx]) {
         setGraph({
           ...graph,
           state: {
@@ -53,7 +55,7 @@ const Graph = function ([graph, setGraph]: any) {
       }
     },
     setEndNode(idx: string) {
-      if (idx && graph[idx]) {
+      if (idx && graph.nodes[idx]) {
         setGraph({
           ...graph,
           state: {

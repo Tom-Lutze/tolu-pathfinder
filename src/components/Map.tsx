@@ -41,18 +41,27 @@ const MarkerIconYellow = Leaflet.icon({
 Leaflet.Marker.prototype.options.icon = MarkerIconDefault;
 
 const MapLayers = () => {
-  const mapGraph = Graph(useState({}));
+  const mapGraph = Graph(
+    useState({
+      nodes: {},
+      state: {
+        activeNode: undefined,
+        startNode: undefined,
+        endNode: undefined,
+      },
+    })
+  );
 
   useMapEvents({
     click(e) {
-      mapGraph.addNode({ position: e.latlng });
+      mapGraph.addNode({ position: e.latlng, edges: undefined });
     },
   });
 
   return (
     <>
       {mapGraph.getNodesIdx().map((nodeIdx: string) => {
-        const node = mapGraph.getGraph()[nodeIdx];
+        const node = mapGraph.getGraph().nodes[nodeIdx];
         const activeNode = mapGraph.getActiveNode();
         const startNode = mapGraph.getStartNode();
         const endNode = mapGraph.getEndNode();
@@ -96,7 +105,7 @@ const MapLayers = () => {
             </Marker>
             {node.edges &&
               node.edges.size > 0 &&
-              [...node.edges].map((edgeIdx: string) => (
+              Array.from(node.edges).map((edgeIdx: string) => (
                 <Polyline
                   key={`polyline-${nodeIdx}-${edgeIdx}`}
                   pathOptions={{ color: 'lime' }}
