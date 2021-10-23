@@ -4,11 +4,6 @@ const Graph = function ([graph, setGraph]: any) {
   return {
     addNode(node: any) {
       nodeIndex++;
-      // setGraph({
-      //   ...graph,
-      //   [nodeIndex]: node,
-      //   state: { ...(graph.state ?? {}), activeNode: nodeIndex },
-      // });
       const newGraph = { ...graph };
       if (!newGraph.state) newGraph.state = {};
       if (newGraph.state.activeNode !== undefined) {
