@@ -13,6 +13,7 @@ import {
 } from 'react-leaflet';
 import Graph from './util/Graph';
 import './Map.css';
+import { Pathfinder } from './util/Pathfinder';
 
 const MarkerIconDefault = Leaflet.icon({
   iconUrl: MarkerIcon,
@@ -65,6 +66,7 @@ const MapLayers = () => {
         const activeNode = mapGraph.getActiveNode();
         const startNode = mapGraph.getStartNode();
         const endNode = mapGraph.getEndNode();
+        const pathBfs = Pathfinder(mapGraph.getGraph()).bfs();
         return (
           <React.Fragment key={`marker-${nodeIdx}`}>
             <Marker
@@ -115,6 +117,14 @@ const MapLayers = () => {
                   ]}
                 />
               ))}
+            {pathBfs.length > 1 && (
+              <Polyline
+                pathOptions={{ color: 'red' }}
+                positions={pathBfs.map(
+                  (nodeIdx) => mapGraph.getNode(nodeIdx).position
+                )}
+              />
+            )}
           </React.Fragment>
         );
       })}

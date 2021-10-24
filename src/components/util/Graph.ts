@@ -27,7 +27,10 @@ const Graph = function ([graph, setGraph]: [GraphInterface, any]) {
     setNodePosition(idx: string, latlng: LatLng) {
       setGraph({
         ...graph,
-        [idx]: { ...graph.nodes[idx], position: latlng },
+        nodes: {
+          ...graph.nodes,
+          [idx]: { ...graph.nodes[idx], position: latlng },
+        },
       });
     },
     getGraph() {
