@@ -6,6 +6,7 @@ import React, { useState } from 'react';
 import {
   MapContainer,
   Marker,
+  Pane,
   Polyline,
   Popup,
   TileLayer,
@@ -148,17 +149,24 @@ const MapLayers = () => {
                   ]}
                 />
               ))}
-            {pathBfs.length > 1 && (
-              <Polyline
-                pathOptions={{ color: 'red' }}
-                positions={pathBfs.map(
-                  (nodeIdx) => mapGraph.getNode(nodeIdx).position
-                )}
-              />
-            )}
           </React.Fragment>
         );
       })}
+      {pathBfs.length > 1 && (
+        <Pane name="tolu-path-pane">
+          <Polyline
+            pathOptions={{
+              color: 'red',
+              dashArray: '20, 20',
+              dashOffset: '0',
+            }}
+            positions={pathBfs.map(
+              (nodeIdx) => mapGraph.getNode(nodeIdx).position
+            )}
+            {...{ zIndex: 9999 }}
+          />
+        </Pane>
+      )}
     </>
   );
 };

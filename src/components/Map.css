@@ -6,3 +6,7 @@
 .leaflet-grab {
   cursor: crosshair;
 }
+
+.tolu-path-pane {
+  z-index: 550;
+}
