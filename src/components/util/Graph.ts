@@ -15,6 +15,7 @@ const Graph = function ([graph, setGraph]: [GraphInterface, any]) {
         newGraph.nodes[newGraph.state.activeNode] = prevNode; //todo
       }
       newGraph.nodes[nodeIndex] = node;
+      newGraph.state.prevActiveNode = newGraph.state.activeNode;
       newGraph.state.activeNode = nodeIndex.toString();
       setGraph(newGraph);
     },
@@ -35,6 +36,9 @@ const Graph = function ([graph, setGraph]: [GraphInterface, any]) {
       );
       if (newGraph.state.activeNode === idx) {
         newGraph.state.activeNode = undefined;
+      }
+      if (newGraph.state.prevActiveNode === idx) {
+        newGraph.state.prevActiveNode = undefined;
       }
       if (newGraph.state.startNode === idx) {
         newGraph.state.startNode = undefined;
@@ -66,7 +70,11 @@ const Graph = function ([graph, setGraph]: [GraphInterface, any]) {
       if (idx && graph.nodes[idx]) {
         setGraph({
           ...graph,
-          state: { ...(graph.state ?? {}), activeNode: idx },
+          state: {
+            ...(graph.state ?? {}),
+            activeNode: idx,
+            prevActiveNode: graph.state.activeNode,
+          },
         });
       }
     },
@@ -96,8 +104,27 @@ const Graph = function ([graph, setGraph]: [GraphInterface, any]) {
         });
       }
     },
+    connectNodes() {
+      if (
+        graph.state.activeNode &&
+        graph.state.prevActiveNode &&
+        graph.state.activeNode !== graph.state.prevActiveNode
+      ) {
+        const newGraph = { ...graph };
+        const newNode = newGraph.nodes[graph.state.prevActiveNode];
+        if (!newNode.edges) {
+          newNode.edges = new Set();
+        }
+        newNode.edges.add(graph.state.activeNode);
+        newGraph.nodes[graph.state.prevActiveNode] = newNode;
+        setGraph(newGraph);
+      }
+    },
     getActiveNode() {
       return graph.state?.activeNode ?? false;
+    },
+    getPrevActiveNode() {
+      return graph.state?.prevActiveNode ?? false;
     },
     getStartNode() {
       return graph.state?.startNode ?? false;

@@ -47,6 +47,7 @@ const MapLayers = () => {
       nodes: {},
       state: {
         activeNode: undefined,
+        prevActiveNode: undefined,
         startNode: undefined,
         endNode: undefined,
       },
@@ -59,14 +60,32 @@ const MapLayers = () => {
     },
   });
 
+  const activeNode = mapGraph.getActiveNode();
+  const prevActiveNode = mapGraph.getPrevActiveNode();
+  const startNode = mapGraph.getStartNode();
+  const endNode = mapGraph.getEndNode();
+  const pathBfs = Pathfinder(mapGraph.getGraph()).bfs();
+
+  const showConnectOption = () => {
+    console.log(activeNode + ' ' + prevActiveNode);
+    if (prevActiveNode && activeNode && prevActiveNode !== activeNode) {
+      if (
+        mapGraph.getNode(prevActiveNode).edges?.has(activeNode) ||
+        mapGraph.getNode(activeNode).edges?.has(prevActiveNode)
+      ) {
+        return false;
+      } else {
+        return true;
+      }
+    }
+    return false;
+  };
+
   return (
     <>
       {mapGraph.getNodesIdx().map((nodeIdx: string) => {
         const node = mapGraph.getGraph().nodes[nodeIdx];
-        const activeNode = mapGraph.getActiveNode();
-        const startNode = mapGraph.getStartNode();
-        const endNode = mapGraph.getEndNode();
-        const pathBfs = Pathfinder(mapGraph.getGraph()).bfs();
+
         return (
           <React.Fragment key={`marker-${nodeIdx}`}>
             <Marker
@@ -101,6 +120,12 @@ const MapLayers = () => {
                 <span>
                   <a onClick={() => mapGraph.setStartNode(nodeIdx)}>Start</a>
                   {' | '}
+                  {showConnectOption() && (
+                    <>
+                      <a onClick={() => mapGraph.connectNodes()}>Connect</a>
+                      {' | '}
+                    </>
+                  )}
                   <a onClick={() => mapGraph.setEndNode(nodeIdx)}>End</a>
                   <br />
                   <a onClick={() => mapGraph.removeNode(nodeIdx)}>Remove</a>

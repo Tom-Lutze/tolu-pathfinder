@@ -14,6 +14,7 @@ export interface NodeInterface {
 
 export interface GraphStateInterface {
   activeNode: string | undefined;
+  prevActiveNode: string | undefined;
   startNode: string | undefined;
   endNode: string | undefined;
 }
