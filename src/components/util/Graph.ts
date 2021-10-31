@@ -110,13 +110,22 @@ const Graph = function ([graph, setGraph]: [GraphInterface, any]) {
         graph.state.prevActiveNode &&
         graph.state.activeNode !== graph.state.prevActiveNode
       ) {
+        let nodeFrom, nodeTo;
+        //change order to keep graph unidirectional
+        if (graph.state.activeNode > graph.state.prevActiveNode) {
+          nodeFrom = graph.state.prevActiveNode;
+          nodeTo = graph.state.activeNode;
+        } else {
+          nodeFrom = graph.state.activeNode;
+          nodeTo = graph.state.prevActiveNode;
+        }
         const newGraph = { ...graph };
-        const newNode = newGraph.nodes[graph.state.prevActiveNode];
+        const newNode = newGraph.nodes[nodeFrom];
         if (!newNode.edges) {
           newNode.edges = new Set();
         }
-        newNode.edges.add(graph.state.activeNode);
-        newGraph.nodes[graph.state.prevActiveNode] = newNode;
+        newNode.edges.add(nodeTo);
+        newGraph.nodes[nodeFrom] = newNode;
         setGraph(newGraph);
       }
     },
