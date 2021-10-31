@@ -18,6 +18,32 @@ const Graph = function ([graph, setGraph]: [GraphInterface, any]) {
       newGraph.state.activeNode = nodeIndex.toString();
       setGraph(newGraph);
     },
+    removeNode(idx: string) {
+      const newGraph = { ...graph };
+      newGraph.nodes = Object.keys(newGraph.nodes).reduce(
+        (prevNodes: any, currIdx: string) => {
+          if (currIdx !== idx) {
+            const newNode = newGraph.nodes[currIdx];
+            if (newNode.edges?.has(idx)) {
+              newNode.edges.delete(idx);
+            }
+            prevNodes[currIdx] = newNode;
+          }
+          return prevNodes;
+        },
+        {}
+      );
+      if (newGraph.state.activeNode === idx) {
+        newGraph.state.activeNode = undefined;
+      }
+      if (newGraph.state.startNode === idx) {
+        newGraph.state.startNode = undefined;
+      }
+      if (newGraph.state.endNode === idx) {
+        newGraph.state.endNode = undefined;
+      }
+      setGraph(newGraph);
+    },
     getNodesIdx() {
       return Object.keys(graph.nodes);
     },
