@@ -67,7 +67,6 @@ const MapLayers = () => {
   const pathBfs = Pathfinder(mapGraph.getGraph()).bfs();
 
   const showConnectOption = () => {
-    console.log(activeNode + ' ' + prevActiveNode);
     if (prevActiveNode && activeNode && prevActiveNode !== activeNode) {
       if (
         mapGraph.getNode(prevActiveNode).edges?.has(activeNode) ||
@@ -85,13 +84,20 @@ const MapLayers = () => {
     <>
       {mapGraph.getNodesIdx().map((nodeIdx: string) => {
         const node = mapGraph.getGraph().nodes[nodeIdx];
+        // console.log(JSON.stringify(mapGraph.getGraph()));
 
         return (
           <React.Fragment key={`marker-${nodeIdx}`}>
             <Marker
               draggable={true}
               position={node.position}
-              opacity={activeNode && activeNode == nodeIdx ? 1 : 0.5}
+              opacity={
+                activeNode == nodeIdx
+                  ? 1
+                  : prevActiveNode == nodeIdx
+                  ? 0.75
+                  : 0.3
+              }
               icon={
                 nodeIdx === startNode
                   ? MarkerIconRed
