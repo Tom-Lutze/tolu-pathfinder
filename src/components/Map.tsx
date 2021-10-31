@@ -84,8 +84,6 @@ const MapLayers = () => {
     <>
       {mapGraph.getNodesIdx().map((nodeIdx: string) => {
         const node = mapGraph.getGraph().nodes[nodeIdx];
-        // console.log(JSON.stringify(mapGraph.getGraph()));
-
         return (
           <React.Fragment key={`marker-${nodeIdx}`}>
             <Marker
