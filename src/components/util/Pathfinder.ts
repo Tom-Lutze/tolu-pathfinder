@@ -28,14 +28,16 @@ export const Pathfinder = function (graph: GraphInterface) {
     bfs() {
       if (!this.checkRequirements()) return [];
       const parentNodes: { [parent: string]: string } = {};
+      const visitedNodes = new Set<string>();
       const startNodeIdx = graph.state.startNode;
       const endNodeIdx = graph.state.endNode;
       let queue = [startNodeIdx];
       while (queue.length > 0) {
         const current = queue.shift();
-        if (!current) {
+        if (!current || visitedNodes.has(current)) {
           continue;
         }
+        visitedNodes.add(current);
         if (current == endNodeIdx && startNodeIdx != undefined) {
           // found path
           return this.retracePath(parentNodes, startNodeIdx, endNodeIdx);
