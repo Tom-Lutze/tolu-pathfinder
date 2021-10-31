@@ -102,6 +102,8 @@ const MapLayers = () => {
                   <a onClick={() => mapGraph.setStartNode(nodeIdx)}>Start</a>
                   {' | '}
                   <a onClick={() => mapGraph.setEndNode(nodeIdx)}>End</a>
+                  <br />
+                  <a onClick={() => mapGraph.removeNode(nodeIdx)}>Remove</a>
                 </span>
               </Popup>
             </Marker>
