@@ -3,50 +3,27 @@ import { GraphInterface } from '../interfaces/interfaces';
 
 export const Pathfinder = function (graph: GraphInterface) {
   return {
-    checkRequirements() {
-      return (
-        graph.state.startNode &&
-        graph.state.endNode &&
-        Object.keys(graph.nodes).length > 1
-      );
-    },
-    retracePath(
-      parentNodes: { [parent: string]: string },
-      start: string,
-      end: string
-    ) {
-      let currentNode = end;
-      const path = [];
-      while (currentNode != start) {
-        if (currentNode === undefined) return [];
-        path.push(currentNode);
-        currentNode = parentNodes[currentNode];
-      }
-      path.push(start);
-      return path.reverse();
-    },
     bfs() {
-      if (!this.checkRequirements()) return [];
-      const parentNodes: { [parent: string]: string } = {};
-      const visitedNodes = new Set<string>();
       const startNodeIdx = graph.state.startNode;
       const endNodeIdx = graph.state.endNode;
-      let queue = [startNodeIdx];
+      if (!startNodeIdx || endNodeIdx || Object.keys(graph.nodes).length < 1)
+        return [];
+      const visitedNodes = new Set<string>();
+      let queue = [[startNodeIdx]];
       while (queue.length > 0) {
-        const current = queue.shift();
-        if (!current || visitedNodes.has(current)) {
+        const queueNode = queue.shift();
+        if (!queueNode || !queueNode[0] || visitedNodes.has(queueNode[0])) {
           continue;
         }
-        visitedNodes.add(current);
-        if (current == endNodeIdx && startNodeIdx != undefined) {
-          // found path
-          return this.retracePath(parentNodes, startNodeIdx, endNodeIdx);
+        visitedNodes.add(queueNode[0]);
+        if (queueNode[0] == endNodeIdx) {
+          return queueNode;
         }
-        const currentEdges = graph.nodes[current].edges;
-        if (currentEdges) {
-          const currentEdgesArr = Array.from(currentEdges);
-          queue = queue.concat(currentEdgesArr);
-          currentEdgesArr.forEach((node) => (parentNodes[node] = current));
+        const queueNodeEdges = graph.nodes[queueNode[0]].edges;
+        if (queueNodeEdges) {
+          queueNodeEdges.forEach((edge) => {
+            queue.push([edge, ...queueNode]);
+          });
         }
       }
       return [];
