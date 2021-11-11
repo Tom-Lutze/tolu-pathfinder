@@ -6,7 +6,7 @@ export const Pathfinder = function (graph: GraphInterface) {
     bfs() {
       const startNodeIdx = graph.state.startNode;
       const endNodeIdx = graph.state.endNode;
-      if (!startNodeIdx || endNodeIdx || Object.keys(graph.nodes).length < 1)
+      if (!startNodeIdx || !endNodeIdx || Object.keys(graph.nodes).length < 1)
         return [];
       const visitedNodes = new Set<string>();
       let queue = [[startNodeIdx]];

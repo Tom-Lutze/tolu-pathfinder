@@ -8,11 +8,14 @@ const Graph = function ([graph, setGraph]: [GraphInterface, any]) {
     addNode(node: NodeInterface) {
       nodeIndex++;
       const newGraph = { ...graph };
-      if (newGraph.state.activeNode !== undefined) {
-        const prevNode = newGraph.nodes[newGraph.state.activeNode];
-        if (!prevNode.edges) prevNode.edges = new Set();
+      const prevNodeIdx = newGraph.state.activeNode;
+      if (prevNodeIdx) {
+        const prevNode = newGraph.nodes[prevNodeIdx];
+        prevNode.edges = prevNode.edges ?? new Set();
         prevNode.edges.add(nodeIndex.toString());
-        newGraph.nodes[newGraph.state.activeNode] = prevNode; //todo
+        newGraph.nodes[prevNodeIdx] = prevNode;
+        node.edges = node.edges ?? new Set();
+        node.edges?.add(prevNodeIdx);
       }
       newGraph.nodes[nodeIndex] = node;
       newGraph.state.prevActiveNode = newGraph.state.activeNode;
@@ -105,27 +108,18 @@ const Graph = function ([graph, setGraph]: [GraphInterface, any]) {
       }
     },
     connectNodes() {
-      if (
-        graph.state.activeNode &&
-        graph.state.prevActiveNode &&
-        graph.state.activeNode !== graph.state.prevActiveNode
-      ) {
-        let nodeFrom, nodeTo;
-        //change order to keep graph unidirectional
-        if (graph.state.activeNode > graph.state.prevActiveNode) {
-          nodeFrom = graph.state.prevActiveNode;
-          nodeTo = graph.state.activeNode;
-        } else {
-          nodeFrom = graph.state.activeNode;
-          nodeTo = graph.state.prevActiveNode;
-        }
+      const prevNodeIdx = graph.state.prevActiveNode;
+      const currNodeIdx = graph.state.activeNode;
+      if (prevNodeIdx && currNodeIdx && prevNodeIdx !== currNodeIdx) {
         const newGraph = { ...graph };
-        const newNode = newGraph.nodes[nodeFrom];
-        if (!newNode.edges) {
-          newNode.edges = new Set();
-        }
-        newNode.edges.add(nodeTo);
-        newGraph.nodes[nodeFrom] = newNode;
+        const prevNode = newGraph.nodes[prevNodeIdx];
+        const currNode = newGraph.nodes[currNodeIdx];
+        prevNode.edges = prevNode.edges ?? new Set();
+        currNode.edges = currNode.edges ?? new Set();
+        prevNode.edges.add(currNodeIdx);
+        currNode.edges.add(prevNodeIdx);
+        newGraph.nodes[prevNodeIdx] = prevNode;
+        newGraph.nodes[currNodeIdx] = currNode;
         setGraph(newGraph);
       }
     },
