@@ -83,7 +83,7 @@ const MapLayers = () => {
 
   return (
     <>
-      {mapGraph.getNodesIdx().map((nodeIdx: string) => {
+      {mapGraph.getNodesIdx().map((nodeIdx: number) => {
         const node = mapGraph.getGraph().nodes[nodeIdx];
         return (
           <React.Fragment key={`marker-${nodeIdx}`}>
@@ -139,7 +139,7 @@ const MapLayers = () => {
             </Marker>
             {node.edges &&
               node.edges.size > 0 &&
-              Array.from(node.edges).map((edgeIdx: string) => (
+              Array.from(node.edges).map((edgeIdx: number) => (
                 <Polyline
                   key={`polyline-${nodeIdx}-${edgeIdx}`}
                   pathOptions={{ color: 'lime' }}

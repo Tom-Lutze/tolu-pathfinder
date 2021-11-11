@@ -8,7 +8,7 @@ export const Pathfinder = function (graph: GraphInterface) {
       const endNodeIdx = graph.state.endNode;
       if (!startNodeIdx || !endNodeIdx || Object.keys(graph.nodes).length < 1)
         return [];
-      const visitedNodes = new Set<string>();
+      const visitedNodes = new Set<number>();
       let queue = [[startNodeIdx]];
       while (queue.length > 0) {
         const queueNode = queue.shift();

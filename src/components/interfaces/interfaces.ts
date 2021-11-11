@@ -3,18 +3,18 @@ import { LatLng } from 'leaflet';
 export interface GraphInterface {
   state: GraphStateInterface;
   nodes: {
-    [idx: string]: NodeInterface;
+    [idx: number]: NodeInterface;
   };
 }
 
 export interface NodeInterface {
   position: LatLng;
-  edges: Set<string> | undefined;
+  edges: Set<number> | undefined;
 }
 
 export interface GraphStateInterface {
-  activeNode: string | undefined;
-  prevActiveNode: string | undefined;
-  startNode: string | undefined;
-  endNode: string | undefined;
+  activeNode: number | undefined;
+  prevActiveNode: number | undefined;
+  startNode: number | undefined;
+  endNode: number | undefined;
 }

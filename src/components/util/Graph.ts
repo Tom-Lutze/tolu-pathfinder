@@ -12,21 +12,22 @@ const Graph = function ([graph, setGraph]: [GraphInterface, any]) {
       if (prevNodeIdx) {
         const prevNode = newGraph.nodes[prevNodeIdx];
         prevNode.edges = prevNode.edges ?? new Set();
-        prevNode.edges.add(nodeIndex.toString());
+        prevNode.edges.add(nodeIndex);
         newGraph.nodes[prevNodeIdx] = prevNode;
         node.edges = node.edges ?? new Set();
         node.edges?.add(prevNodeIdx);
       }
       newGraph.nodes[nodeIndex] = node;
       newGraph.state.prevActiveNode = newGraph.state.activeNode;
-      newGraph.state.activeNode = nodeIndex.toString();
+      newGraph.state.activeNode = nodeIndex;
       setGraph(newGraph);
     },
-    removeNode(idx: string) {
+    removeNode(idx: number) {
       const newGraph = { ...graph };
-      newGraph.nodes = Object.keys(newGraph.nodes).reduce(
-        (prevNodes: any, currIdx: string) => {
-          if (currIdx !== idx) {
+      newGraph.nodes = Object.keys(newGraph.nodes)
+        .map((key) => Number(key))
+        .reduce((prevNodes: any, currIdx: number) => {
+          if (currIdx != idx) {
             const newNode = newGraph.nodes[currIdx];
             if (newNode.edges?.has(idx)) {
               newNode.edges.delete(idx);
@@ -34,9 +35,7 @@ const Graph = function ([graph, setGraph]: [GraphInterface, any]) {
             prevNodes[currIdx] = newNode;
           }
           return prevNodes;
-        },
-        {}
-      );
+        }, {});
       if (newGraph.state.activeNode === idx) {
         newGraph.state.activeNode = undefined;
       }
@@ -52,12 +51,12 @@ const Graph = function ([graph, setGraph]: [GraphInterface, any]) {
       setGraph(newGraph);
     },
     getNodesIdx() {
-      return Object.keys(graph.nodes);
+      return Object.keys(graph.nodes).map((key) => Number(key));
     },
-    getNode(idx: string) {
+    getNode(idx: number) {
       return graph.nodes[idx];
     },
-    setNodePosition(idx: string, latlng: LatLng) {
+    setNodePosition(idx: number, latlng: LatLng) {
       setGraph({
         ...graph,
         nodes: {
@@ -69,7 +68,7 @@ const Graph = function ([graph, setGraph]: [GraphInterface, any]) {
     getGraph() {
       return graph;
     },
-    setActiveNode(idx: string) {
+    setActiveNode(idx: number) {
       if (idx && graph.nodes[idx]) {
         setGraph({
           ...graph,
@@ -81,7 +80,7 @@ const Graph = function ([graph, setGraph]: [GraphInterface, any]) {
         });
       }
     },
-    setStartNode(idx: string) {
+    setStartNode(idx: number) {
       if (idx && graph.nodes[idx]) {
         setGraph({
           ...graph,
@@ -94,7 +93,7 @@ const Graph = function ([graph, setGraph]: [GraphInterface, any]) {
         });
       }
     },
-    setEndNode(idx: string) {
+    setEndNode(idx: number) {
       if (idx && graph.nodes[idx]) {
         setGraph({
           ...graph,
