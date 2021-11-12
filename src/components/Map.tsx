@@ -66,6 +66,7 @@ const MapLayers = () => {
   const startNode = mapGraph.getStartNode();
   const endNode = mapGraph.getEndNode();
   const pathBfs = Pathfinder(mapGraph.getGraph()).bfs();
+  const drawnEdges = new Set<string>();
 
   const showConnectOption = () => {
     if (prevActiveNode && activeNode && prevActiveNode !== activeNode) {
@@ -139,16 +140,33 @@ const MapLayers = () => {
             </Marker>
             {node.edges &&
               node.edges.size > 0 &&
-              Array.from(node.edges).map((edgeIdx: number) => (
-                <Polyline
-                  key={`polyline-${nodeIdx}-${edgeIdx}`}
-                  pathOptions={{ color: 'lime' }}
-                  positions={[
-                    node.position,
-                    mapGraph.getNode(edgeIdx).position,
-                  ]}
-                />
-              ))}
+              Array.from(node.edges).reduce(
+                (prevValue: any, edgeIdx: number) => {
+                  if (
+                    !drawnEdges.has(`${nodeIdx}-${edgeIdx}`) &&
+                    !drawnEdges.has(`${edgeIdx}-${nodeIdx}`)
+                  ) {
+                    drawnEdges.add(`${nodeIdx}-${edgeIdx}`);
+                    const edgePolyline = (
+                      <Polyline
+                        key={`polyline-${nodeIdx}-${edgeIdx}`}
+                        pathOptions={{ color: 'lime' }}
+                        positions={[
+                          node.position,
+                          mapGraph.getNode(edgeIdx).position,
+                        ]}
+                      >
+                        <Popup>
+                          <span>Test</span>
+                        </Popup>
+                      </Polyline>
+                    );
+                    prevValue.push(edgePolyline);
+                  }
+                  return prevValue;
+                },
+                []
+              )}
           </React.Fragment>
         );
       })}
