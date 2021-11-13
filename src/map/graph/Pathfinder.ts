@@ -1,6 +1,5 @@
-import { LatLng } from 'leaflet';
-import { GraphInterface } from '../interfaces/interfaces';
-import { sleep } from './Utils';
+import { GraphInterface } from '../../interfaces/interfaces';
+import { sleep } from '../../utils/Helper';
 
 export const Pathfinder = function (mapGraph: any) {
   const graph: GraphInterface = mapGraph.getGraph();

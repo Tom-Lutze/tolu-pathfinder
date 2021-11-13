@@ -1,46 +1,13 @@
-import Leaflet, { map } from 'leaflet';
-import MarkerIcon from 'leaflet/dist/images/marker-icon.png';
-import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 import 'leaflet/dist/leaflet.css';
 import React, { useEffect, useState } from 'react';
+import { Marker, Pane, Polyline, Popup, useMapEvents } from 'react-leaflet';
 import {
-  MapContainer,
-  Marker,
-  Pane,
-  Polyline,
-  Popup,
-  TileLayer,
-  useMapEvents,
-} from 'react-leaflet';
-import Graph from './util/Graph';
-import './Map.css';
-import { Pathfinder } from './util/Pathfinder';
-
-const MarkerIconDefault = Leaflet.icon({
-  iconUrl: MarkerIcon,
-  shadowUrl: iconShadow,
-  iconSize: [25, 41],
-  iconAnchor: [13, 41],
-  popupAnchor: [2, -40],
-});
-
-const getMarkerIconPath = (color: string) =>
-  `${process.env.PUBLIC_URL}/marker/marker-icon-${color}.png`;
-
-const MarkerIconGreen = Leaflet.icon({
-  ...MarkerIconDefault.options,
-  iconUrl: getMarkerIconPath('green'),
-});
-const MarkerIconRed = Leaflet.icon({
-  ...MarkerIconDefault.options,
-  iconUrl: getMarkerIconPath('red'),
-});
-const MarkerIconYellow = Leaflet.icon({
-  ...MarkerIconDefault.options,
-  iconUrl: getMarkerIconPath('yellow'),
-});
-
-Leaflet.Marker.prototype.options.icon = MarkerIconDefault;
+  MarkerIconDefault,
+  MarkerIconGreen,
+  MarkerIconRed,
+} from '../constants/Markers';
+import Graph from '../graph/Graph';
+import { Pathfinder } from '../graph/Pathfinder';
 
 const MapLayers = () => {
   const mapGraph = Graph(
@@ -207,16 +174,4 @@ const MapLayers = () => {
   );
 };
 
-const Map = () => {
-  return (
-    <MapContainer center={[0, 0]} zoom={13} scrollWheelZoom={false}>
-      <TileLayer
-        attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-        url={`${process.env.PUBLIC_URL}/map-tile.png`}
-      />
-      <MapLayers />
-    </MapContainer>
-  );
-};
-
-export default Map;
+export default MapLayers;
