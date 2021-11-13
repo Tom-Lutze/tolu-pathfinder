@@ -5,6 +5,10 @@ export interface GraphInterface {
   nodes: {
     [idx: number]: NodeInterface;
   };
+  path: {
+    searchPath: number[];
+    foundPath: number[];
+  };
 }
 
 export interface NodeInterface {

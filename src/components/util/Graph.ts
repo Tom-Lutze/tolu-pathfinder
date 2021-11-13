@@ -134,6 +134,26 @@ const Graph = function ([graph, setGraph]: [GraphInterface, any]) {
     getEndNode() {
       return graph.state?.endNode ?? false;
     },
+    setSearchPath(searchPath: number[]) {
+      setGraph({
+        ...graph,
+        path: {
+          ...graph.path,
+          foundPath: [],
+          searchPath: searchPath,
+        },
+      });
+    },
+    setFoundPath(foundPath: number[]) {
+      setGraph({
+        ...graph,
+        path: {
+          ...graph.path,
+          searchPath: [],
+          foundPath: foundPath,
+        },
+      });
+    },
   };
 };
 

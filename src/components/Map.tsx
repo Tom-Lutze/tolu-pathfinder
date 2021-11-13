@@ -1,8 +1,8 @@
-import Leaflet from 'leaflet';
+import Leaflet, { map } from 'leaflet';
 import MarkerIcon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 import 'leaflet/dist/leaflet.css';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   MapContainer,
   Marker,
@@ -52,6 +52,10 @@ const MapLayers = () => {
         startNode: undefined,
         endNode: undefined,
       },
+      path: {
+        searchPath: [],
+        foundPath: [],
+      },
     })
   );
 
@@ -61,11 +65,14 @@ const MapLayers = () => {
     },
   });
 
+  useEffect(() => {
+    Pathfinder(mapGraph).bfs();
+  }, [mapGraph.getGraph().state.endNode, mapGraph.getGraph().state.startNode]);
+
   const activeNode = mapGraph.getActiveNode();
   const prevActiveNode = mapGraph.getPrevActiveNode();
   const startNode = mapGraph.getStartNode();
   const endNode = mapGraph.getEndNode();
-  const pathBfs = Pathfinder(mapGraph.getGraph()).bfs();
   const drawnEdges = new Set<string>();
 
   const showConnectOption = () => {
@@ -170,7 +177,24 @@ const MapLayers = () => {
           </React.Fragment>
         );
       })}
-      {pathBfs.length > 1 && (
+      {mapGraph.getGraph().path.searchPath.length > 1 && (
+        <Pane name="tolu-search-path-pane">
+          <Polyline
+            pathOptions={{
+              color: 'blue',
+              dashArray: '20, 20',
+              dashOffset: '0',
+            }}
+            positions={mapGraph
+              .getGraph()
+              .path.searchPath.map(
+                (nodeIdx) => mapGraph.getNode(nodeIdx).position
+              )}
+            {...{ zIndex: 9998 }}
+          />
+        </Pane>
+      )}
+      {mapGraph.getGraph().path.foundPath.length > 1 && (
         <Pane name="tolu-path-pane">
           <Polyline
             pathOptions={{
@@ -178,9 +202,11 @@ const MapLayers = () => {
               dashArray: '20, 20',
               dashOffset: '0',
             }}
-            positions={pathBfs.map(
-              (nodeIdx) => mapGraph.getNode(nodeIdx).position
-            )}
+            positions={mapGraph
+              .getGraph()
+              .path.foundPath.map(
+                (nodeIdx) => mapGraph.getNode(nodeIdx).position
+              )}
             {...{ zIndex: 9999 }}
           />
         </Pane>
