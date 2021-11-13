@@ -3,7 +3,7 @@ import { GraphInterface, NodeInterface } from '../../interfaces/interfaces';
 
 let nodeIndex = 0;
 
-const Graph = function ([graph, setGraph]: [GraphInterface, any]) {
+const GraphController = function ([graph, setGraph]: [GraphInterface, any]) {
   return {
     addNode(node: NodeInterface) {
       nodeIndex++;
@@ -157,4 +157,4 @@ const Graph = function ([graph, setGraph]: [GraphInterface, any]) {
   };
 };
 
-export default Graph;
+export default GraphController;
