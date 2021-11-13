@@ -58,6 +58,7 @@ const MapLayers = () => {
       },
     })
   );
+  const graph = mapGraph.getGraph();
 
   useMapEvents({
     click(e) {
@@ -67,7 +68,7 @@ const MapLayers = () => {
 
   useEffect(() => {
     Pathfinder(mapGraph).bfs();
-  }, [mapGraph.getGraph().state.endNode, mapGraph.getGraph().state.startNode]);
+  }, [graph.state.startNode, graph.state.endNode]);
 
   const activeNode = mapGraph.getActiveNode();
   const prevActiveNode = mapGraph.getPrevActiveNode();
@@ -77,14 +78,10 @@ const MapLayers = () => {
 
   const showConnectOption = () => {
     if (prevActiveNode && activeNode && prevActiveNode !== activeNode) {
-      if (
+      return !(
         mapGraph.getNode(prevActiveNode).edges?.has(activeNode) ||
         mapGraph.getNode(activeNode).edges?.has(prevActiveNode)
-      ) {
-        return false;
-      } else {
-        return true;
-      }
+      );
     }
     return false;
   };
@@ -92,7 +89,7 @@ const MapLayers = () => {
   return (
     <>
       {mapGraph.getNodesIdx().map((nodeIdx: number) => {
-        const node = mapGraph.getGraph().nodes[nodeIdx];
+        const node = graph.nodes[nodeIdx];
         return (
           <React.Fragment key={`marker-${nodeIdx}`}>
             <Marker
@@ -115,7 +112,6 @@ const MapLayers = () => {
               eventHandlers={{
                 click: (e) => {
                   mapGraph.setActiveNode(e.target.options.nodeIdx);
-                  // console.log(mapGraph.getGraph());
                 },
                 dragend: (e) => {
                   // console.log(e.target.getLatLng());
@@ -177,7 +173,7 @@ const MapLayers = () => {
           </React.Fragment>
         );
       })}
-      {mapGraph.getGraph().path.searchPath.length > 1 && (
+      {graph.path.searchPath.length > 1 && (
         <Pane name="tolu-search-path-pane">
           <Polyline
             pathOptions={{
@@ -185,16 +181,14 @@ const MapLayers = () => {
               dashArray: '20, 20',
               dashOffset: '0',
             }}
-            positions={mapGraph
-              .getGraph()
-              .path.searchPath.map(
-                (nodeIdx) => mapGraph.getNode(nodeIdx).position
-              )}
+            positions={graph.path.searchPath.map(
+              (nodeIdx) => mapGraph.getNode(nodeIdx).position
+            )}
             {...{ zIndex: 9998 }}
           />
         </Pane>
       )}
-      {mapGraph.getGraph().path.foundPath.length > 1 && (
+      {graph.path.foundPath.length > 1 && (
         <Pane name="tolu-path-pane">
           <Polyline
             pathOptions={{
@@ -202,11 +196,9 @@ const MapLayers = () => {
               dashArray: '20, 20',
               dashOffset: '0',
             }}
-            positions={mapGraph
-              .getGraph()
-              .path.foundPath.map(
-                (nodeIdx) => mapGraph.getNode(nodeIdx).position
-              )}
+            positions={graph.path.foundPath.map(
+              (nodeIdx) => mapGraph.getNode(nodeIdx).position
+            )}
             {...{ zIndex: 9999 }}
           />
         </Pane>
