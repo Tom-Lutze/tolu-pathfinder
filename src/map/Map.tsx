@@ -1,6 +1,7 @@
 import 'leaflet/dist/leaflet.css';
 import React, { useEffect, useState } from 'react';
 import { MapContainer, TileLayer, useMapEvents } from 'react-leaflet';
+import { GraphInterface } from '../interfaces/interfaces';
 import GraphController from './graph/GraphController';
 import { Pathfinder } from './graph/Pathfinder';
 import MapLayers from './layers/MapLayers';
@@ -8,7 +9,7 @@ import './Map.css';
 
 const Map = () => {
   const MapLayer = () => {
-    const [graph, setGraph]: any = useState({
+    const initGraphState: GraphInterface = {
       nodes: {},
       state: {
         activeNode: undefined,
@@ -20,9 +21,10 @@ const Map = () => {
         searchPath: [],
         foundPath: [],
       },
-    });
+    };
+    const [graph, setGraph] = useState(initGraphState);
 
-    const graphController = GraphController([graph, setGraph]);
+    const graphController = new GraphController(graph, setGraph);
 
     useMapEvents({
       click(e) {

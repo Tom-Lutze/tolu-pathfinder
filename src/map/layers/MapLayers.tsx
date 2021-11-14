@@ -1,53 +1,26 @@
-import 'leaflet/dist/leaflet.css';
 import React from 'react';
-import { Pane, Polyline, Popup } from 'react-leaflet';
+import { Pane, Polyline } from 'react-leaflet';
 import { GraphInterface } from '../../interfaces/interfaces';
+import MarkerConnection from './MarkerConnection';
 import MarkerWithPopup from './MarkerWithPopup';
 
-const MapLayers = (params: any) => {
+const MapLayers = (params: { graphController: any }) => {
   const graphController = params.graphController;
   const graph: GraphInterface = graphController.getGraph();
-  const drawnEdges = new Set<string>();
 
   return (
     <>
       {graphController.getNodesIdx().map((nodeIdx: number) => {
-        const node = graph.nodes[nodeIdx];
         return (
           <React.Fragment key={`marker-${nodeIdx}`}>
             <MarkerWithPopup
               nodeIdx={nodeIdx}
               graphController={graphController}
             />
-            {node.edges &&
-              node.edges.size > 0 &&
-              Array.from(node.edges).reduce(
-                (prevValue: any, edgeIdx: number) => {
-                  if (
-                    !drawnEdges.has(`${nodeIdx}-${edgeIdx}`) &&
-                    !drawnEdges.has(`${edgeIdx}-${nodeIdx}`)
-                  ) {
-                    drawnEdges.add(`${nodeIdx}-${edgeIdx}`);
-                    const edgePolyline = (
-                      <Polyline
-                        key={`polyline-${nodeIdx}-${edgeIdx}`}
-                        pathOptions={{ color: 'lime' }}
-                        positions={[
-                          node.position,
-                          graphController.getNode(edgeIdx).position,
-                        ]}
-                      >
-                        <Popup>
-                          <span>Test</span>
-                        </Popup>
-                      </Polyline>
-                    );
-                    prevValue.push(edgePolyline);
-                  }
-                  return prevValue;
-                },
-                []
-              )}
+            <MarkerConnection
+              nodeIdx={nodeIdx}
+              graphController={graphController}
+            />
           </React.Fragment>
         );
       })}
