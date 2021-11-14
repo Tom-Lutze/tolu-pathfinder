@@ -1,44 +1,65 @@
 import { LatLng } from 'leaflet';
-import { GraphInterface, NodeInterface } from '../../interfaces/interfaces';
-
-let nodeIndex = 0;
+import {
+  GraphInterface,
+  NodeInterface,
+  GraphStateInterface,
+  PathInterface,
+} from '../../interfaces/interfaces';
+import Pathfinder from './Pathfinder';
 
 class GraphController {
+  nodeIndex = 0;
   graph: GraphInterface;
   setGraph: React.Dispatch<React.SetStateAction<GraphInterface>>;
+  graphState: GraphStateInterface;
+  setGraphState: React.Dispatch<React.SetStateAction<GraphStateInterface>>;
+  path: PathInterface;
+  setFindPath: React.Dispatch<React.SetStateAction<boolean>>;
   constructor(
     graph: GraphInterface,
-    setGraph: React.Dispatch<React.SetStateAction<GraphInterface>>
+    setGraph: React.Dispatch<React.SetStateAction<GraphInterface>>,
+    graphState: GraphStateInterface,
+    setGraphState: React.Dispatch<React.SetStateAction<GraphStateInterface>>,
+    path: PathInterface,
+    setFindPath: React.Dispatch<React.SetStateAction<boolean>>
   ) {
     this.graph = graph;
     this.setGraph = setGraph;
+    this.graphState = graphState;
+    this.setGraphState = setGraphState;
+    this.path = path;
+    this.setFindPath = setFindPath;
   }
 
   addNode(node: NodeInterface) {
-    nodeIndex++;
+    this.nodeIndex++;
     const newGraph = { ...this.graph };
-    const prevNodeIdx = newGraph.state.activeNode;
+    const newGraphState = { ...this.graphState };
+
+    const prevNodeIdx = newGraphState.activeNode;
     if (prevNodeIdx) {
-      const prevNode = newGraph.nodes[prevNodeIdx];
+      const prevNode = newGraph[prevNodeIdx];
       prevNode.edges = prevNode.edges ?? new Set();
-      prevNode.edges.add(nodeIndex);
-      newGraph.nodes[prevNodeIdx] = prevNode;
+      prevNode.edges.add(this.nodeIndex);
+      newGraph[prevNodeIdx] = prevNode;
       node.edges = node.edges ?? new Set();
       node.edges?.add(prevNodeIdx);
     }
-    newGraph.nodes[nodeIndex] = node;
-    newGraph.state.prevActiveNode = newGraph.state.activeNode;
-    newGraph.state.activeNode = nodeIndex;
+    newGraph[this.nodeIndex] = node;
+    newGraphState.prevActiveNode = newGraphState.activeNode;
+    newGraphState.activeNode = this.nodeIndex;
     this.setGraph(newGraph);
+    this.setGraphState(newGraphState);
   }
 
   removeNode(idx: number) {
-    const newGraph = { ...this.graph };
-    newGraph.nodes = Object.keys(newGraph.nodes)
+    let newGraph = { ...this.graph };
+    const newGraphState = { ...this.graphState };
+    newGraph = Object.keys(newGraph)
       .map((key) => Number(key))
       .reduce((prevNodes: any, currIdx: number) => {
         if (currIdx != idx) {
-          const newNode = newGraph.nodes[currIdx];
+          const newNode = newGraph[currIdx];
           if (newNode.edges?.has(idx)) {
             newNode.edges.delete(idx);
           }
@@ -46,36 +67,34 @@ class GraphController {
         }
         return prevNodes;
       }, {});
-    if (newGraph.state.activeNode === idx) {
-      newGraph.state.activeNode = undefined;
+    if (newGraphState.activeNode === idx) {
+      newGraphState.activeNode = undefined;
     }
-    if (newGraph.state.prevActiveNode === idx) {
-      newGraph.state.prevActiveNode = undefined;
+    if (newGraphState.prevActiveNode === idx) {
+      newGraphState.prevActiveNode = undefined;
     }
-    if (newGraph.state.startNode === idx) {
-      newGraph.state.startNode = undefined;
+    if (newGraphState.startNode === idx) {
+      newGraphState.startNode = undefined;
     }
-    if (newGraph.state.endNode === idx) {
-      newGraph.state.endNode = undefined;
+    if (newGraphState.endNode === idx) {
+      newGraphState.endNode = undefined;
     }
     this.setGraph(newGraph);
+    this.setGraphState(newGraphState);
   }
 
   getNodesIdx() {
-    return Object.keys(this.graph.nodes).map((key) => Number(key));
+    return Object.keys(this.graph).map((key) => Number(key));
   }
 
   getNode(idx: number) {
-    return this.graph.nodes[idx];
+    return this.graph[idx];
   }
 
   setNodePosition(idx: number, latlng: LatLng) {
     this.setGraph({
       ...this.graph,
-      nodes: {
-        ...this.graph.nodes,
-        [idx]: { ...this.graph.nodes[idx], position: latlng },
-      },
+      [idx]: { ...this.graph[idx], position: latlng },
     });
   }
 
@@ -83,105 +102,98 @@ class GraphController {
     return this.graph;
   }
 
+  getPath() {
+    return this.path;
+  }
+
   setActiveNode(idx: number) {
-    if (idx && this.graph.nodes[idx]) {
-      this.setGraph({
-        ...this.graph,
-        state: {
-          ...(this.graph.state ?? {}),
-          activeNode: idx,
-          prevActiveNode: this.graph.state.activeNode,
-        },
+    if (idx && this.graph[idx]) {
+      this.setGraphState({
+        ...(this.graphState ?? {}),
+        activeNode: idx,
+        prevActiveNode: this.graphState.activeNode,
       });
     }
   }
 
   setStartNode(idx: number) {
-    if (idx && this.graph.nodes[idx]) {
-      this.setGraph({
-        ...this.graph,
-        state: {
-          ...(this.graph.state ?? {}),
-          startNode: idx,
-          endNode:
-            this.graph.state.endNode != idx
-              ? this.graph.state.endNode
-              : undefined,
-        },
+    if (idx && this.graph[idx]) {
+      this.setGraphState({
+        ...(this.graphState ?? {}),
+        startNode: idx,
+        endNode:
+          this.graphState.endNode != idx ? this.graphState.endNode : undefined,
       });
     }
   }
 
   setEndNode(idx: number) {
-    if (idx && this.graph.nodes[idx]) {
-      this.setGraph({
-        ...this.graph,
-        state: {
-          ...(this.graph.state ?? {}),
-          endNode: idx,
-          startNode:
-            this.graph.state.startNode != idx
-              ? this.graph.state.startNode
-              : undefined,
-        },
+    if (idx && this.graph[idx]) {
+      this.setGraphState({
+        ...(this.graphState ?? {}),
+        endNode: idx,
+        startNode:
+          this.graphState.startNode != idx
+            ? this.graphState.startNode
+            : undefined,
       });
     }
   }
 
   connectNodes() {
-    const prevNodeIdx = this.graph.state.prevActiveNode;
-    const currNodeIdx = this.graph.state.activeNode;
+    const prevNodeIdx = this.graphState.prevActiveNode;
+    const currNodeIdx = this.graphState.activeNode;
     if (prevNodeIdx && currNodeIdx && prevNodeIdx !== currNodeIdx) {
       const newGraph = { ...this.graph };
-      const prevNode = newGraph.nodes[prevNodeIdx];
-      const currNode = newGraph.nodes[currNodeIdx];
+      const prevNode = newGraph[prevNodeIdx];
+      const currNode = newGraph[currNodeIdx];
       prevNode.edges = prevNode.edges ?? new Set();
       currNode.edges = currNode.edges ?? new Set();
       prevNode.edges.add(currNodeIdx);
       currNode.edges.add(prevNodeIdx);
-      newGraph.nodes[prevNodeIdx] = prevNode;
-      newGraph.nodes[currNodeIdx] = currNode;
+      newGraph[prevNodeIdx] = prevNode;
+      newGraph[currNodeIdx] = currNode;
       this.setGraph(newGraph);
     }
   }
 
   getActiveNode() {
-    return this.graph.state?.activeNode ?? false;
+    return this.graphState?.activeNode ?? false;
   }
 
   getPrevActiveNode() {
-    return this.graph.state?.prevActiveNode ?? false;
+    return this.graphState?.prevActiveNode ?? false;
   }
 
   getStartNode() {
-    return this.graph.state?.startNode ?? false;
+    return this.graphState?.startNode ?? false;
   }
 
   getEndNode() {
-    return this.graph.state?.endNode ?? false;
+    return this.graphState?.endNode ?? false;
   }
 
-  setSearchPath(searchPath: number[]) {
-    this.setGraph({
-      ...this.graph,
-      path: {
-        ...this.graph.path,
-        foundPath: [],
-        searchPath: searchPath,
-      },
-    });
-  }
+  // setSearchPath(searchPath: number[]) {
+  //   this.setGraph({
+  //     ...this.graph,
+  //     path: {
+  //       ...this.graph.path,
+  //       foundPath: [],
+  //       searchPath: searchPath,
+  //     },
+  //   });
+  // }
 
-  setFoundPath(foundPath: number[]) {
-    this.setGraph({
-      ...this.graph,
-      path: {
-        ...this.graph.path,
-        searchPath: [],
-        foundPath: foundPath,
-      },
-    });
-  }
+  // setFoundPath(foundPath: number[]) {
+  //   this.setGraph({
+  //     ...this.graph,
+  //     path: {
+  //       ...this.graph.path,
+  //       searchPath: [],
+  //       foundPath: foundPath,
+  //     },
+  //   });
+  // }
 }
 
 export default GraphController;

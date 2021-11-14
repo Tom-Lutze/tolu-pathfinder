@@ -1,12 +1,15 @@
 import React from 'react';
 import { Pane, Polyline } from 'react-leaflet';
-import { GraphInterface } from '../../interfaces/interfaces';
+import { GraphInterface, PathInterface } from '../../interfaces/interfaces';
+import GraphController from '../graph/GraphController';
+import Pathfinder from '../graph/Pathfinder';
 import MarkerConnection from './MarkerConnection';
 import MarkerWithPopup from './MarkerWithPopup';
 
-const MapLayers = (params: { graphController: any }) => {
+const MapLayers = (params: { graphController: GraphController }) => {
   const graphController = params.graphController;
   const graph: GraphInterface = graphController.getGraph();
+  const path: PathInterface = graphController.getPath();
 
   return (
     <>
@@ -24,7 +27,7 @@ const MapLayers = (params: { graphController: any }) => {
           </React.Fragment>
         );
       })}
-      {graph.path.searchPath.length > 1 && (
+      {path.search && path.path.length > 1 && (
         <Pane name="tolu-search-path-pane">
           <Polyline
             pathOptions={{
@@ -32,14 +35,14 @@ const MapLayers = (params: { graphController: any }) => {
               dashArray: '20, 20',
               dashOffset: '0',
             }}
-            positions={graph.path.searchPath.map(
+            positions={path.path.map(
               (nodeIdx) => graphController.getNode(nodeIdx).position
             )}
             {...{ zIndex: 9998 }}
           />
         </Pane>
       )}
-      {graph.path.foundPath.length > 1 && (
+      {!path.search && path.path.length > 1 && (
         <Pane name="tolu-path-pane">
           <Polyline
             pathOptions={{
@@ -47,7 +50,7 @@ const MapLayers = (params: { graphController: any }) => {
               dashArray: '20, 20',
               dashOffset: '0',
             }}
-            positions={graph.path.foundPath.map(
+            positions={path.path.map(
               (nodeIdx) => graphController.getNode(nodeIdx).position
             )}
             {...{ zIndex: 9999 }}

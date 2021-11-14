@@ -1,30 +1,44 @@
 import 'leaflet/dist/leaflet.css';
 import React, { useEffect, useState } from 'react';
 import { MapContainer, TileLayer, useMapEvents } from 'react-leaflet';
-import { GraphInterface } from '../interfaces/interfaces';
+import {
+  GraphInterface,
+  GraphStateInterface,
+  PathInterface,
+} from '../interfaces/interfaces';
 import GraphController from './graph/GraphController';
-import { Pathfinder } from './graph/Pathfinder';
+import Pathfinder from './graph/Pathfinder';
 import MapLayers from './layers/MapLayers';
 import './Map.css';
 
 const Map = () => {
   const MapLayer = () => {
-    const initGraphState: GraphInterface = {
-      nodes: {},
-      state: {
-        activeNode: undefined,
-        prevActiveNode: undefined,
-        startNode: undefined,
-        endNode: undefined,
-      },
-      path: {
-        searchPath: [],
-        foundPath: [],
-      },
+    const initGraph: GraphInterface = {};
+    const initGraphState: GraphStateInterface = {
+      activeNode: undefined,
+      prevActiveNode: undefined,
+      startNode: undefined,
+      endNode: undefined,
     };
-    const [graph, setGraph] = useState(initGraphState);
+    const initPathState: PathInterface = {
+      search: false,
+      path: [],
+    };
+    const [graph, setGraph] = useState(initGraph);
+    const [graphState, setGraphState] = useState(initGraphState);
+    const [path, setPath] = useState(initPathState);
+    const [findPath, setFindPath] = useState(false);
 
-    const graphController = new GraphController(graph, setGraph);
+    const pathFinder = new Pathfinder(graph, graphState, setPath);
+
+    const graphController = new GraphController(
+      graph,
+      setGraph,
+      graphState,
+      setGraphState,
+      path,
+      setFindPath
+    );
 
     useMapEvents({
       click(e) {
@@ -32,9 +46,13 @@ const Map = () => {
       },
     });
 
+    // useEffect(() => {
+    //   Pathfinder(graphController).bfs();
+    // }, [graph.state.startNode, graph.state.endNode]);
     useEffect(() => {
-      Pathfinder(graphController).bfs();
-    }, [graph.state.startNode, graph.state.endNode]);
+      // setFindPath(false);
+      pathFinder.bfs();
+    }, [findPath]);
 
     return <MapLayers graphController={graphController} />;
   };
