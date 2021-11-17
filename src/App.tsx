@@ -2,7 +2,6 @@ import './App.css';
 import 'antd/dist/antd.css';
 import { Layout, Menu, Breadcrumb } from 'antd';
 import Map from './map/Map';
-// import React, { useState } from 'react';
 
 const App = () => {
   const { Header, Content, Footer } = Layout;

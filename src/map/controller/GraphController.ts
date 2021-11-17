@@ -10,40 +10,17 @@ import PathController from './PathController';
 class GraphController {
   graph: GraphInterface;
   setGraph: React.Dispatch<React.SetStateAction<GraphInterface>>;
-  // graphState: GraphStateInterface;
-  // setGraphState: React.Dispatch<React.SetStateAction<GraphStateInterface>>;
-  // path: PathInterface;
-  // setFindPath: React.Dispatch<React.SetStateAction<boolean>>;
   constructor(
-    // [nodeCount, setNodeCount]: [
-    //   number,
-    //   React.Dispatch<React.SetStateAction<number>>
-    // ],
     graph: GraphInterface,
     setGraph: React.Dispatch<React.SetStateAction<GraphInterface>>
-    // ],
-    // [graphState, setGraphState]: [
-    //   GraphStateInterface,
-    //   React.Dispatch<React.SetStateAction<GraphStateInterface>>
-    // ],
-    // path: PathInterface,
-    // setFindPath: React.Dispatch<React.SetStateAction<boolean>>
   ) {
-    // this.nodeCount = nodeCount;
-    // this.setNodeCount = setNodeCount;
     this.graph = graph;
     this.setGraph = setGraph;
-    // this.graphState = graphState;
-    // this.setGraphState = setGraphState;
-    // this.path = path;
-    // this.setFindPath = setFindPath;
   }
 
   addNode(node: NodeInterface) {
     const newGraph = { ...this.graph };
     newGraph.count = newGraph.count + 1;
-    // const newGraph.state = { ...this.graphState };
-    // const newNodeCount = newGraph.count + 1;
 
     const prevNodeIdx = newGraph.state.activeNode;
     if (prevNodeIdx) {
@@ -57,14 +34,11 @@ class GraphController {
     newGraph.nodes[newGraph.count] = node;
     newGraph.state.prevActiveNode = newGraph.state.activeNode;
     newGraph.state.activeNode = newGraph.count;
-    // this.setNodeCount(newGraph.count);
     this.setGraph(newGraph);
-    // this.setGraphState(newGraph.state);
   }
 
   removeNode(idx: number) {
     const newGraph = { ...this.graph };
-    // const newGraph.state = { ...this.graphState };
     newGraph.nodes = Object.keys(newGraph.nodes)
       .map((key) => Number(key))
       .reduce((prevNodes: any, currIdx: number) => {
@@ -90,7 +64,6 @@ class GraphController {
       newGraph.state.endNode = undefined;
     }
     this.setGraph(newGraph);
-    // this.setGraphState(newGraph.state);
   }
 
   getNodesIdx() {
@@ -115,10 +88,6 @@ class GraphController {
     return this.graph;
   }
 
-  // getPath() {
-  //   return this.path;
-  // }
-
   setActiveNode(idx: number) {
     if (idx && this.graph.nodes[idx]) {
       const newGraph = { ...this.graph };
@@ -131,11 +100,6 @@ class GraphController {
           prevActiveNode: newGraph.state.activeNode,
         },
       });
-      // this.setGraph({
-      //   ...(this.graph.state ?? {}),
-      //   activeNode: idx,
-      //   prevActiveNode: this.graphState.activeNode,
-      // });
     }
   }
 
@@ -152,13 +116,6 @@ class GraphController {
             newGraph.state.endNode != idx ? newGraph.state.endNode : undefined,
         },
       });
-
-      // this.setGraphState({
-      //   ...(this.graphState ?? {}),
-      //   startNode: idx,
-      //   endNode:
-      //     this.graphState.endNode != idx ? this.graphState.endNode : undefined,
-      // });
     }
   }
 
@@ -177,15 +134,6 @@ class GraphController {
               : undefined,
         },
       });
-
-      // this.setGraphState({
-      //   ...(this.graphState ?? {}),
-      //   endNode: idx,
-      //   startNode:
-      //     this.graphState.startNode != idx
-      //       ? this.graphState.startNode
-      //       : undefined,
-      // });
     }
   }
 
@@ -221,28 +169,6 @@ class GraphController {
   getEndNode() {
     return this.graph.state?.endNode ?? false;
   }
-
-  // setSearchPath(searchPath: number[]) {
-  //   this.setGraph({
-  //     ...this.graph,
-  //     path: {
-  //       ...this.graph.path,
-  //       foundPath: [],
-  //       searchPath: searchPath,
-  //     },
-  //   });
-  // }
-
-  // setFoundPath(foundPath: number[]) {
-  //   this.setGraph({
-  //     ...this.graph,
-  //     path: {
-  //       ...this.graph.path,
-  //       searchPath: [],
-  //       foundPath: foundPath,
-  //     },
-  //   });
-  // }
 }
 
 export default GraphController;

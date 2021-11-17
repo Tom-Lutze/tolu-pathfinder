@@ -1,6 +1,5 @@
 import {
   GraphInterface,
-  GraphStateInterface,
   PathInterface,
 } from '../../interfaces/interfaces';
 import { sleep } from '../../utils/Helper';
@@ -14,8 +13,6 @@ class PathController {
     graph: GraphInterface,
     path: PathInterface,
     setPath: React.Dispatch<React.SetStateAction<PathInterface>>
-    // graphState: GraphStateInterface,
-    // setPath: React.Dispatch<React.SetStateAction<PathInterface>>
   ) {
     this.graph = graph;
     this.path = path;

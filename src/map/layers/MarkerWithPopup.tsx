@@ -46,7 +46,6 @@ const MarkerWithPopup = (params: {
           params.graphController.setActiveNode(e.target.options.nodeIdx);
         },
         dragend: (e) => {
-          // console.log(e.target.getLatLng());
           params.graphController.setNodePosition(
             e.target.options.nodeIdx,
             e.target.getLatLng()

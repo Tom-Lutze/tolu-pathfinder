@@ -1,11 +1,7 @@
 import 'leaflet/dist/leaflet.css';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { MapContainer, TileLayer, useMapEvents } from 'react-leaflet';
-import {
-  GraphInterface,
-  GraphStateInterface,
-  PathInterface,
-} from '../interfaces/interfaces';
+import { GraphInterface, PathInterface } from '../interfaces/interfaces';
 import GraphController from './controller/GraphController';
 import PathController from './controller/PathController';
 import MapLayers from './layers/MapLayers';
@@ -23,24 +19,14 @@ const Map = () => {
         endNode: undefined,
       },
     };
-    // const initGraphState: GraphStateInterface = ;
     const initPath: PathInterface = {
       found: false,
       path: [],
     };
     const [graph, setGraph] = useState(initGraph);
-    // const [graphState, setGraphState] = useState(initGraphState);
-    // const [path, setPath] = useState(initPathState);
     const [path, setPath] = useState(initPath);
-    // const [nodeCount, setNodeCount] = useState(0);
 
-    const graphController = new GraphController(
-      graph,
-      setGraph
-      // [graphState, setGraphState],
-      // path,
-      // setFindPath
-    );
+    const graphController = new GraphController(graph, setGraph);
     const pathController = new PathController(graph, path, setPath);
 
     useMapEvents({
@@ -49,12 +35,7 @@ const Map = () => {
       },
     });
 
-    // useEffect(() => {
-    //   Pathfinder(graphController).bfs();
-    // }, [graph.state.startNode, graph.state.endNode]);
     useEffect(() => {
-      // setFindPath(false);
-      console.log('search path');
       pathController.bfs();
     }, [graph.state, graph.nodes]);
 

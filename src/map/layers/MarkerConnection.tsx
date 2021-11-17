@@ -1,4 +1,3 @@
-import React from 'react';
 import { Polyline, Popup } from 'react-leaflet';
 import GraphController from '../controller/GraphController';
 
