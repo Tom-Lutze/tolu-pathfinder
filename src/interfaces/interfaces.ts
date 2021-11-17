@@ -1,7 +1,16 @@
 import { LatLng } from 'leaflet';
 
 export interface GraphInterface {
-  [idx: number]: NodeInterface;
+  count: number;
+  nodes: {
+    [idx: number]: NodeInterface;
+  };
+  state: {
+    activeNode: number | undefined;
+    prevActiveNode: number | undefined;
+    startNode: number | undefined;
+    endNode: number | undefined;
+  };
 }
 
 export interface NodeInterface {
@@ -17,6 +26,6 @@ export interface GraphStateInterface {
 }
 
 export interface PathInterface {
-  search: boolean;
+  found: boolean;
   path: number[];
 }

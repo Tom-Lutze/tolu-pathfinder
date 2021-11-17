@@ -1,15 +1,19 @@
 import React from 'react';
 import { Pane, Polyline } from 'react-leaflet';
 import { GraphInterface, PathInterface } from '../../interfaces/interfaces';
-import GraphController from '../graph/GraphController';
-import Pathfinder from '../graph/Pathfinder';
+import GraphController from '../controller/GraphController';
+import PathController from '../controller/PathController';
 import MarkerConnection from './MarkerConnection';
 import MarkerWithPopup from './MarkerWithPopup';
 
-const MapLayers = (params: { graphController: GraphController }) => {
+const MapLayers = (params: {
+  graphController: GraphController;
+  pathController: PathController;
+}) => {
   const graphController = params.graphController;
-  const graph: GraphInterface = graphController.getGraph();
-  const path: PathInterface = graphController.getPath();
+  const pathController = params.pathController;
+  // const graph: GraphInterface = graphController.getGraph();
+  const path: PathInterface = pathController.getPath();
 
   return (
     <>
@@ -27,7 +31,7 @@ const MapLayers = (params: { graphController: GraphController }) => {
           </React.Fragment>
         );
       })}
-      {path.search && path.path.length > 1 && (
+      {!path.found && path.path.length > 1 && (
         <Pane name="tolu-search-path-pane">
           <Polyline
             pathOptions={{
@@ -42,7 +46,7 @@ const MapLayers = (params: { graphController: GraphController }) => {
           />
         </Pane>
       )}
-      {!path.search && path.path.length > 1 && (
+      {path.found && path.path.length > 1 && (
         <Pane name="tolu-path-pane">
           <Polyline
             pathOptions={{

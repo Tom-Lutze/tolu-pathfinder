@@ -4,8 +4,12 @@ import {
   MarkerIconGreen,
   MarkerIconRed,
 } from '../constants/MarkerIcons';
+import GraphController from '../controller/GraphController';
 
-const MarkerWithPopup = (params: { nodeIdx: number; graphController: any }) => {
+const MarkerWithPopup = (params: {
+  nodeIdx: number;
+  graphController: GraphController;
+}) => {
   const activeNode = params.graphController.getActiveNode();
   const prevActiveNode = params.graphController.getPrevActiveNode();
   const startNode = params.graphController.getStartNode();

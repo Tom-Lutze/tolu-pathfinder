@@ -6,39 +6,42 @@ import {
   GraphStateInterface,
   PathInterface,
 } from '../interfaces/interfaces';
-import GraphController from './graph/GraphController';
-import Pathfinder from './graph/Pathfinder';
+import GraphController from './controller/GraphController';
+import PathController from './controller/PathController';
 import MapLayers from './layers/MapLayers';
 import './Map.css';
 
 const Map = () => {
   const MapLayer = () => {
-    const initGraph: GraphInterface = {};
-    const initGraphState: GraphStateInterface = {
-      activeNode: undefined,
-      prevActiveNode: undefined,
-      startNode: undefined,
-      endNode: undefined,
+    const initGraph: GraphInterface = {
+      count: 0,
+      nodes: {},
+      state: {
+        activeNode: undefined,
+        prevActiveNode: undefined,
+        startNode: undefined,
+        endNode: undefined,
+      },
     };
-    const initPathState: PathInterface = {
-      search: false,
+    // const initGraphState: GraphStateInterface = ;
+    const initPath: PathInterface = {
+      found: false,
       path: [],
     };
     const [graph, setGraph] = useState(initGraph);
-    const [graphState, setGraphState] = useState(initGraphState);
-    const [path, setPath] = useState(initPathState);
-    const [findPath, setFindPath] = useState(false);
-
-    const pathFinder = new Pathfinder(graph, graphState, setPath);
+    // const [graphState, setGraphState] = useState(initGraphState);
+    // const [path, setPath] = useState(initPathState);
+    const [path, setPath] = useState(initPath);
+    // const [nodeCount, setNodeCount] = useState(0);
 
     const graphController = new GraphController(
       graph,
-      setGraph,
-      graphState,
-      setGraphState,
-      path,
-      setFindPath
+      setGraph
+      // [graphState, setGraphState],
+      // path,
+      // setFindPath
     );
+    const pathController = new PathController(graph, path, setPath);
 
     useMapEvents({
       click(e) {
@@ -51,10 +54,16 @@ const Map = () => {
     // }, [graph.state.startNode, graph.state.endNode]);
     useEffect(() => {
       // setFindPath(false);
-      pathFinder.bfs();
-    }, [findPath]);
+      console.log('search path');
+      pathController.bfs();
+    }, [graph.state, graph.nodes]);
 
-    return <MapLayers graphController={graphController} />;
+    return (
+      <MapLayers
+        graphController={graphController}
+        pathController={pathController}
+      />
+    );
   };
 
   return (
