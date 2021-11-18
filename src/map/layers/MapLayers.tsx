@@ -12,6 +12,7 @@ const MapLayers = (params: {
 }) => {
   const graphController = params.graphController;
   const pathController = params.pathController;
+  const graph = graphController.getGraph();
   const path: PathInterface = pathController.getPath();
 
   return (
@@ -30,7 +31,7 @@ const MapLayers = (params: {
           </React.Fragment>
         );
       })}
-      {!path.found && path.path.length > 1 && (
+      {!graph.state.updated && !path.found && path.nodes.length > 1 && (
         <Pane name="tolu-search-path-pane">
           <Polyline
             pathOptions={{
@@ -38,14 +39,14 @@ const MapLayers = (params: {
               dashArray: '20, 20',
               dashOffset: '0',
             }}
-            positions={path.path.map(
+            positions={path.nodes.map(
               (nodeIdx) => graphController.getNode(nodeIdx).position
             )}
             {...{ zIndex: 9998 }}
           />
         </Pane>
       )}
-      {path.found && path.path.length > 1 && (
+      {!graph.state.updated && path.found && path.nodes.length > 1 && (
         <Pane name="tolu-path-pane">
           <Polyline
             pathOptions={{
@@ -53,7 +54,7 @@ const MapLayers = (params: {
               dashArray: '20, 20',
               dashOffset: '0',
             }}
-            positions={path.path.map(
+            positions={path.nodes.map(
               (nodeIdx) => graphController.getNode(nodeIdx).position
             )}
             {...{ zIndex: 9999 }}

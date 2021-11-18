@@ -13,6 +13,7 @@ const Map = () => {
       count: 0,
       nodes: {},
       state: {
+        updated: false,
         activeNode: undefined,
         prevActiveNode: undefined,
         startNode: undefined,
@@ -21,7 +22,7 @@ const Map = () => {
     };
     const initPath: PathInterface = {
       found: false,
-      path: [],
+      nodes: [],
     };
     const [graph, setGraph] = useState(initGraph);
     const [path, setPath] = useState(initPath);
@@ -36,8 +37,13 @@ const Map = () => {
     });
 
     useEffect(() => {
-      pathController.bfs();
-    }, [graph.state, graph.nodes]);
+      if (graph.state.updated && path.nodes.length > 0) {
+        setPath(initPath);
+      } else if (graph.state.updated && path.nodes.length < 1) {
+        setGraph({ ...graph, state: { ...graph.state, updated: false } });
+        pathController.bfs();
+      }
+    }, [graph.state.updated, path.nodes]);
 
     return (
       <MapLayers

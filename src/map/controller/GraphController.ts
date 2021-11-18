@@ -8,8 +8,8 @@ import {
 import PathController from './PathController';
 
 class GraphController {
-  graph: GraphInterface;
-  setGraph: React.Dispatch<React.SetStateAction<GraphInterface>>;
+  graph;
+  setGraph;
   constructor(
     graph: GraphInterface,
     setGraph: React.Dispatch<React.SetStateAction<GraphInterface>>
@@ -34,6 +34,7 @@ class GraphController {
     newGraph.nodes[newGraph.count] = node;
     newGraph.state.prevActiveNode = newGraph.state.activeNode;
     newGraph.state.activeNode = newGraph.count;
+    newGraph.state.updated = true;
     this.setGraph(newGraph);
   }
 
@@ -63,6 +64,7 @@ class GraphController {
     if (newGraph.state.endNode === idx) {
       newGraph.state.endNode = undefined;
     }
+    newGraph.state.updated = true;
     this.setGraph(newGraph);
   }
 
@@ -75,11 +77,13 @@ class GraphController {
   }
 
   setNodePosition(idx: number, latlng: LatLng) {
+    const newGraph = { ...this.graph };
+    newGraph.state.updated = true;
     this.setGraph({
-      ...this.graph,
+      ...newGraph,
       nodes: {
-        ...this.graph.nodes,
-        [idx]: { ...this.graph.nodes[idx], position: latlng },
+        ...newGraph.nodes,
+        [idx]: { ...newGraph.nodes[idx], position: latlng },
       },
     });
   }
@@ -106,7 +110,7 @@ class GraphController {
   setStartNode(idx: number) {
     if (idx && this.graph.nodes[idx]) {
       const newGraph = { ...this.graph };
-
+      newGraph.state.updated = true;
       this.setGraph({
         ...newGraph,
         state: {
@@ -122,7 +126,7 @@ class GraphController {
   setEndNode(idx: number) {
     if (idx && this.graph.nodes[idx]) {
       const newGraph = { ...this.graph };
-
+      newGraph.state.updated = true;
       this.setGraph({
         ...newGraph,
         state: {
@@ -150,6 +154,7 @@ class GraphController {
       currNode.edges.add(prevNodeIdx);
       newGraph.nodes[prevNodeIdx] = prevNode;
       newGraph.nodes[currNodeIdx] = currNode;
+      newGraph.state.updated = true;
       this.setGraph(newGraph);
     }
   }

@@ -1,7 +1,4 @@
-import {
-  GraphInterface,
-  PathInterface,
-} from '../../interfaces/interfaces';
+import { GraphInterface, PathInterface } from '../../interfaces/interfaces';
 import { sleep } from '../../utils/Helper';
 
 class PathController {
@@ -35,10 +32,10 @@ class PathController {
         if (!queueNode || !queueNode[0] || visitedNodes.has(queueNode[0])) {
           loop(queue);
         } else {
-          this.setPath({ found: false, path: queueNode });
+          this.setPath({ found: false, nodes: queueNode });
           visitedNodes.add(queueNode[0]);
           if (queueNode[0] == endNodeIdx) {
-            return this.setPath({ found: true, path: queueNode });
+            return this.setPath({ found: true, nodes: queueNode });
           }
           const queueNodeEdges = this.graph.nodes[queueNode[0]].edges;
           if (queueNodeEdges) {

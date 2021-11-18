@@ -6,6 +6,7 @@ export interface GraphInterface {
     [idx: number]: NodeInterface;
   };
   state: {
+    updated: boolean;
     activeNode: number | undefined;
     prevActiveNode: number | undefined;
     startNode: number | undefined;
@@ -27,5 +28,5 @@ export interface GraphStateInterface {
 
 export interface PathInterface {
   found: boolean;
-  path: number[];
+  nodes: number[];
 }
