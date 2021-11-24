@@ -13,7 +13,7 @@ const MapLayers = (params: {
   const graphController = params.graphController;
   const pathController = params.pathController;
   const graph = graphController.getGraph();
-  const path: PathInterface = pathController.getPath();
+  const path: PathInterface = pathController.getPath().current;
 
   return (
     <>

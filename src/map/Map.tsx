@@ -1,5 +1,5 @@
 import 'leaflet/dist/leaflet.css';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { MapContainer, TileLayer, useMapEvents } from 'react-leaflet';
 import { GraphInterface, PathInterface } from '../interfaces/interfaces';
 import GraphController from './controller/GraphController';
@@ -23,12 +23,17 @@ const Map = () => {
     const initPath: PathInterface = {
       found: false,
       nodes: [],
+      searchIdx: 0,
     };
+
     const [graph, setGraph] = useState(initGraph);
     const [path, setPath] = useState(initPath);
 
+    const pathRef = useRef(path);
+    pathRef.current = path;
+
     const graphController = new GraphController(graph, setGraph);
-    const pathController = new PathController(graph, path, setPath);
+    const pathController = new PathController(graph, pathRef, setPath);
 
     useMapEvents({
       click(e) {
@@ -38,7 +43,7 @@ const Map = () => {
 
     useEffect(() => {
       if (graph.state.updated && path.nodes.length > 0) {
-        setPath(initPath);
+        setPath({ ...initPath, searchIdx: path.searchIdx + 1 });
       } else if (graph.state.updated && path.nodes.length < 1) {
         setGraph({ ...graph, state: { ...graph.state, updated: false } });
         pathController.bfs();

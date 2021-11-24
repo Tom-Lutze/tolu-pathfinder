@@ -8,7 +8,6 @@ const MarkerConnection = (params: {
   const nodeIdx = params.nodeIdx;
   const node = params.graphController.getNode(nodeIdx);
   const drawnEdges = new Set<string>();
-  console.log(node);
 
   if (node && node.edges && node.edges.size) {
     return Array.from(node.edges).reduce((prevValue: any, edgeIdx: number) => {

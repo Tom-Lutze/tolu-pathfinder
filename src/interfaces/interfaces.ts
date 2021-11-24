@@ -29,4 +29,5 @@ export interface GraphStateInterface {
 export interface PathInterface {
   found: boolean;
   nodes: number[];
+  searchIdx: number;
 }
