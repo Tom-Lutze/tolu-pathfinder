@@ -1,66 +1,70 @@
 import React from 'react';
 import { Pane, Polyline } from 'react-leaflet';
-import { PathInterface } from '../../interfaces/interfaces';
+import { GraphInterface, PathInterface } from '../../interfaces/interfaces';
 import GraphController from '../controller/GraphController';
 import PathController from '../controller/PathController';
 import MarkerConnection from './MarkerConnection';
 import MarkerWithPopup from './MarkerWithPopup';
 
 const MapLayers = (params: {
-  graphController: GraphController;
-  pathController: PathController;
+  graph: GraphInterface;
+  setGraph: React.Dispatch<React.SetStateAction<GraphInterface>>;
+  path: PathInterface;
 }) => {
-  const graphController = params.graphController;
-  const pathController = params.pathController;
-  const graph = graphController.getGraph();
-  const path: PathInterface = pathController.getPath().current;
-
   return (
     <>
-      {graphController.getNodesIdx().map((nodeIdx: number) => {
+      {GraphController.getNodesIdx(params.graph).map((nodeIdx: number) => {
         return (
           <React.Fragment key={`marker-${nodeIdx}`}>
             <MarkerWithPopup
               nodeIdx={nodeIdx}
-              graphController={graphController}
+              graph={params.graph}
+              setGraph={params.setGraph}
             />
             <MarkerConnection
               nodeIdx={nodeIdx}
-              graphController={graphController}
+              graph={params.graph}
+              setGraph={params.setGraph}
             />
           </React.Fragment>
         );
       })}
-      {!graph.state.updated && !path.found && path.nodes.length > 1 && (
-        <Pane name="tolu-search-path-pane">
-          <Polyline
-            pathOptions={{
-              color: 'blue',
-              dashArray: '20, 20',
-              dashOffset: '0',
-            }}
-            positions={path.nodes.map(
-              (nodeIdx) => graphController.getNode(nodeIdx).position
-            )}
-            {...{ zIndex: 9998 }}
-          />
-        </Pane>
-      )}
-      {!graph.state.updated && path.found && path.nodes.length > 1 && (
-        <Pane name="tolu-path-pane">
-          <Polyline
-            pathOptions={{
-              color: 'red',
-              dashArray: '20, 20',
-              dashOffset: '0',
-            }}
-            positions={path.nodes.map(
-              (nodeIdx) => graphController.getNode(nodeIdx).position
-            )}
-            {...{ zIndex: 9999 }}
-          />
-        </Pane>
-      )}
+      {!params.graph.state.updated &&
+        !params.path.found &&
+        params.path.nodes.length > 1 && (
+          <Pane name="tolu-search-path-pane">
+            <Polyline
+              pathOptions={{
+                color: 'blue',
+                dashArray: '20, 20',
+                dashOffset: '0',
+              }}
+              positions={params.path.nodes.map(
+                (nodeIdx) =>
+                  GraphController.getNode(nodeIdx, params.graph).position
+              )}
+              {...{ zIndex: 9998 }}
+            />
+          </Pane>
+        )}
+      {!params.graph.state.updated &&
+        params.path.found &&
+        params.path.nodes.length > 1 && (
+          <Pane name="tolu-path-pane">
+            <Polyline
+              pathOptions={{
+                color: 'red',
+                dashArray: '20, 20',
+                dashOffset: '0',
+              }}
+              positions={params.path.nodes.map(
+                (nodeIdx) =>
+                  GraphController.getNode(nodeIdx, params.graph).position
+              )}
+              {...{ zIndex: 9999 }}
+            />
+          </Pane>
+        )}
     </>
   );
 };

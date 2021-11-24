@@ -32,12 +32,13 @@ const Map = () => {
     const pathRef = useRef(path);
     pathRef.current = path;
 
-    const graphController = new GraphController(graph, setGraph);
-    const pathController = new PathController(graph, pathRef, setPath);
-
     useMapEvents({
       click(e) {
-        graphController.addNode({ position: e.latlng, edges: undefined });
+        GraphController.addNode(
+          { position: e.latlng, edges: undefined },
+          graph,
+          setGraph
+        );
       },
     });
 
@@ -46,16 +47,11 @@ const Map = () => {
         setPath({ ...initPath, searchIdx: path.searchIdx + 1 });
       } else if (graph.state.updated && path.nodes.length < 1) {
         setGraph({ ...graph, state: { ...graph.state, updated: false } });
-        pathController.bfs();
+        PathController.bfs(graph, pathRef, setPath);
       }
     }, [graph.state.updated, path.nodes]);
 
-    return (
-      <MapLayers
-        graphController={graphController}
-        pathController={pathController}
-      />
-    );
+    return <MapLayers graph={graph} setGraph={setGraph} path={path} />;
   };
 
   return (

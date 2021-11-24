@@ -1,25 +1,12 @@
 import { LatLng } from 'leaflet';
-import {
-  GraphInterface,
-  NodeInterface,
-  GraphStateInterface,
-  PathInterface,
-} from '../../interfaces/interfaces';
-import PathController from './PathController';
-
-class GraphController {
-  graph;
-  setGraph;
-  constructor(
+import { GraphInterface, NodeInterface } from '../../interfaces/interfaces';
+export default class GraphController {
+  static addNode(
+    node: NodeInterface,
     graph: GraphInterface,
     setGraph: React.Dispatch<React.SetStateAction<GraphInterface>>
   ) {
-    this.graph = graph;
-    this.setGraph = setGraph;
-  }
-
-  addNode(node: NodeInterface) {
-    const newGraph = { ...this.graph };
+    const newGraph = { ...graph };
     newGraph.count = newGraph.count + 1;
 
     const prevNodeIdx = newGraph.state.activeNode;
@@ -35,11 +22,15 @@ class GraphController {
     newGraph.state.prevActiveNode = newGraph.state.activeNode;
     newGraph.state.activeNode = newGraph.count;
     newGraph.state.updated = true;
-    this.setGraph(newGraph);
+    setGraph(newGraph);
   }
 
-  removeNode(idx: number) {
-    const newGraph = { ...this.graph };
+  static removeNode(
+    idx: number,
+    graph: GraphInterface,
+    setGraph: React.Dispatch<React.SetStateAction<GraphInterface>>
+  ) {
+    const newGraph = { ...graph };
     newGraph.nodes = Object.keys(newGraph.nodes)
       .map((key) => Number(key))
       .reduce((prevNodes: any, currIdx: number) => {
@@ -65,21 +56,26 @@ class GraphController {
       newGraph.state.endNode = undefined;
     }
     newGraph.state.updated = true;
-    this.setGraph(newGraph);
+    setGraph(newGraph);
   }
 
-  getNodesIdx() {
-    return Object.keys(this.graph.nodes).map((key) => Number(key));
+  static getNodesIdx(graph: GraphInterface) {
+    return Object.keys(graph.nodes).map((key) => Number(key));
   }
 
-  getNode(idx: number) {
-    return this.graph.nodes[idx];
+  static getNode(idx: number, graph: GraphInterface) {
+    return graph.nodes[idx];
   }
 
-  setNodePosition(idx: number, latlng: LatLng) {
-    const newGraph = { ...this.graph };
+  static setNodePosition(
+    idx: number,
+    latlng: LatLng,
+    graph: GraphInterface,
+    setGraph: React.Dispatch<React.SetStateAction<GraphInterface>>
+  ) {
+    const newGraph = { ...graph };
     newGraph.state.updated = true;
-    this.setGraph({
+    setGraph({
       ...newGraph,
       nodes: {
         ...newGraph.nodes,
@@ -88,18 +84,18 @@ class GraphController {
     });
   }
 
-  getGraph() {
-    return this.graph;
-  }
+  static setActiveNode(
+    idx: number,
+    graph: GraphInterface,
+    setGraph: React.Dispatch<React.SetStateAction<GraphInterface>>
+  ) {
+    if (idx && graph.nodes[idx]) {
+      const newGraph = { ...graph };
 
-  setActiveNode(idx: number) {
-    if (idx && this.graph.nodes[idx]) {
-      const newGraph = { ...this.graph };
-
-      this.setGraph({
+      setGraph({
         ...newGraph,
         state: {
-          ...(this.graph.state ?? {}),
+          ...(graph.state ?? {}),
           activeNode: idx,
           prevActiveNode: newGraph.state.activeNode,
         },
@@ -107,14 +103,18 @@ class GraphController {
     }
   }
 
-  setStartNode(idx: number) {
-    if (idx && this.graph.nodes[idx]) {
-      const newGraph = { ...this.graph };
+  static setStartNode(
+    idx: number,
+    graph: GraphInterface,
+    setGraph: React.Dispatch<React.SetStateAction<GraphInterface>>
+  ) {
+    if (idx && graph.nodes[idx]) {
+      const newGraph = { ...graph };
       newGraph.state.updated = true;
-      this.setGraph({
+      setGraph({
         ...newGraph,
         state: {
-          ...(this.graph.state ?? {}),
+          ...(graph.state ?? {}),
           startNode: idx,
           endNode:
             newGraph.state.endNode != idx ? newGraph.state.endNode : undefined,
@@ -123,14 +123,18 @@ class GraphController {
     }
   }
 
-  setEndNode(idx: number) {
-    if (idx && this.graph.nodes[idx]) {
-      const newGraph = { ...this.graph };
+  static setEndNode(
+    idx: number,
+    graph: GraphInterface,
+    setGraph: React.Dispatch<React.SetStateAction<GraphInterface>>
+  ) {
+    if (idx && graph.nodes[idx]) {
+      const newGraph = { ...graph };
       newGraph.state.updated = true;
-      this.setGraph({
+      setGraph({
         ...newGraph,
         state: {
-          ...(this.graph.state ?? {}),
+          ...(graph.state ?? {}),
           endNode: idx,
           startNode:
             newGraph.state.startNode != idx
@@ -141,11 +145,14 @@ class GraphController {
     }
   }
 
-  connectNodes() {
-    const prevNodeIdx = this.graph.state.prevActiveNode;
-    const currNodeIdx = this.graph.state.activeNode;
+  static connectNodes(
+    graph: GraphInterface,
+    setGraph: React.Dispatch<React.SetStateAction<GraphInterface>>
+  ) {
+    const prevNodeIdx = graph.state.prevActiveNode;
+    const currNodeIdx = graph.state.activeNode;
     if (prevNodeIdx && currNodeIdx && prevNodeIdx !== currNodeIdx) {
-      const newGraph = { ...this.graph };
+      const newGraph = { ...graph };
       const prevNode = newGraph.nodes[prevNodeIdx];
       const currNode = newGraph.nodes[currNodeIdx];
       prevNode.edges = prevNode.edges ?? new Set();
@@ -155,25 +162,7 @@ class GraphController {
       newGraph.nodes[prevNodeIdx] = prevNode;
       newGraph.nodes[currNodeIdx] = currNode;
       newGraph.state.updated = true;
-      this.setGraph(newGraph);
+      setGraph(newGraph);
     }
   }
-
-  getActiveNode() {
-    return this.graph.state?.activeNode ?? false;
-  }
-
-  getPrevActiveNode() {
-    return this.graph.state?.prevActiveNode ?? false;
-  }
-
-  getStartNode() {
-    return this.graph.state?.startNode ?? false;
-  }
-
-  getEndNode() {
-    return this.graph.state?.endNode ?? false;
-  }
 }
-
-export default GraphController;

@@ -1,12 +1,14 @@
 import { Polyline, Popup } from 'react-leaflet';
+import { GraphInterface } from '../../interfaces/interfaces';
 import GraphController from '../controller/GraphController';
 
 const MarkerConnection = (params: {
   nodeIdx: number;
-  graphController: GraphController;
+  graph: GraphInterface;
+  setGraph: React.Dispatch<React.SetStateAction<GraphInterface>>;
 }) => {
   const nodeIdx = params.nodeIdx;
-  const node = params.graphController.getNode(nodeIdx);
+  const node = GraphController.getNode(nodeIdx, params.graph);
   const drawnEdges = new Set<string>();
 
   if (node && node.edges && node.edges.size) {
@@ -22,7 +24,7 @@ const MarkerConnection = (params: {
             pathOptions={{ color: 'lime' }}
             positions={[
               node.position,
-              params.graphController.getNode(edgeIdx).position,
+              GraphController.getNode(edgeIdx, params.graph).position,
             ]}
           >
             <Popup>

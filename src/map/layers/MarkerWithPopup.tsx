@@ -1,4 +1,5 @@
 import { Marker, Popup } from 'react-leaflet';
+import { GraphInterface } from '../../interfaces/interfaces';
 import {
   MarkerIconDefault,
   MarkerIconGreen,
@@ -8,17 +9,22 @@ import GraphController from '../controller/GraphController';
 
 const MarkerWithPopup = (params: {
   nodeIdx: number;
-  graphController: GraphController;
+  graph: GraphInterface;
+  setGraph: React.Dispatch<React.SetStateAction<GraphInterface>>;
 }) => {
-  const activeNode = params.graphController.getActiveNode();
-  const prevActiveNode = params.graphController.getPrevActiveNode();
-  const startNode = params.graphController.getStartNode();
-  const endNode = params.graphController.getEndNode();
+  const activeNode = params.graph.state.activeNode;
+  const prevActiveNode = params.graph.state.prevActiveNode;
+  const startNode = params.graph.state.startNode;
+  const endNode = params.graph.state.endNode;
   const showConnectOption = () => {
     if (prevActiveNode && activeNode && prevActiveNode !== activeNode) {
       return !(
-        params.graphController.getNode(prevActiveNode).edges?.has(activeNode) ||
-        params.graphController.getNode(activeNode).edges?.has(prevActiveNode)
+        GraphController.getNode(prevActiveNode, params.graph).edges?.has(
+          activeNode
+        ) ||
+        GraphController.getNode(activeNode, params.graph).edges?.has(
+          prevActiveNode
+        )
       );
     }
     return false;
@@ -26,7 +32,7 @@ const MarkerWithPopup = (params: {
   return (
     <Marker
       draggable={true}
-      position={params.graphController.getNode(params.nodeIdx).position}
+      position={GraphController.getNode(params.nodeIdx, params.graph).position}
       opacity={
         activeNode == params.nodeIdx
           ? 1
@@ -43,12 +49,18 @@ const MarkerWithPopup = (params: {
       }
       eventHandlers={{
         click: (e) => {
-          params.graphController.setActiveNode(e.target.options.nodeIdx);
+          GraphController.setActiveNode(
+            e.target.options.nodeIdx,
+            params.graph,
+            params.setGraph
+          );
         },
         dragend: (e) => {
-          params.graphController.setNodePosition(
+          GraphController.setNodePosition(
             e.target.options.nodeIdx,
-            e.target.getLatLng()
+            e.target.getLatLng(),
+            params.graph,
+            params.setGraph
           );
         },
       }}
@@ -59,24 +71,50 @@ const MarkerWithPopup = (params: {
       <Popup>
         <span>
           <a
-            onClick={() => params.graphController.setStartNode(params.nodeIdx)}
+            onClick={() =>
+              GraphController.setStartNode(
+                params.nodeIdx,
+                params.graph,
+                params.setGraph
+              )
+            }
           >
             Start
           </a>
           {' | '}
           {showConnectOption() && (
             <>
-              <a onClick={() => params.graphController.connectNodes()}>
+              <a
+                onClick={() =>
+                  GraphController.connectNodes(params.graph, params.setGraph)
+                }
+              >
                 Connect
               </a>
               {' | '}
             </>
           )}
-          <a onClick={() => params.graphController.setEndNode(params.nodeIdx)}>
+          <a
+            onClick={() =>
+              GraphController.setEndNode(
+                params.nodeIdx,
+                params.graph,
+                params.setGraph
+              )
+            }
+          >
             End
           </a>
           <br />
-          <a onClick={() => params.graphController.removeNode(params.nodeIdx)}>
+          <a
+            onClick={() =>
+              GraphController.removeNode(
+                params.nodeIdx,
+                params.graph,
+                params.setGraph
+              )
+            }
+          >
             Remove
           </a>
         </span>
