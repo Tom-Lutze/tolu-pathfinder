@@ -47,7 +47,7 @@ const Map = () => {
         setPath({ ...initPath, searchIdx: path.searchIdx + 1 });
       } else if (graph.state.updated && path.nodes.length < 1) {
         setGraph({ ...graph, state: { ...graph.state, updated: false } });
-        PathController.dfs(graph, pathRef, setPath);
+        PathController.bfs(graph, pathRef, setPath);
       }
     }, [graph.state.updated, path.nodes]);
 

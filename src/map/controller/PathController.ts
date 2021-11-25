@@ -30,49 +30,55 @@ export default class PathController {
 }
 
 class PathControllerHelper {
-  static searchAlgorithm = (
+  static searchAlgorithm(
     graph: GraphInterface,
     pathRef: React.MutableRefObject<PathInterface>,
     setPath: React.Dispatch<React.SetStateAction<PathInterface>>,
     arrayOperation: (array: any) => number[] | undefined
-  ) => {
+  ) {
     const startSearchIdx = pathRef.current.searchIdx;
     const startNodeIdx = graph.state.startNode;
     const endNodeIdx = graph.state.endNode;
     if (!startNodeIdx || !endNodeIdx || Object.keys(graph).length < 1)
       return [];
     const visitedNodes = new Set<number>();
-    const loop = async (stack: number[][]) => {
-      if (stack.length > 0 && startSearchIdx === pathRef.current.searchIdx) {
-        const queueNode = arrayOperation(stack);
-        if (!queueNode || !queueNode[0] || visitedNodes.has(queueNode[0])) {
-          loop(stack);
+    const loop = async (nodesArray: number[][]) => {
+      if (
+        nodesArray.length > 0 &&
+        startSearchIdx === pathRef.current.searchIdx
+      ) {
+        const currentNode = arrayOperation(nodesArray);
+        if (
+          !currentNode ||
+          !currentNode[0] ||
+          visitedNodes.has(currentNode[0])
+        ) {
+          loop(nodesArray);
         } else {
           setPath({
             ...pathRef.current,
             found: false,
-            nodes: queueNode,
+            nodes: currentNode,
           });
-          visitedNodes.add(queueNode[0]);
-          if (queueNode[0] == endNodeIdx) {
+          visitedNodes.add(currentNode[0]);
+          if (currentNode[0] == endNodeIdx) {
             return setPath({
               ...pathRef.current,
               found: true,
-              nodes: queueNode,
+              nodes: currentNode,
             });
           }
-          const queueNodeEdges = graph.nodes[queueNode[0]].edges;
-          if (queueNodeEdges) {
-            queueNodeEdges.forEach((edge) => {
-              stack.push([edge, ...queueNode]);
+          const currentNodeEdges = graph.nodes[currentNode[0]].edges;
+          if (currentNodeEdges) {
+            currentNodeEdges.forEach((edge) => {
+              nodesArray.push([edge, ...currentNode]);
             });
           }
           await sleep(1000);
-          loop(stack);
+          loop(nodesArray);
         }
       }
     };
-    let stack = [[startNodeIdx]];
-    loop(stack);
-  };
+    loop([[startNodeIdx]]);
+  }
 }
