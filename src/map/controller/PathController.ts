@@ -7,17 +7,46 @@ export default class PathController {
     pathRef: React.MutableRefObject<PathInterface>,
     setPath: React.Dispatch<React.SetStateAction<PathInterface>>
   ) {
+    PathControllerHelper.searchAlgorithm(
+      graph,
+      pathRef,
+      setPath,
+      (array: number[][]) => array.shift()
+    );
+  }
+
+  static dfs(
+    graph: GraphInterface,
+    pathRef: React.MutableRefObject<PathInterface>,
+    setPath: React.Dispatch<React.SetStateAction<PathInterface>>
+  ) {
+    PathControllerHelper.searchAlgorithm(
+      graph,
+      pathRef,
+      setPath,
+      (array: number[][]) => array.pop()
+    );
+  }
+}
+
+class PathControllerHelper {
+  static searchAlgorithm = (
+    graph: GraphInterface,
+    pathRef: React.MutableRefObject<PathInterface>,
+    setPath: React.Dispatch<React.SetStateAction<PathInterface>>,
+    arrayOperation: (array: any) => number[] | undefined
+  ) => {
     const startSearchIdx = pathRef.current.searchIdx;
     const startNodeIdx = graph.state.startNode;
     const endNodeIdx = graph.state.endNode;
     if (!startNodeIdx || !endNodeIdx || Object.keys(graph).length < 1)
       return [];
     const visitedNodes = new Set<number>();
-    const loop = async (queue: number[][]) => {
-      if (queue.length > 0 && startSearchIdx === pathRef.current.searchIdx) {
-        const queueNode = queue.shift();
+    const loop = async (stack: number[][]) => {
+      if (stack.length > 0 && startSearchIdx === pathRef.current.searchIdx) {
+        const queueNode = arrayOperation(stack);
         if (!queueNode || !queueNode[0] || visitedNodes.has(queueNode[0])) {
-          loop(queue);
+          loop(stack);
         } else {
           setPath({
             ...pathRef.current,
@@ -35,15 +64,15 @@ export default class PathController {
           const queueNodeEdges = graph.nodes[queueNode[0]].edges;
           if (queueNodeEdges) {
             queueNodeEdges.forEach((edge) => {
-              queue.push([edge, ...queueNode]);
+              stack.push([edge, ...queueNode]);
             });
           }
           await sleep(1000);
-          loop(queue);
+          loop(stack);
         }
       }
     };
-    let queue = [[startNodeIdx]];
-    loop(queue);
-  }
+    let stack = [[startNodeIdx]];
+    loop(stack);
+  };
 }
