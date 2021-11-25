@@ -26,9 +26,23 @@ const MarkerConnection = (params: {
               node.position,
               GraphController.getNode(edgeIdx, params.graph).position,
             ]}
+            interactive={true}
           >
             <Popup>
-              <span>Test</span>
+              <span>
+                <a
+                  onClick={() =>
+                    GraphController.disconnectNodes(
+                      nodeIdx,
+                      edgeIdx,
+                      params.graph,
+                      params.setGraph
+                    )
+                  }
+                >
+                  Disconnect
+                </a>
+              </span>
             </Popup>
           </Polyline>
         );

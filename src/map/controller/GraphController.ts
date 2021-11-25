@@ -43,18 +43,7 @@ export default class GraphController {
         }
         return prevNodes;
       }, {});
-    if (newGraph.state.activeNode === idx) {
-      newGraph.state.activeNode = undefined;
-    }
-    if (newGraph.state.prevActiveNode === idx) {
-      newGraph.state.prevActiveNode = undefined;
-    }
-    if (newGraph.state.startNode === idx) {
-      newGraph.state.startNode = undefined;
-    }
-    if (newGraph.state.endNode === idx) {
-      newGraph.state.endNode = undefined;
-    }
+    GraphControllerHelper.removeNodeFromState(idx, newGraph);
     newGraph.state.updated = true;
     setGraph(newGraph);
   }
@@ -163,6 +152,48 @@ export default class GraphController {
       newGraph.nodes[currNodeIdx] = currNode;
       newGraph.state.updated = true;
       setGraph(newGraph);
+    }
+  }
+
+  static disconnectNodes(
+    fromNodeIdx: number,
+    toNodeIdx: number,
+    graph: GraphInterface,
+    setGraph: React.Dispatch<React.SetStateAction<GraphInterface>>
+  ) {
+    const newGraph = { ...graph };
+    Object.keys(newGraph.nodes).forEach((key) => {
+      const currentIdx = Number(key);
+      const currentNode = newGraph.nodes[currentIdx];
+      let found = false;
+      if (currentIdx === toNodeIdx && currentNode.edges?.has(fromNodeIdx)) {
+        found = true;
+        currentNode.edges.delete(fromNodeIdx);
+      }
+      if (currentIdx === fromNodeIdx && currentNode.edges?.has(toNodeIdx)) {
+        found = true;
+        currentNode.edges.delete(toNodeIdx);
+      }
+      if (found) newGraph.nodes[currentIdx] = currentNode;
+    });
+    newGraph.state.updated = true;
+    setGraph(newGraph);
+  }
+}
+
+class GraphControllerHelper {
+  static removeNodeFromState(nodeIdx: number, newGraph: GraphInterface) {
+    if (newGraph.state.activeNode === nodeIdx) {
+      newGraph.state.activeNode = undefined;
+    }
+    if (newGraph.state.prevActiveNode === nodeIdx) {
+      newGraph.state.prevActiveNode = undefined;
+    }
+    if (newGraph.state.startNode === nodeIdx) {
+      newGraph.state.startNode = undefined;
+    }
+    if (newGraph.state.endNode === nodeIdx) {
+      newGraph.state.endNode = undefined;
     }
   }
 }
