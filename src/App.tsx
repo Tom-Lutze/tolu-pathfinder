@@ -1,7 +1,7 @@
 import './App.css';
 import 'antd/dist/antd.css';
 import { Layout, Menu, Breadcrumb } from 'antd';
-import Map from './map/Map';
+import MapComponent from './map/MapComponent';
 
 const App = () => {
   const { Header, Content, Footer } = Layout;
@@ -23,7 +23,7 @@ const App = () => {
           <Breadcrumb.Item>App</Breadcrumb.Item>
         </Breadcrumb>
         <div className="site-layout-content">
-          <Map />
+          <MapComponent />
         </div>
       </Content>
       <Footer style={{ textAlign: 'center' }}>Tom ©2021</Footer>
