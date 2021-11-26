@@ -86,7 +86,10 @@ const MarkerWithPopup = (params: {
             <>
               <a
                 onClick={() =>
-                  GraphController.connectNodes(params.graph, params.setGraph)
+                  GraphController.connectSelectedNodes(
+                    params.graph,
+                    params.setGraph
+                  )
                 }
               >
                 Connect
