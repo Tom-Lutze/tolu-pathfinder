@@ -12,6 +12,12 @@ export interface GraphInterface {
     startNode: number | undefined;
     endNode: number | undefined;
   };
+  buildState: {
+    state: number;
+    iNext: number;
+    jNext: number;
+    nodeAddresses: Map<string, number> | undefined;
+  };
 }
 
 export interface NodeInterface {
