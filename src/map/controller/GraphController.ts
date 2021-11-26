@@ -4,13 +4,14 @@ export default class GraphController {
   static addNode(
     node: NodeInterface,
     graph: GraphInterface,
-    setGraph: React.Dispatch<React.SetStateAction<GraphInterface>>
+    setGraph: React.Dispatch<React.SetStateAction<GraphInterface>>,
+    connect = true
   ) {
     const newGraph = { ...graph };
     newGraph.count = newGraph.count + 1;
 
     const prevNodeIdx = newGraph.state.activeNode;
-    if (prevNodeIdx) {
+    if (connect && prevNodeIdx) {
       const prevNode = newGraph.nodes[prevNodeIdx];
       prevNode.edges = prevNode.edges ?? new Set();
       prevNode.edges.add(newGraph.count);
@@ -135,24 +136,40 @@ export default class GraphController {
   }
 
   static connectNodes(
+    nodePairs: [number, number][],
+    graph: GraphInterface,
+    setGraph: React.Dispatch<React.SetStateAction<GraphInterface>>
+  ) {
+    const newGraph = { ...graph };
+    nodePairs.forEach((nodePair) => {
+      const fromNodeIdx = nodePair[0];
+      const toNodeIdx = nodePair[1];
+
+      if (fromNodeIdx !== toNodeIdx) {
+        const prevNode = newGraph.nodes[fromNodeIdx];
+        const currNode = newGraph.nodes[toNodeIdx];
+        if (prevNode && currNode) {
+          prevNode.edges = prevNode.edges ?? new Set();
+          currNode.edges = currNode.edges ?? new Set();
+          prevNode.edges.add(toNodeIdx);
+          currNode.edges.add(fromNodeIdx);
+          newGraph.nodes[fromNodeIdx] = prevNode;
+          newGraph.nodes[toNodeIdx] = currNode;
+          newGraph.state.updated = true;
+        }
+      }
+    });
+    if (newGraph.state.updated) setGraph(newGraph);
+  }
+
+  static connectSelectedNodes(
     graph: GraphInterface,
     setGraph: React.Dispatch<React.SetStateAction<GraphInterface>>
   ) {
     const prevNodeIdx = graph.state.prevActiveNode;
     const currNodeIdx = graph.state.activeNode;
-    if (prevNodeIdx && currNodeIdx && prevNodeIdx !== currNodeIdx) {
-      const newGraph = { ...graph };
-      const prevNode = newGraph.nodes[prevNodeIdx];
-      const currNode = newGraph.nodes[currNodeIdx];
-      prevNode.edges = prevNode.edges ?? new Set();
-      currNode.edges = currNode.edges ?? new Set();
-      prevNode.edges.add(currNodeIdx);
-      currNode.edges.add(prevNodeIdx);
-      newGraph.nodes[prevNodeIdx] = prevNode;
-      newGraph.nodes[currNodeIdx] = currNode;
-      newGraph.state.updated = true;
-      setGraph(newGraph);
-    }
+    if (prevNodeIdx && currNodeIdx)
+      this.connectNodes([[prevNodeIdx, currNodeIdx]], graph, setGraph);
   }
 
   static disconnectNodes(
