@@ -22,7 +22,7 @@ const MapComponent = () => {
       },
       buildState: {
         state: 0,
-        iNext: -_MAX_NODES,
+        iNext: _MAX_NODES,
         jNext: -_MAX_NODES,
         nodeAddresses: new Map(),
       },
@@ -50,21 +50,24 @@ const MapComponent = () => {
     });
 
     useEffect(() => {
-      if (graph.buildState.state < 3) {
+      if (graph.buildState.state < 2) {
         BuilderController.buildNetwork(graph, setGraph);
       }
-    }, [graph.buildState.iNext, graph.buildState.jNext]);
+    }, [
+      graph.buildState.state,
+      graph.buildState.iNext,
+      graph.buildState.jNext,
+    ]);
 
     useEffect(() => {
-      if (graph.buildState.state < 3) return;
-
+      if (graph.buildState.state < 2) return;
       if (graph.state.updated && path.nodes.length > 0) {
         setPath({ ...initPath, searchIdx: path.searchIdx + 1 });
       } else if (graph.state.updated && path.nodes.length < 1) {
         setGraph({ ...graph, state: { ...graph.state, updated: false } });
         PathController.bfs(graph, pathRef, setPath);
       }
-    }, [graph.state.updated, path.nodes]);
+    }, [graph.buildState.state, graph.state.updated, path.nodes]);
 
     return <MapLayers graph={graph} setGraph={setGraph} path={path} />;
   };

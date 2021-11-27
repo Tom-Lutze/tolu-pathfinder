@@ -74,7 +74,7 @@ class PathControllerHelper {
               nodesArray.push([edge, ...currentNode]);
             });
           }
-          await sleep(1000);
+          await sleep(200);
           loop(nodesArray);
         }
       }
