@@ -1,10 +1,9 @@
 import React from 'react';
-import { Pane, Polyline } from 'react-leaflet';
 import { GraphInterface, PathInterface } from '../../interfaces/interfaces';
 import GraphController from '../controller/GraphController';
-import PathController from '../controller/PathController';
 import MarkerConnection from './MarkerConnection';
 import MarkerWithPopup from './MarkerWithPopup';
+import SearchPath from './SearchPath';
 
 const MapLayers = (params: {
   graph: GraphInterface;
@@ -29,42 +28,7 @@ const MapLayers = (params: {
           </React.Fragment>
         );
       })}
-      {!params.graph.state.updated &&
-        !params.path.found &&
-        params.path.nodes.length > 1 && (
-          <Pane name="tolu-search-path-pane">
-            <Polyline
-              pathOptions={{
-                color: 'blue',
-                dashArray: '20, 20',
-                dashOffset: '0',
-              }}
-              positions={params.path.nodes.map(
-                (nodeIdx) =>
-                  GraphController.getNode(nodeIdx, params.graph).position
-              )}
-              {...{ zIndex: 9998 }}
-            />
-          </Pane>
-        )}
-      {!params.graph.state.updated &&
-        params.path.found &&
-        params.path.nodes.length > 1 && (
-          <Pane name="tolu-path-pane">
-            <Polyline
-              pathOptions={{
-                color: 'red',
-                dashArray: '20, 20',
-                dashOffset: '0',
-              }}
-              positions={params.path.nodes.map(
-                (nodeIdx) =>
-                  GraphController.getNode(nodeIdx, params.graph).position
-              )}
-              {...{ zIndex: 9999 }}
-            />
-          </Pane>
-        )}
+      <SearchPath graph={params.graph} path={params.path} />
     </>
   );
 };
