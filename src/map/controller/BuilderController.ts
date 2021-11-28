@@ -1,9 +1,8 @@
 import { LatLng } from 'leaflet';
 import { GraphInterface, NodeInterface } from '../../interfaces/interfaces';
 import { sleep } from '../../utils/Helper';
+import { BuilderStates, NODES_PER_AXIS } from '../constants/Settings';
 import GraphController from './GraphController';
-
-export const _MAX_NODES = 3;
 
 export default class BuilderController {
   static async buildNetwork(
@@ -12,8 +11,8 @@ export default class BuilderController {
   ) {
     if (graph.buildState.state < 1) {
       const newGraph = { ...graph };
-      for (let i = graph.buildState.iNext; i >= -_MAX_NODES; i--) {
-        for (let j = graph.buildState.jNext; j <= _MAX_NODES; j++) {
+      for (let i = graph.buildState.iNext; i >= -NODES_PER_AXIS; i--) {
+        for (let j = graph.buildState.jNext; j <= NODES_PER_AXIS; j++) {
           newGraph.buildState.jNext = j + 1;
           newGraph.buildState.nodeAddresses?.set(
             `${i}#${j}`,
@@ -28,16 +27,16 @@ export default class BuilderController {
           );
         }
         newGraph.buildState.iNext = i - 1;
-        newGraph.buildState.jNext = -_MAX_NODES;
+        newGraph.buildState.jNext = -NODES_PER_AXIS;
       }
-      newGraph.buildState.iNext = _MAX_NODES;
-      newGraph.buildState.jNext = -_MAX_NODES;
+      newGraph.buildState.iNext = NODES_PER_AXIS;
+      newGraph.buildState.jNext = -NODES_PER_AXIS;
       newGraph.buildState.state = newGraph.buildState.state + 1;
       setGraph(newGraph);
     } else if (graph.buildState.state < 2) {
       const newGraph = { ...graph };
-      for (let i = graph.buildState.iNext; i >= -_MAX_NODES; i--) {
-        for (let j = graph.buildState.jNext; j <= _MAX_NODES; j++) {
+      for (let i = graph.buildState.iNext; i >= -NODES_PER_AXIS; i--) {
+        for (let j = graph.buildState.jNext; j <= NODES_PER_AXIS; j++) {
           newGraph.buildState.jNext = j + 1;
           const currentNodeIdx = graph.buildState.nodeAddresses?.get(
             `${i}#${j}`
@@ -59,9 +58,9 @@ export default class BuilderController {
           }
         }
         newGraph.buildState.iNext = i - 1;
-        newGraph.buildState.jNext = -_MAX_NODES;
+        newGraph.buildState.jNext = -NODES_PER_AXIS;
       }
-      newGraph.buildState.state = newGraph.buildState.state + 1;
+      newGraph.buildState.state = BuilderStates.Ready;
       setGraph(newGraph);
     }
   }

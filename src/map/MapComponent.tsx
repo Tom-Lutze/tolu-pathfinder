@@ -2,7 +2,8 @@ import 'leaflet/dist/leaflet.css';
 import { useEffect, useRef, useState } from 'react';
 import { MapContainer, TileLayer, useMapEvents } from 'react-leaflet';
 import { GraphInterface, PathInterface } from '../interfaces/interfaces';
-import BuilderController, { _MAX_NODES } from './controller/BuilderController';
+import { BuilderStates, NODES_PER_AXIS } from './constants/Settings';
+import BuilderController from './controller/BuilderController';
 import GraphController from './controller/GraphController';
 import PathController from './controller/PathController';
 import MapLayers from './layers/MapLayers';
@@ -21,9 +22,9 @@ const MapComponent = () => {
         endNode: undefined,
       },
       buildState: {
-        state: 0,
-        iNext: _MAX_NODES,
-        jNext: -_MAX_NODES,
+        state: BuilderStates.Uninitialized,
+        iNext: NODES_PER_AXIS,
+        jNext: -NODES_PER_AXIS,
         nodeAddresses: new Map(),
       },
     };
@@ -41,16 +42,18 @@ const MapComponent = () => {
 
     useMapEvents({
       click(e) {
-        GraphController.addNode(
-          { position: e.latlng, edges: undefined },
-          graph,
-          setGraph
-        );
+        if (graph.buildState.state === BuilderStates.Ready) {
+          GraphController.addNode(
+            { position: e.latlng, edges: undefined },
+            graph,
+            setGraph
+          );
+        }
       },
     });
 
     useEffect(() => {
-      if (graph.buildState.state < 2) {
+      if (graph.buildState.state < BuilderStates.Ready) {
         BuilderController.buildNetwork(graph, setGraph);
       }
     }, [
@@ -60,7 +63,7 @@ const MapComponent = () => {
     ]);
 
     useEffect(() => {
-      if (graph.buildState.state < 2) return;
+      if (graph.buildState.state < BuilderStates.Ready) return;
       if (graph.state.updated && path.nodes.length > 0) {
         setPath({ ...initPath, searchIdx: path.searchIdx + 1 });
       } else if (graph.state.updated && path.nodes.length < 1) {
