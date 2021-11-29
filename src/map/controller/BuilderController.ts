@@ -98,14 +98,14 @@ export default class BuilderController {
       return setGraph(newGraph);
     } else if (graph.buildState.state < 2) {
       const newGraph = { ...graph };
-      const randomX = getRandomNumber(SETTINGS.latFrom, SETTINGS.latTo);
-      const randomY = getRandomNumber(SETTINGS.lngFrom, SETTINGS.lngTo);
+      const randomLat = getRandomNumber(SETTINGS.latFrom, SETTINGS.latTo);
+      const randomLng = getRandomNumber(SETTINGS.lngFrom, SETTINGS.lngTo);
       if (graph.nodeCount < SETTINGS.nodesMax) {
         newGraph.buildState.counterA++;
         await sleep(30);
         return GraphController.addNode(
           {
-            position: new LatLng(randomX / 100, randomY / 100),
+            position: new LatLng(randomLat / 100, randomLng / 100),
             edges: undefined,
           },
           newGraph,
