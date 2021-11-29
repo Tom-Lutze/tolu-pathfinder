@@ -5,7 +5,7 @@ import {
   MarkerIconGreen,
   MarkerIconRed,
 } from '../constants/MarkerIcons';
-import { BuilderStates } from '../constants/Settings';
+import { BUILDER_STATES } from '../constants/Settings';
 import GraphController from '../controller/GraphController';
 
 const MarkerWithPopup = (params: {
@@ -17,7 +17,8 @@ const MarkerWithPopup = (params: {
   const prevActiveNode = params.graph.state.prevActiveNode;
   const startNode = params.graph.state.startNode;
   const endNode = params.graph.state.endNode;
-  const buildStateReady = params.graph.buildState.state === BuilderStates.Ready;
+  const buildStateReady =
+    params.graph.buildState.state === BUILDER_STATES.Ready;
   const showConnectOption = () => {
     if (prevActiveNode && activeNode && prevActiveNode !== activeNode) {
       return !(

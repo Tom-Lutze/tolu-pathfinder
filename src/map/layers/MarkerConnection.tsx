@@ -1,6 +1,6 @@
 import { Polyline, Popup } from 'react-leaflet';
 import { GraphInterface } from '../../interfaces/interfaces';
-import { BuilderStates } from '../constants/Settings';
+import { BUILDER_STATES } from '../constants/Settings';
 import GraphController from '../controller/GraphController';
 
 const MarkerConnection = (params: {
@@ -11,7 +11,8 @@ const MarkerConnection = (params: {
   const nodeIdx = params.nodeIdx;
   const node = GraphController.getNode(nodeIdx, params.graph);
   const drawnEdges = new Set<string>();
-  const buildStateReady = params.graph.buildState.state === BuilderStates.Ready;
+  const buildStateReady =
+    params.graph.buildState.state === BUILDER_STATES.Ready;
 
   if (node && node.edges && node.edges.size) {
     return Array.from(node.edges).reduce((prevValue: any, edgeIdx: number) => {

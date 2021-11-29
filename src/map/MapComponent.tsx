@@ -2,7 +2,7 @@ import 'leaflet/dist/leaflet.css';
 import { useEffect, useRef, useState } from 'react';
 import { MapContainer, TileLayer, useMapEvents } from 'react-leaflet';
 import { GraphInterface, PathInterface } from '../interfaces/interfaces';
-import { BuilderStates, NODES_PER_AXIS } from './constants/Settings';
+import { BUILDER_STATES, BUILDER_SETTINGS } from './constants/Settings';
 import BuilderController from './controller/BuilderController';
 import GraphController from './controller/GraphController';
 import PathController from './controller/PathController';
@@ -22,9 +22,9 @@ const MapComponent = () => {
         endNode: undefined,
       },
       buildState: {
-        state: BuilderStates.Uninitialized,
-        iNext: NODES_PER_AXIS,
-        jNext: -NODES_PER_AXIS,
+        state: BUILDER_STATES.Uninitialized,
+        iNext: BUILDER_SETTINGS.square.nodesPerAxis,
+        jNext: -BUILDER_SETTINGS.square.nodesPerAxis,
         nodeAddresses: new Map(),
       },
     };
@@ -42,7 +42,7 @@ const MapComponent = () => {
 
     useMapEvents({
       click(e) {
-        if (graph.buildState.state === BuilderStates.Ready) {
+        if (graph.buildState.state === BUILDER_STATES.Ready) {
           GraphController.addNode(
             { position: e.latlng, edges: undefined },
             graph,
@@ -53,8 +53,9 @@ const MapComponent = () => {
     });
 
     useEffect(() => {
-      if (graph.buildState.state < BuilderStates.Ready) {
-        BuilderController.buildNetwork(graph, setGraph);
+      if (graph.buildState.state < BUILDER_STATES.Ready) {
+        // BuilderController.buildSquareNetwork(graph, setGraph); //TODO add ui selector
+        BuilderController.buildRandomNetwork(graph, setGraph);
       }
     }, [
       graph.buildState.state,
@@ -63,7 +64,7 @@ const MapComponent = () => {
     ]);
 
     useEffect(() => {
-      if (graph.buildState.state < BuilderStates.Ready) return;
+      if (graph.buildState.state < BUILDER_STATES.Ready) return;
       if (graph.state.updated && path.nodes.length > 0) {
         setPath({ ...initPath, searchIdx: path.searchIdx + 1 });
       } else if (graph.state.updated && path.nodes.length < 1) {
