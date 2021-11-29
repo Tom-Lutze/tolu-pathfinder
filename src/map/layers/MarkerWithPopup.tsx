@@ -5,6 +5,7 @@ import {
   MarkerIconGreen,
   MarkerIconRed,
 } from '../constants/MarkerIcons';
+import { BuilderStates } from '../constants/Settings';
 import GraphController from '../controller/GraphController';
 
 const MarkerWithPopup = (params: {
@@ -16,6 +17,7 @@ const MarkerWithPopup = (params: {
   const prevActiveNode = params.graph.state.prevActiveNode;
   const startNode = params.graph.state.startNode;
   const endNode = params.graph.state.endNode;
+  const buildStateReady = params.graph.buildState.state === BuilderStates.Ready;
   const showConnectOption = () => {
     if (prevActiveNode && activeNode && prevActiveNode !== activeNode) {
       return !(
@@ -31,7 +33,7 @@ const MarkerWithPopup = (params: {
   };
   return (
     <Marker
-      draggable={true}
+      draggable={buildStateReady}
       position={GraphController.getNode(params.nodeIdx, params.graph).position}
       opacity={
         activeNode == params.nodeIdx
@@ -49,79 +51,83 @@ const MarkerWithPopup = (params: {
       }
       eventHandlers={{
         click: (e) => {
-          GraphController.setActiveNode(
-            e.target.options.nodeIdx,
-            params.graph,
-            params.setGraph
-          );
+          if (buildStateReady)
+            GraphController.setActiveNode(
+              e.target.options.nodeIdx,
+              params.graph,
+              params.setGraph
+            );
         },
         dragend: (e) => {
-          GraphController.setNodePosition(
-            e.target.options.nodeIdx,
-            e.target.getLatLng(),
-            params.graph,
-            params.setGraph
-          );
+          if (buildStateReady)
+            GraphController.setNodePosition(
+              e.target.options.nodeIdx,
+              e.target.getLatLng(),
+              params.graph,
+              params.setGraph
+            );
         },
       }}
       {...{
         nodeIdx: params.nodeIdx,
       }}
     >
-      <Popup>
-        <span>
-          <a
-            onClick={() =>
-              GraphController.setStartNode(
-                params.nodeIdx,
-                params.graph,
-                params.setGraph
-              )
-            }
-          >
-            Start
-          </a>
-          {' | '}
-          {showConnectOption() && (
-            <>
-              <a
-                onClick={() =>
-                  GraphController.connectSelectedNodes(
-                    params.graph,
-                    params.setGraph
-                  )
-                }
-              >
-                Connect
-              </a>
-              {' | '}
-            </>
-          )}
-          <a
-            onClick={() =>
-              GraphController.setEndNode(
-                params.nodeIdx,
-                params.graph,
-                params.setGraph
-              )
-            }
-          >
-            End
-          </a>
-          <br />
-          <a
-            onClick={() =>
-              GraphController.removeNode(
-                params.nodeIdx,
-                params.graph,
-                params.setGraph
-              )
-            }
-          >
-            Remove
-          </a>
-        </span>
-      </Popup>
+      {buildStateReady && (
+        <Popup>
+          <span>
+            <a
+              onClick={() =>
+                GraphController.setStartNode(
+                  params.nodeIdx,
+                  params.graph,
+                  params.setGraph
+                )
+              }
+            >
+              Start
+            </a>
+            {' | '}
+            {showConnectOption() && (
+              <>
+                <a
+                  onClick={() =>
+                    GraphController.connectSelectedNodes(
+                      params.graph,
+                      params.setGraph
+                    )
+                  }
+                >
+                  Connect
+                </a>
+                {' | '}
+              </>
+            )}
+            <a
+              onClick={() =>
+                GraphController.setEndNode(
+                  params.nodeIdx,
+                  params.graph,
+                  params.setGraph
+                )
+              }
+            >
+              End
+            </a>
+            <br />
+            <a
+              onClick={() =>
+                GraphController.removeNode(
+                  params.nodeIdx,
+                  params.graph,
+                  params.setGraph
+                )
+              }
+            >
+              Remove
+            </a>
+          </span>
+        </Popup>
+      )}
     </Marker>
   );
 };
