@@ -1,6 +1,10 @@
 import { LatLng } from 'leaflet';
 import { GraphInterface, NodeInterface } from '../../interfaces/interfaces';
-import { getRandomInt, getRandomIntExcept, sleep } from '../../utils/Helper';
+import {
+  getRandomNumber,
+  getRandomNumberExcept,
+  sleep,
+} from '../../utils/Helper';
 import { BUILDER_STATES, BUILDER_SETTINGS } from '../constants/Settings';
 import GraphController from './GraphController';
 export default class BuilderController {
@@ -8,16 +12,22 @@ export default class BuilderController {
     graph: GraphInterface,
     setGraph: React.Dispatch<React.SetStateAction<GraphInterface>>
   ) {
-    const NODES_PER_AXIS = BUILDER_SETTINGS.square.nodesPerAxis;
+    const NODES_PER_AXIS = BUILDER_SETTINGS.square.nodesPerAxisMax;
 
     if (graph.buildState.state < 1) {
       const newGraph = { ...graph };
-      for (let i = graph.buildState.iNext; i >= -NODES_PER_AXIS; i--) {
-        for (let j = graph.buildState.jNext; j <= NODES_PER_AXIS; j++) {
-          newGraph.buildState.jNext = j + 1;
+      newGraph.buildState.counterA = BUILDER_SETTINGS.square.nodesPerAxisMax;
+      newGraph.buildState.counterB = -BUILDER_SETTINGS.square.nodesPerAxisMax;
+      newGraph.buildState.state++;
+      return setGraph(newGraph);
+    } else if (graph.buildState.state < 2) {
+      const newGraph = { ...graph };
+      for (let i = graph.buildState.counterA; i >= -NODES_PER_AXIS; i--) {
+        for (let j = graph.buildState.counterB; j <= NODES_PER_AXIS; j++) {
+          newGraph.buildState.counterB = j + 1;
           newGraph.buildState.nodeAddresses?.set(
             `${i}#${j}`,
-            newGraph.count + 1
+            newGraph.nodeCount + 1
           );
           await sleep(30);
           return GraphController.addNode(
@@ -27,18 +37,18 @@ export default class BuilderController {
             false
           );
         }
-        newGraph.buildState.iNext = i - 1;
-        newGraph.buildState.jNext = -NODES_PER_AXIS;
+        newGraph.buildState.counterA = i - 1;
+        newGraph.buildState.counterB = -NODES_PER_AXIS;
       }
-      newGraph.buildState.iNext = NODES_PER_AXIS;
-      newGraph.buildState.jNext = -NODES_PER_AXIS;
-      newGraph.buildState.state = newGraph.buildState.state + 1;
-      setGraph(newGraph);
-    } else if (graph.buildState.state < 2) {
+      newGraph.buildState.counterA = NODES_PER_AXIS;
+      newGraph.buildState.counterB = -NODES_PER_AXIS;
+      newGraph.buildState.state++;
+      return setGraph(newGraph);
+    } else if (graph.buildState.state < 3) {
       const newGraph = { ...graph };
-      for (let i = graph.buildState.iNext; i >= -NODES_PER_AXIS; i--) {
-        for (let j = graph.buildState.jNext; j <= NODES_PER_AXIS; j++) {
-          newGraph.buildState.jNext = j + 1;
+      for (let i = graph.buildState.counterA; i >= -NODES_PER_AXIS; i--) {
+        for (let j = graph.buildState.counterB; j <= NODES_PER_AXIS; j++) {
+          newGraph.buildState.counterB = j + 1;
           const currentNodeIdx = graph.buildState.nodeAddresses?.get(
             `${i}#${j}`
           );
@@ -58,8 +68,8 @@ export default class BuilderController {
             return GraphController.connectNodes(nodePairs, graph, setGraph);
           }
         }
-        newGraph.buildState.iNext = i - 1;
-        newGraph.buildState.jNext = -NODES_PER_AXIS;
+        newGraph.buildState.counterA = i - 1;
+        newGraph.buildState.counterB = -NODES_PER_AXIS;
       }
       newGraph.buildState.state = BUILDER_STATES.Ready;
       setGraph(newGraph);
@@ -73,19 +83,25 @@ export default class BuilderController {
     const SETTINGS = BUILDER_SETTINGS.random;
 
     const setConnectionCounterState = (graph: GraphInterface) => {
-      const connectionCount = getRandomInt(
-        SETTINGS.minConnections,
-        SETTINGS.maxConnections
+      const connectionCount = getRandomNumber(
+        SETTINGS.connectionsMin,
+        SETTINGS.connectionsMax
       );
-      graph.buildState.jNext = connectionCount;
+      graph.buildState.counterB = connectionCount;
     };
 
     if (graph.buildState.state < 1) {
       const newGraph = { ...graph };
-      const randomX = getRandomInt(SETTINGS.xFrom, SETTINGS.xTo);
-      const randomY = getRandomInt(SETTINGS.yFrom, SETTINGS.yTo);
-      if (graph.count < SETTINGS.nodes) {
-        newGraph.buildState.iNext = newGraph.buildState.iNext + 1;
+      newGraph.buildState.counterA = 0;
+      newGraph.buildState.counterB = 0;
+      newGraph.buildState.state++;
+      return setGraph(newGraph);
+    } else if (graph.buildState.state < 2) {
+      const newGraph = { ...graph };
+      const randomX = getRandomNumber(SETTINGS.latFrom, SETTINGS.latTo);
+      const randomY = getRandomNumber(SETTINGS.lngFrom, SETTINGS.lngTo);
+      if (graph.nodeCount < SETTINGS.nodesMax) {
+        newGraph.buildState.counterA++;
         await sleep(30);
         return GraphController.addNode(
           {
@@ -97,28 +113,28 @@ export default class BuilderController {
           false
         );
       }
-      newGraph.buildState.iNext = 1;
+      newGraph.buildState.counterA = 1;
       setConnectionCounterState(newGraph);
-      newGraph.buildState.state = newGraph.buildState.state + 1;
-      setGraph(newGraph);
-    } else if (graph.buildState.state < 2) {
+      newGraph.buildState.state++;
+      return setGraph(newGraph);
+    } else if (graph.buildState.state < 3) {
       const newGraph = { ...graph };
-      const currentNodeIdx = graph.buildState.iNext;
-      if (currentNodeIdx < SETTINGS.nodes) {
-        if (graph.buildState.jNext > 0) {
+      const currentNodeIdx = graph.buildState.counterA;
+      if (currentNodeIdx < SETTINGS.nodesMax) {
+        if (graph.buildState.counterB > 0) {
           const nodePairs: [number, number][] = [];
-          const neighborNode = getRandomIntExcept(
+          const neighborNode = getRandomNumberExcept(
             1,
-            SETTINGS.nodes,
+            SETTINGS.nodesMax,
             currentNodeIdx
           );
           nodePairs.push([currentNodeIdx, neighborNode]);
-          newGraph.buildState.jNext = newGraph.buildState.jNext - 1;
+          newGraph.buildState.counterB--;
           await sleep(30);
           return GraphController.connectNodes(nodePairs, newGraph, setGraph);
         }
         setConnectionCounterState(newGraph);
-        newGraph.buildState.iNext = currentNodeIdx + 1;
+        newGraph.buildState.counterA++;
         return setGraph(newGraph);
       }
       newGraph.buildState.state = BUILDER_STATES.Ready;

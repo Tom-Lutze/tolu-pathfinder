@@ -5,15 +5,15 @@ export enum BUILDER_STATES {
 
 export const BUILDER_SETTINGS = {
   square: {
-    nodesPerAxis: 3,
+    nodesPerAxisMax: 3,
   },
   random: {
-    nodes: 15,
-    xFrom: -5,
-    xTo: 5,
-    yFrom: -5,
-    yTo: 5,
-    minConnections: 1,
-    maxConnections: 3,
+    nodesMax: 15,
+    latFrom: -5,
+    latTo: 5,
+    lngFrom: -5,
+    lngTo: 5,
+    connectionsMin: 1,
+    connectionsMax: 3,
   },
 };

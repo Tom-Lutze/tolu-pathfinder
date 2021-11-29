@@ -8,20 +8,20 @@ export default class GraphController {
     connect = true
   ) {
     const newGraph = { ...graph };
-    newGraph.count = newGraph.count + 1;
+    newGraph.nodeCount = newGraph.nodeCount + 1;
 
     const prevNodeIdx = newGraph.state.activeNode;
     if (connect && prevNodeIdx) {
       const prevNode = newGraph.nodes[prevNodeIdx];
       prevNode.edges = prevNode.edges ?? new Set();
-      prevNode.edges.add(newGraph.count);
+      prevNode.edges.add(newGraph.nodeCount);
       newGraph.nodes[prevNodeIdx] = prevNode;
       node.edges = node.edges ?? new Set();
       node.edges?.add(prevNodeIdx);
     }
-    newGraph.nodes[newGraph.count] = node;
+    newGraph.nodes[newGraph.nodeCount] = node;
     newGraph.state.prevActiveNode = newGraph.state.activeNode;
-    newGraph.state.activeNode = newGraph.count;
+    newGraph.state.activeNode = newGraph.nodeCount;
     newGraph.state.updated = true;
     setGraph(newGraph);
   }

@@ -12,7 +12,7 @@ import './MapComponent.css';
 const MapComponent = () => {
   const MapLayer = () => {
     const initGraph: GraphInterface = {
-      count: 0,
+      nodeCount: 0,
       nodes: {},
       state: {
         updated: false,
@@ -23,8 +23,8 @@ const MapComponent = () => {
       },
       buildState: {
         state: BUILDER_STATES.Uninitialized,
-        iNext: BUILDER_SETTINGS.square.nodesPerAxis,
-        jNext: -BUILDER_SETTINGS.square.nodesPerAxis,
+        counterA: 0,
+        counterB: 0,
         nodeAddresses: new Map(),
       },
     };
@@ -59,8 +59,8 @@ const MapComponent = () => {
       }
     }, [
       graph.buildState.state,
-      graph.buildState.iNext,
-      graph.buildState.jNext,
+      graph.buildState.counterA,
+      graph.buildState.counterB,
     ]);
 
     useEffect(() => {

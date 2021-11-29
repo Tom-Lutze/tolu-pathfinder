@@ -1,7 +1,7 @@
 import { LatLng } from 'leaflet';
 
 export interface GraphInterface {
-  count: number;
+  nodeCount: number;
   nodes: {
     [idx: number]: NodeInterface;
   };
@@ -14,8 +14,8 @@ export interface GraphInterface {
   };
   buildState: {
     state: number;
-    iNext: number;
-    jNext: number;
+    counterA: number;
+    counterB: number;
     nodeAddresses: Map<string, number> | undefined;
   };
 }
