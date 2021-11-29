@@ -113,22 +113,58 @@ export default class BuilderController {
           false
         );
       }
-      newGraph.buildState.counterA = 1;
+      newGraph.buildState.counterA = 0;
       setConnectionCounterState(newGraph);
       newGraph.buildState.state++;
       return setGraph(newGraph);
     } else if (graph.buildState.state < 3) {
       const newGraph = { ...graph };
+      const adjacencyMatrix = [...Array(SETTINGS.nodesMax)].map(() =>
+        Array(SETTINGS.nodesMax)
+      );
+      for (let i = 0; i < SETTINGS.nodesMax; i++) {
+        for (let j = 0; j < SETTINGS.nodesMax; j++) {
+          if (i == j) {
+            adjacencyMatrix[i][j] = undefined;
+          } else if (!adjacencyMatrix[i][j]) {
+            const dist = graph.nodes[i].position.distanceTo(
+              graph.nodes[j].position
+            );
+            adjacencyMatrix[i][j] = { idx: j, distance: dist };
+            adjacencyMatrix[j][i] = { idx: i, distance: dist };
+          }
+        }
+      }
+      newGraph.buildState.nodeDistances = adjacencyMatrix.map((node) => {
+        return node
+          .filter((node) => node != undefined)
+          .sort((a, b) => a.distance - b.distance)
+          .map((node) => node.idx); //TODO improve performance
+      });
+      newGraph.buildState.state++;
+      setGraph(newGraph);
+    } else if (graph.buildState.state < 4) {
+      const newGraph = { ...graph };
       const currentNodeIdx = graph.buildState.counterA;
       if (currentNodeIdx < SETTINGS.nodesMax) {
         if (graph.buildState.counterB > 0) {
+          //TODO testing
           const nodePairs: [number, number][] = [];
-          const neighborNode = getRandomNumberExcept(
-            1,
-            SETTINGS.nodesMax,
-            currentNodeIdx
-          );
-          nodePairs.push([currentNodeIdx, neighborNode]);
+          if (newGraph.buildState.nodeDistances) {
+            const sortedNeighbors =
+              newGraph.buildState.nodeDistances[currentNodeIdx];
+            const maxSortedNeighborsIndex = Math.round(
+              (graph.buildState.counterB / SETTINGS.connectionsMax) *
+                sortedNeighbors.length
+            );
+            const sortedNeighborsIndex = getRandomNumber(
+              0,
+              maxSortedNeighborsIndex
+            );
+            const neighborNodeIdx = sortedNeighbors[sortedNeighborsIndex];
+            nodePairs.push([currentNodeIdx, neighborNodeIdx]);
+            sortedNeighbors.splice(sortedNeighborsIndex, 1);
+          }
           newGraph.buildState.counterB--;
           await sleep(30);
           return GraphController.connectNodes(nodePairs, newGraph, setGraph);

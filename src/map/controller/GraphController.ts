@@ -8,7 +8,6 @@ export default class GraphController {
     connect = true
   ) {
     const newGraph = { ...graph };
-    newGraph.nodeCount = newGraph.nodeCount + 1;
 
     const prevNodeIdx = newGraph.state.activeNode;
     if (connect && prevNodeIdx) {
@@ -22,6 +21,7 @@ export default class GraphController {
     newGraph.nodes[newGraph.nodeCount] = node;
     newGraph.state.prevActiveNode = newGraph.state.activeNode;
     newGraph.state.activeNode = newGraph.nodeCount;
+    newGraph.nodeCount++;
     newGraph.state.updated = true;
     setGraph(newGraph);
   }

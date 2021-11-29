@@ -17,6 +17,7 @@ export interface GraphInterface {
     counterA: number;
     counterB: number;
     nodeAddresses: Map<string, number> | undefined;
+    nodeDistances: number[][] | undefined;
   };
 }
 

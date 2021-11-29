@@ -26,6 +26,7 @@ const MapComponent = () => {
         counterA: 0,
         counterB: 0,
         nodeAddresses: new Map(),
+        nodeDistances: undefined,
       },
     };
     const initPath: PathInterface = {

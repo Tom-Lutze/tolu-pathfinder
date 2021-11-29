@@ -8,12 +8,12 @@ export const BUILDER_SETTINGS = {
     nodesPerAxisMax: 3,
   },
   random: {
-    nodesMax: 15,
+    nodesMax: 10,
     latFrom: -5,
     latTo: 5,
     lngFrom: -5,
     lngTo: 5,
-    connectionsMin: 1,
-    connectionsMax: 3,
+    connectionsMin: 2,
+    connectionsMax: 4,
   },
 };
