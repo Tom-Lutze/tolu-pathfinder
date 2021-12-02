@@ -4,9 +4,9 @@ import { Layout, Menu, Breadcrumb } from 'antd';
 import MapComponent from './map/MapComponent';
 import SubMenu from 'antd/lib/menu/SubMenu';
 import {
-  UserOutlined,
+  BranchesOutlined,
   LaptopOutlined,
-  NotificationOutlined,
+  CompassOutlined,
 } from '@ant-design/icons';
 
 const App = () => {
@@ -21,30 +21,25 @@ const App = () => {
           <Menu
             mode="inline"
             defaultSelectedKeys={['1']}
-            defaultOpenKeys={['sub1']}
+            defaultOpenKeys={['sub-m-algorithm']}
             style={{ height: '100%', borderRight: 0 }}
           >
-            <SubMenu key="sub1" icon={<UserOutlined />} title="subnav 1">
-              <Menu.Item key="1">option1</Menu.Item>
-              <Menu.Item key="2">option2</Menu.Item>
-              <Menu.Item key="3">option3</Menu.Item>
-              <Menu.Item key="4">option4</Menu.Item>
-            </SubMenu>
-            <SubMenu key="sub2" icon={<LaptopOutlined />} title="subnav 2">
-              <Menu.Item key="5">option5</Menu.Item>
-              <Menu.Item key="6">option6</Menu.Item>
-              <Menu.Item key="7">option7</Menu.Item>
-              <Menu.Item key="8">option8</Menu.Item>
+            <SubMenu
+              key="sub-m-graph"
+              icon={<BranchesOutlined />}
+              title="Graph Builder"
+            >
+              <Menu.Item key="sub-i-none">None</Menu.Item>
+              <Menu.Item key="sub-i-squre">Square</Menu.Item>
+              <Menu.Item key="sub-i-random">Random</Menu.Item>
             </SubMenu>
             <SubMenu
-              key="sub3"
-              icon={<NotificationOutlined />}
-              title="subnav 3"
+              key="sub-m-algorithm"
+              icon={<CompassOutlined />}
+              title="Search Algorithm"
             >
-              <Menu.Item key="9">option9</Menu.Item>
-              <Menu.Item key="10">option10</Menu.Item>
-              <Menu.Item key="11">option11</Menu.Item>
-              <Menu.Item key="12">option12</Menu.Item>
+              <Menu.Item key="1">Depth First Search</Menu.Item>
+              <Menu.Item key="2">Breadth First Search</Menu.Item>
             </SubMenu>
           </Menu>
         </Sider>
