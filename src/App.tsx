@@ -8,9 +8,14 @@ import {
   LaptopOutlined,
   CompassOutlined,
 } from '@ant-design/icons';
+import { useContext } from 'react';
+import { store } from './Store';
 
 const App = () => {
   const { Header, Content, Sider } = Layout;
+  const globalState = useContext(store);
+  const { dispatch } = globalState;
+  console.log(JSON.stringify(globalState));
   return (
     <Layout>
       <Header className="header">
@@ -23,23 +28,24 @@ const App = () => {
             defaultSelectedKeys={['1']}
             defaultOpenKeys={['sub-m-algorithm']}
             style={{ height: '100%', borderRight: 0 }}
+            onClick={(e) => dispatch({ type: e.key })}
           >
             <SubMenu
               key="sub-m-graph"
               icon={<BranchesOutlined />}
               title="Graph Builder"
             >
-              <Menu.Item key="sub-i-none">None</Menu.Item>
-              <Menu.Item key="sub-i-squre">Square</Menu.Item>
-              <Menu.Item key="sub-i-random">Random</Menu.Item>
+              <Menu.Item key="graph-none">None</Menu.Item>
+              <Menu.Item key="graph-square">Square</Menu.Item>
+              <Menu.Item key="graph-random">Random</Menu.Item>
             </SubMenu>
             <SubMenu
               key="sub-m-algorithm"
               icon={<CompassOutlined />}
               title="Search Algorithm"
             >
-              <Menu.Item key="1">Depth First Search</Menu.Item>
-              <Menu.Item key="2">Breadth First Search</Menu.Item>
+              <Menu.Item key="algo-dfs">Depth First Search</Menu.Item>
+              <Menu.Item key="algo-bfs">Breadth First Search</Menu.Item>
             </SubMenu>
           </Menu>
         </Sider>

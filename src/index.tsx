@@ -2,11 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { StateProvider } from './Store';
 
 ReactDOM.render(
-  <React.StrictMode>
+  // <React.StrictMode>
+  <StateProvider>
     <App />
-  </React.StrictMode>,
+  </StateProvider>,
+  // </React.StrictMode>,
   document.getElementById('root')
 );
 
