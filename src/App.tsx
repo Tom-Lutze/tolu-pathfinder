@@ -10,15 +10,32 @@ import {
 } from '@ant-design/icons';
 import React, { useContext } from 'react';
 import { store } from './Store';
-import { GraphBuilderType, StoreActionType } from './interfaces/interfaces';
-import { capitalizeFirstLetter } from './utils/Helper';
+import {
+  GraphBuilderType,
+  SearchAlgoType,
+  StoreActionType,
+} from './interfaces/interfaces';
 
-const MenuItems = () => {
+const actionTypeAssociation = {
+  [StoreActionType[StoreActionType.Graph]]: {
+    type: GraphBuilderType,
+    icon: <BranchesOutlined />,
+  },
+  [StoreActionType[StoreActionType.Algo]]: {
+    type: SearchAlgoType,
+    icon: <CompassOutlined />,
+  },
+};
+
+const AppMenu = () => {
+  const globalState = useContext(store);
+  const { dispatch } = globalState;
   const subMenuitems = [];
   for (const storeActionType in StoreActionType) {
     if (!isNaN(Number(storeActionType))) continue;
     const menuItems = [];
-    for (const graphBuilderType in GraphBuilderType) {
+    for (const graphBuilderType in actionTypeAssociation[storeActionType]
+      .type) {
       if (!isNaN(Number(graphBuilderType))) continue;
       const menuItem = (
         <Menu.Item key={`${storeActionType}-${graphBuilderType}`}>
@@ -29,8 +46,8 @@ const MenuItems = () => {
     }
     const subMenu = (
       <SubMenu
-        key={`sub-m-${storeActionType}`}
-        icon={<BranchesOutlined />}
+        key={`${storeActionType}`}
+        icon={actionTypeAssociation[storeActionType].icon}
         title={`${storeActionType}`}
       >
         {menuItems}
@@ -38,13 +55,31 @@ const MenuItems = () => {
     );
     subMenuitems.push(subMenu);
   }
-  return <React.Fragment key="test">{subMenuitems}</React.Fragment>;
+  return (
+    <Menu
+      mode="inline"
+      defaultSelectedKeys={[
+        `${StoreActionType[StoreActionType.Graph]}-${
+          GraphBuilderType[GraphBuilderType.Random]
+        }`,
+        `${StoreActionType[StoreActionType.Algo]}-${
+          SearchAlgoType[SearchAlgoType.DFS]
+        }`,
+      ]}
+      defaultOpenKeys={[
+        `${StoreActionType[StoreActionType.Graph]}`,
+        `${StoreActionType[StoreActionType.Algo]}`,
+      ]}
+      style={{ height: '100%', borderRight: 0 }}
+      onClick={(e) => dispatch({ type: e.key })}
+      children={subMenuitems}
+    />
+  );
 };
 
 const App = () => {
   const { Header, Content, Sider } = Layout;
-  const globalState = useContext(store);
-  const { dispatch } = globalState;
+
   return (
     <Layout>
       <Header className="header">
@@ -52,15 +87,7 @@ const App = () => {
       </Header>
       <Layout>
         <Sider width={200} className="site-layout-background" collapsible>
-          <Menu
-            mode="inline"
-            // defaultSelectedKeys={['1']}
-            // defaultOpenKeys={['sub-m-algorithm']}
-            style={{ height: '100%', borderRight: 0 }}
-            onClick={(e) => dispatch({ type: e.key })}
-          >
-            <MenuItems />
-          </Menu>
+          <AppMenu />
         </Sider>
         <Layout>
           <Content
