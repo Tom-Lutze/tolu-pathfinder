@@ -20,3 +20,7 @@ export function getRandomNumberExcept(
   if (number < except) return number;
   else return number + 1;
 }
+
+export function capitalizeFirstLetter(str: string) {
+  return `${str[0].toUpperCase()}${str.slice(1).toLowerCase()}`;
+}
