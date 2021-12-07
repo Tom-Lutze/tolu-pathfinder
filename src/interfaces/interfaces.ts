@@ -38,3 +38,19 @@ export interface PathInterface {
   nodes: number[];
   searchIdx: number;
 }
+
+export enum StoreActionType {
+  Graph,
+  Algo,
+}
+
+export enum GraphBuilderType {
+  None,
+  Square,
+  Random,
+}
+
+export enum SearchAlgoType {
+  BFS,
+  DFS,
+}
