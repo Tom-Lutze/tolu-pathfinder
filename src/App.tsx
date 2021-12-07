@@ -8,14 +8,43 @@ import {
   LaptopOutlined,
   CompassOutlined,
 } from '@ant-design/icons';
-import { useContext } from 'react';
+import React, { useContext } from 'react';
 import { store } from './Store';
+import { GraphBuilderType, StoreActionType } from './interfaces/interfaces';
+import { capitalizeFirstLetter } from './utils/Helper';
+
+const MenuItems = () => {
+  const subMenuitems = [];
+  for (const storeActionType in StoreActionType) {
+    if (!isNaN(Number(storeActionType))) continue;
+    const menuItems = [];
+    for (const graphBuilderType in GraphBuilderType) {
+      if (!isNaN(Number(graphBuilderType))) continue;
+      const menuItem = (
+        <Menu.Item key={`${storeActionType}-${graphBuilderType}`}>
+          {graphBuilderType}
+        </Menu.Item>
+      );
+      menuItems.push(menuItem);
+    }
+    const subMenu = (
+      <SubMenu
+        key={`sub-m-${storeActionType}`}
+        icon={<BranchesOutlined />}
+        title={`${storeActionType}`}
+      >
+        {menuItems}
+      </SubMenu>
+    );
+    subMenuitems.push(subMenu);
+  }
+  return <React.Fragment key="test">{subMenuitems}</React.Fragment>;
+};
 
 const App = () => {
   const { Header, Content, Sider } = Layout;
   const globalState = useContext(store);
   const { dispatch } = globalState;
-  console.log(JSON.stringify(globalState));
   return (
     <Layout>
       <Header className="header">
@@ -25,28 +54,12 @@ const App = () => {
         <Sider width={200} className="site-layout-background" collapsible>
           <Menu
             mode="inline"
-            defaultSelectedKeys={['1']}
-            defaultOpenKeys={['sub-m-algorithm']}
+            // defaultSelectedKeys={['1']}
+            // defaultOpenKeys={['sub-m-algorithm']}
             style={{ height: '100%', borderRight: 0 }}
             onClick={(e) => dispatch({ type: e.key })}
           >
-            <SubMenu
-              key="sub-m-graph"
-              icon={<BranchesOutlined />}
-              title="Graph Builder"
-            >
-              <Menu.Item key="graph-none">None</Menu.Item>
-              <Menu.Item key="graph-square">Square</Menu.Item>
-              <Menu.Item key="graph-random">Random</Menu.Item>
-            </SubMenu>
-            <SubMenu
-              key="sub-m-algorithm"
-              icon={<CompassOutlined />}
-              title="Search Algorithm"
-            >
-              <Menu.Item key="algo-dfs">Depth First Search</Menu.Item>
-              <Menu.Item key="algo-bfs">Breadth First Search</Menu.Item>
-            </SubMenu>
+            <MenuItems />
           </Menu>
         </Sider>
         <Layout>

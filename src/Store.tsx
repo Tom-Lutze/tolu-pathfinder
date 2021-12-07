@@ -1,4 +1,5 @@
 import React, { createContext, useReducer } from 'react';
+import { GraphBuilderType, SearchAlgoType } from './interfaces/interfaces';
 
 export interface AppSettingInterface {
   graphType: 'none' | 'square' | 'random';
@@ -17,20 +18,20 @@ const StateProvider = ({ children }: any) => {
   const [state, dispatch] = useReducer((state: any, action: any) => {
     let newState;
     switch (action.type) {
-      case 'graph-none':
-        newState = { ...state, graphType: 'none' };
+      case GraphBuilderType.None:
+        newState = { ...state, graphType: GraphBuilderType.None };
         return newState;
-      case 'graph-square':
-        newState = { ...state, graphType: 'square' };
+      case GraphBuilderType.Square:
+        newState = { ...state, graphType: GraphBuilderType.Square };
         return newState;
-      case 'graph-random':
-        newState = { ...state, graphType: 'random' };
+      case GraphBuilderType.Random:
+        newState = { ...state, graphType: GraphBuilderType.Random };
         return newState;
-      case 'algo-dfs':
-        newState = { ...state, searchAlgo: 'dfs' };
+      case SearchAlgoType.DFS:
+        newState = { ...state, searchAlgo: SearchAlgoType.DFS };
         return newState;
-      case 'algo-bfs':
-        newState = { ...state, searchAlgo: 'bfs' };
+      case SearchAlgoType.BFS:
+        newState = { ...state, searchAlgo: SearchAlgoType.BFS };
         return newState;
       default:
         throw new Error();
