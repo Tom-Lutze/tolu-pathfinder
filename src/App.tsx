@@ -1,28 +1,24 @@
-import './App.css';
+import { BranchesOutlined, CompassOutlined } from '@ant-design/icons';
+import { Layout, Menu } from 'antd';
 import 'antd/dist/antd.css';
-import { Layout, Menu, Breadcrumb } from 'antd';
-import MapComponent from './map/MapComponent';
 import SubMenu from 'antd/lib/menu/SubMenu';
-import {
-  BranchesOutlined,
-  LaptopOutlined,
-  CompassOutlined,
-} from '@ant-design/icons';
 import React, { useContext } from 'react';
-import { store } from './Store';
+import './App.css';
 import {
-  GraphBuilderType,
-  SearchAlgoType,
-  StoreActionType,
+  AlgoCatType,
+  GraphCatType,
+  MainCatType,
 } from './interfaces/interfaces';
+import MapComponent from './map/MapComponent';
+import { store } from './Store';
 
-const actionTypeAssociation = {
-  [StoreActionType.Graph]: {
-    type: GraphBuilderType,
+const mainCatParams = {
+  [MainCatType.Graph]: {
+    subType: GraphCatType,
     icon: <BranchesOutlined />,
   },
-  [StoreActionType.Algo]: {
-    type: SearchAlgoType,
+  [MainCatType.Algo]: {
+    subType: AlgoCatType,
     icon: <CompassOutlined />,
   },
 };
@@ -31,12 +27,11 @@ const AppMenu = () => {
   const globalState = useContext(store);
   const { state, dispatch } = globalState;
   const subMenuitems = [];
-  for (const storeActionType in StoreActionType) {
-    if (!isNaN(Number(storeActionType))) continue;
+  for (const mainCatType in MainCatType) {
+    if (!isNaN(Number(mainCatType))) continue;
     const menuItems = [];
-    for (const graphBuilderType in actionTypeAssociation[
-      StoreActionType[storeActionType]
-    ].type) {
+    for (const graphBuilderType in mainCatParams[MainCatType[mainCatType]]
+      .subType) {
       if (!isNaN(Number(graphBuilderType))) continue;
       const menuItem = (
         <Menu.Item key={`${graphBuilderType}`}>{graphBuilderType}</Menu.Item>
@@ -45,9 +40,9 @@ const AppMenu = () => {
     }
     const subMenu = (
       <SubMenu
-        key={`${storeActionType}`}
-        icon={actionTypeAssociation[StoreActionType[storeActionType]].icon}
-        title={`${storeActionType}`}
+        key={`${mainCatType}`}
+        icon={mainCatParams[MainCatType[mainCatType]].icon}
+        title={`${mainCatType}`}
       >
         {menuItems}
       </SubMenu>
@@ -58,21 +53,21 @@ const AppMenu = () => {
     <Menu
       mode="inline"
       selectedKeys={[
-        GraphBuilderType[state.menu[StoreActionType.Graph]],
-        SearchAlgoType[state.menu[StoreActionType.Algo]],
+        GraphCatType[state.menu[MainCatType.Graph]],
+        AlgoCatType[state.menu[MainCatType.Algo]],
       ]}
       defaultOpenKeys={[
-        StoreActionType[StoreActionType.Graph],
-        StoreActionType[StoreActionType.Algo],
+        MainCatType[MainCatType.Graph],
+        MainCatType[MainCatType.Algo],
       ]}
       style={{ height: '100%', borderRight: 0 }}
       onClick={(e) => {
-        const storeActionType = StoreActionType[e.keyPath[1]];
+        const storeActionType = MainCatType[e.keyPath[1]];
         dispatch({
           type: 'menu',
-          setting: [
+          settings: [
             storeActionType,
-            actionTypeAssociation[storeActionType].type[e.keyPath[0]],
+            mainCatParams[storeActionType].subType[e.keyPath[0]],
           ],
         });
       }}
@@ -83,7 +78,6 @@ const AppMenu = () => {
 
 const App = () => {
   const { Header, Content, Sider } = Layout;
-
   return (
     <Layout>
       <Header className="header">

@@ -39,18 +39,18 @@ export interface PathInterface {
   searchIdx: number;
 }
 
-export enum StoreActionType {
+export enum MainCatType {
   Graph,
   Algo,
 }
 
-export enum GraphBuilderType {
+export enum GraphCatType {
   None,
   Square,
   Random,
 }
 
-export enum SearchAlgoType {
+export enum AlgoCatType {
   BFS,
   DFS,
 }
