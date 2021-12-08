@@ -1,42 +1,35 @@
 import React, { createContext, useReducer } from 'react';
-import { GraphBuilderType, SearchAlgoType } from './interfaces/interfaces';
-
-export interface AppSettingInterface {
-  graphType: 'none' | 'square' | 'random';
-  searchAlgo: 'dfs' | 'bfs';
-}
+import {
+  GraphBuilderType,
+  SearchAlgoType,
+  StoreActionType,
+} from './interfaces/interfaces';
 
 const initialState: any = {
-  searchAlgo: 'bfs',
-  graphType: 'none',
+  menu: {
+    [StoreActionType.Graph]: GraphBuilderType.Random,
+    [StoreActionType.Algo]: SearchAlgoType.DFS,
+  },
 };
 
 const store = createContext(initialState);
 const { Provider } = store;
 
 const StateProvider = ({ children }: any) => {
-  const [state, dispatch] = useReducer((state: any, action: any) => {
-    let newState;
-    switch (action.type) {
-      case GraphBuilderType.None:
-        newState = { ...state, graphType: GraphBuilderType.None };
-        return newState;
-      case GraphBuilderType.Square:
-        newState = { ...state, graphType: GraphBuilderType.Square };
-        return newState;
-      case GraphBuilderType.Random:
-        newState = { ...state, graphType: GraphBuilderType.Random };
-        return newState;
-      case SearchAlgoType.DFS:
-        newState = { ...state, searchAlgo: SearchAlgoType.DFS };
-        return newState;
-      case SearchAlgoType.BFS:
-        newState = { ...state, searchAlgo: SearchAlgoType.BFS };
-        return newState;
-      default:
-        throw new Error();
-    }
-  }, initialState);
+  const [state, dispatch] = useReducer(
+    (state: any, action: { type: string; setting: any }) => {
+      switch (action.type) {
+        case 'menu':
+          return {
+            ...state,
+            menu: { ...state.menu, [action.setting[0]]: action.setting[1] },
+          };
+        default:
+          throw new Error('Action type is not defined');
+      }
+    },
+    initialState
+  );
 
   return <Provider value={{ state, dispatch }}>{children}</Provider>;
 };

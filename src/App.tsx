@@ -17,11 +17,11 @@ import {
 } from './interfaces/interfaces';
 
 const actionTypeAssociation = {
-  [StoreActionType[StoreActionType.Graph]]: {
+  [StoreActionType.Graph]: {
     type: GraphBuilderType,
     icon: <BranchesOutlined />,
   },
-  [StoreActionType[StoreActionType.Algo]]: {
+  [StoreActionType.Algo]: {
     type: SearchAlgoType,
     icon: <CompassOutlined />,
   },
@@ -29,25 +29,24 @@ const actionTypeAssociation = {
 
 const AppMenu = () => {
   const globalState = useContext(store);
-  const { dispatch } = globalState;
+  const { state, dispatch } = globalState;
   const subMenuitems = [];
   for (const storeActionType in StoreActionType) {
     if (!isNaN(Number(storeActionType))) continue;
     const menuItems = [];
-    for (const graphBuilderType in actionTypeAssociation[storeActionType]
-      .type) {
+    for (const graphBuilderType in actionTypeAssociation[
+      StoreActionType[storeActionType]
+    ].type) {
       if (!isNaN(Number(graphBuilderType))) continue;
       const menuItem = (
-        <Menu.Item key={`${storeActionType}-${graphBuilderType}`}>
-          {graphBuilderType}
-        </Menu.Item>
+        <Menu.Item key={`${graphBuilderType}`}>{graphBuilderType}</Menu.Item>
       );
       menuItems.push(menuItem);
     }
     const subMenu = (
       <SubMenu
         key={`${storeActionType}`}
-        icon={actionTypeAssociation[storeActionType].icon}
+        icon={actionTypeAssociation[StoreActionType[storeActionType]].icon}
         title={`${storeActionType}`}
       >
         {menuItems}
@@ -58,20 +57,25 @@ const AppMenu = () => {
   return (
     <Menu
       mode="inline"
-      defaultSelectedKeys={[
-        `${StoreActionType[StoreActionType.Graph]}-${
-          GraphBuilderType[GraphBuilderType.Random]
-        }`,
-        `${StoreActionType[StoreActionType.Algo]}-${
-          SearchAlgoType[SearchAlgoType.DFS]
-        }`,
+      selectedKeys={[
+        GraphBuilderType[state.menu[StoreActionType.Graph]],
+        SearchAlgoType[state.menu[StoreActionType.Algo]],
       ]}
       defaultOpenKeys={[
-        `${StoreActionType[StoreActionType.Graph]}`,
-        `${StoreActionType[StoreActionType.Algo]}`,
+        StoreActionType[StoreActionType.Graph],
+        StoreActionType[StoreActionType.Algo],
       ]}
       style={{ height: '100%', borderRight: 0 }}
-      onClick={(e) => dispatch({ type: e.key })}
+      onClick={(e) => {
+        const storeActionType = StoreActionType[e.keyPath[1]];
+        dispatch({
+          type: 'menu',
+          setting: [
+            storeActionType,
+            actionTypeAssociation[storeActionType].type[e.keyPath[0]],
+          ],
+        });
+      }}
       children={subMenuitems}
     />
   );
