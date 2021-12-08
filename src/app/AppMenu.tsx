@@ -1,16 +1,11 @@
 import { BranchesOutlined, CompassOutlined } from '@ant-design/icons';
-import { Layout, Menu } from 'antd';
+import { Menu } from 'antd';
 import 'antd/dist/antd.css';
 import SubMenu from 'antd/lib/menu/SubMenu';
 import React, { useContext } from 'react';
+import { AlgoCatType, GraphCatType, MainCatType } from '../interfaces';
 import './App.css';
-import {
-  AlgoCatType,
-  GraphCatType,
-  MainCatType,
-} from './interfaces/interfaces';
-import MapComponent from './map/MapComponent';
-import { store } from './Store';
+import { storeContext } from './AppStore';
 
 const mainCatParams = {
   [MainCatType.Graph]: {
@@ -24,7 +19,7 @@ const mainCatParams = {
 };
 
 const AppMenu = () => {
-  const globalState = useContext(store);
+  const globalState = useContext(storeContext);
   const { state, dispatch } = globalState;
   const subMenuitems = [];
   for (const mainCatType in MainCatType) {
@@ -76,31 +71,4 @@ const AppMenu = () => {
   );
 };
 
-const App = () => {
-  const { Header, Content, Sider } = Layout;
-  return (
-    <Layout>
-      <Header className="header">
-        <div className="logo" />
-      </Header>
-      <Layout>
-        <Sider width={200} className="site-layout-background" collapsible>
-          <AppMenu />
-        </Sider>
-        <Layout>
-          <Content
-            className="site-layout-background"
-            style={{
-              margin: 0,
-              minHeight: 280,
-            }}
-          >
-            <MapComponent />
-          </Content>
-        </Layout>
-      </Layout>
-    </Layout>
-  );
-};
-
-export default App;
+export default AppMenu;

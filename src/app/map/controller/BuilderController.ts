@@ -1,10 +1,10 @@
 import { LatLng } from 'leaflet';
-import { GraphInterface, NodeInterface } from '../../interfaces/interfaces';
+import { GraphInterface, NodeInterface } from '../../../interfaces';
 import {
   getRandomNumber,
   getRandomNumberExcept,
   sleep,
-} from '../../utils/Helper';
+} from '../../../utils/Helper';
 import { BUILDER_STATES, BUILDER_SETTINGS } from '../constants/Settings';
 import GraphController from './GraphController';
 export default class BuilderController {

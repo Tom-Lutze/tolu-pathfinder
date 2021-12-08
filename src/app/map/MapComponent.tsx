@@ -1,7 +1,7 @@
 import 'leaflet/dist/leaflet.css';
 import { useEffect, useRef, useState } from 'react';
 import { MapContainer, TileLayer, useMapEvents } from 'react-leaflet';
-import { GraphInterface, PathInterface } from '../interfaces/interfaces';
+import { GraphInterface, PathInterface } from '../../interfaces';
 import { BUILDER_STATES, BUILDER_SETTINGS } from './constants/Settings';
 import BuilderController from './controller/BuilderController';
 import GraphController from './controller/GraphController';

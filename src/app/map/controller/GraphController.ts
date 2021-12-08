@@ -1,5 +1,5 @@
 import { LatLng } from 'leaflet';
-import { GraphInterface, NodeInterface } from '../../interfaces/interfaces';
+import { GraphInterface, NodeInterface } from '../../../interfaces';
 export default class GraphController {
   static addNode(
     node: NodeInterface,

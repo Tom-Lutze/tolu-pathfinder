@@ -1,5 +1,5 @@
 import { Polyline, Popup } from 'react-leaflet';
-import { GraphInterface } from '../../interfaces/interfaces';
+import { GraphInterface } from '../../../interfaces';
 import { BUILDER_STATES } from '../constants/Settings';
 import GraphController from '../controller/GraphController';
 

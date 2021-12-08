@@ -1,9 +1,5 @@
 import React, { createContext, useReducer } from 'react';
-import {
-  GraphCatType,
-  AlgoCatType,
-  MainCatType,
-} from './interfaces/interfaces';
+import { GraphCatType, AlgoCatType, MainCatType } from '../interfaces';
 
 const initialState: any = {
   menu: {
@@ -12,10 +8,10 @@ const initialState: any = {
   },
 };
 
-const store = createContext(initialState);
-const { Provider } = store;
+const storeContext = createContext(initialState);
+const { Provider } = storeContext;
 
-const StateProvider = ({ children }: any) => {
+const StoreProvider = ({ children }: any) => {
   const [state, dispatch] = useReducer(
     (state: any, action: { type: string; settings: any }) => {
       switch (action.type) {
@@ -34,4 +30,4 @@ const StateProvider = ({ children }: any) => {
   return <Provider value={{ state, dispatch }}>{children}</Provider>;
 };
 
-export { store, StateProvider };
+export { storeContext, StoreProvider };

@@ -1,5 +1,5 @@
 import React from 'react';
-import { GraphInterface, PathInterface } from '../../interfaces/interfaces';
+import { GraphInterface, PathInterface } from '../../../interfaces';
 import GraphController from '../controller/GraphController';
 import MarkerConnection from './MarkerConnection';
 import MarkerWithPopup from './MarkerWithPopup';

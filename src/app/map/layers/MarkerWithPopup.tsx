@@ -1,5 +1,5 @@
 import { Marker, Popup } from 'react-leaflet';
-import { GraphInterface } from '../../interfaces/interfaces';
+import { GraphInterface } from '../../../interfaces';
 import {
   MarkerIconDefault,
   MarkerIconGreen,

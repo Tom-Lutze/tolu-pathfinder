@@ -1,5 +1,5 @@
 import { Pane, Polyline } from 'react-leaflet';
-import { GraphInterface, PathInterface } from '../../interfaces/interfaces';
+import { GraphInterface, PathInterface } from '../../../interfaces';
 import GraphController from '../controller/GraphController';
 
 const SearchPath = (params: { graph: GraphInterface; path: PathInterface }) => {

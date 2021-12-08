@@ -1,5 +1,5 @@
-import { GraphInterface, PathInterface } from '../../interfaces/interfaces';
-import { sleep } from '../../utils/Helper';
+import { GraphInterface, PathInterface } from '../../../interfaces';
+import { sleep } from '../../../utils/Helper';
 
 export default class PathController {
   static bfs(
