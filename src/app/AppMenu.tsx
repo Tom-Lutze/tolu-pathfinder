@@ -20,7 +20,7 @@ const mainCatParams = {
 
 const AppMenu = () => {
   const globalState = useContext(storeContext);
-  const { state, dispatch } = globalState;
+  const { appState, dispatch } = globalState;
   const subMenuitems = [];
   for (const mainCatType in MainCatType) {
     if (!isNaN(Number(mainCatType))) continue;
@@ -48,8 +48,8 @@ const AppMenu = () => {
     <Menu
       mode="inline"
       selectedKeys={[
-        GraphCatType[state.menu[MainCatType.Graph]],
-        AlgoCatType[state.menu[MainCatType.Algo]],
+        GraphCatType[appState.menu[MainCatType.Graph]],
+        AlgoCatType[appState.menu[MainCatType.Algo]],
       ]}
       defaultOpenKeys={[
         MainCatType[MainCatType.Graph],

@@ -12,7 +12,7 @@ const storeContext = createContext(initialState);
 const { Provider } = storeContext;
 
 const StoreProvider = ({ children }: any) => {
-  const [state, dispatch] = useReducer(
+  const [appState, dispatch] = useReducer(
     (state: any, action: { type: string; settings: any }) => {
       switch (action.type) {
         case 'menu':
@@ -27,7 +27,7 @@ const StoreProvider = ({ children }: any) => {
     initialState
   );
 
-  return <Provider value={{ state, dispatch }}>{children}</Provider>;
+  return <Provider value={{ appState, dispatch }}>{children}</Provider>;
 };
 
 export { storeContext, StoreProvider };

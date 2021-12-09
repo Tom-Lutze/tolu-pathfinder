@@ -1,11 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './app/App';
+import { StoreProvider } from './app/AppStore';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   // <React.StrictMode>
-  <App />,
+  <StoreProvider>
+    <App />
+  </StoreProvider>,
   // </React.StrictMode>,
   document.getElementById('root')
 );

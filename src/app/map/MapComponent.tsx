@@ -1,15 +1,23 @@
 import 'leaflet/dist/leaflet.css';
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { MapContainer, TileLayer, useMapEvents } from 'react-leaflet';
-import { GraphInterface, PathInterface } from '../../interfaces';
-import { BUILDER_STATES, BUILDER_SETTINGS } from './constants/Settings';
+import {
+  AlgoCatType,
+  GraphCatType,
+  GraphInterface,
+  PathInterface,
+} from '../../interfaces';
+import { BUILDER_STATES } from './constants/Settings';
 import BuilderController from './controller/BuilderController';
 import GraphController from './controller/GraphController';
 import PathController from './controller/PathController';
 import MapLayers from './layers/MapLayers';
 import './MapComponent.css';
 
-const MapComponent = () => {
+const MapComponent = (param: {
+  graphType: GraphCatType;
+  algoType: AlgoCatType;
+}) => {
   const MapLayer = () => {
     const initGraph: GraphInterface = {
       nodeCount: 0,
@@ -55,8 +63,15 @@ const MapComponent = () => {
 
     useEffect(() => {
       if (graph.buildState.state < BUILDER_STATES.Ready) {
-        // BuilderController.buildSquareNetwork(graph, setGraph); //TODO add ui selector
-        BuilderController.buildRandomNetwork(graph, setGraph);
+        switch (param.graphType) {
+          case GraphCatType.None:
+            break;
+          case GraphCatType.Random:
+            BuilderController.buildRandomNetwork(graph, setGraph);
+            break;
+          case GraphCatType.Square:
+            BuilderController.buildSquareNetwork(graph, setGraph);
+        }
       }
     }, [
       graph.buildState.state,
@@ -70,9 +85,21 @@ const MapComponent = () => {
         setPath({ ...initPath, searchIdx: path.searchIdx + 1 });
       } else if (graph.state.updated && path.nodes.length < 1) {
         setGraph({ ...graph, state: { ...graph.state, updated: false } });
-        PathController.dfs(graph, pathRef, setPath);
+        switch (param.algoType) {
+          case AlgoCatType.DFS:
+            PathController.dfs(graph, pathRef, setPath);
+            break;
+          case AlgoCatType.BFS:
+            PathController.bfs(graph, pathRef, setPath);
+            break;
+        }
       }
-    }, [graph.buildState.state, graph.state.updated, path.nodes]);
+    }, [
+      graph.buildState.state,
+      graph.state.updated,
+      path.nodes,
+      param.algoType,
+    ]);
 
     return <MapLayers graph={graph} setGraph={setGraph} path={path} />;
   };
@@ -88,4 +115,7 @@ const MapComponent = () => {
   );
 };
 
-export default MapComponent;
+export default React.memo(
+  MapComponent,
+  (prevProp, nextProp) => prevProp.graphType === nextProp.graphType
+);
