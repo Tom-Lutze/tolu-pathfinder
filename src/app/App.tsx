@@ -2,12 +2,12 @@ import { Layout } from 'antd';
 import 'antd/dist/antd.css';
 import React, { useContext, useRef } from 'react';
 import MapComponent from '../app/map/MapComponent';
-import { MainCatType } from '../interfaces';
+import { MainCatType, PreserveRefInterface } from '../interfaces';
 import './App.css';
 import AppMenu from './AppMenu';
 import { storeContext } from './AppStore';
 
-const App = (param: { genericRef: React.MutableRefObject<any> }) => {
+const App = (param: { preserveRef: PreserveRefInterface }) => {
   const globalState = useContext(storeContext);
   const { appState } = globalState;
 
@@ -32,7 +32,7 @@ const App = (param: { genericRef: React.MutableRefObject<any> }) => {
             <MapComponent
               graphType={appState.menu[MainCatType.Graph]}
               algoType={appState.menu[MainCatType.Algo]}
-              genericRef={param.genericRef}
+              preserveRef={param.preserveRef}
             />
           </Content>
         </Layout>
@@ -42,8 +42,11 @@ const App = (param: { genericRef: React.MutableRefObject<any> }) => {
 };
 
 const AppWrapper = () => {
-  const genericRef = useRef({});
-  return <App genericRef={genericRef} />;
+  const preserveRef: PreserveRefInterface = useRef({
+    prevGraph: undefined,
+    prevAlgo: undefined,
+  });
+  return <App preserveRef={preserveRef} />;
 };
 
 export default AppWrapper;

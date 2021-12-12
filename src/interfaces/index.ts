@@ -1,4 +1,5 @@
 import { LatLng } from 'leaflet';
+import React from 'react';
 
 export interface GraphInterface {
   nodeCount: number;
@@ -36,7 +37,7 @@ export interface GraphStateInterface {
 export interface PathInterface {
   found: boolean;
   nodes: number[];
-  searchIdx: number;
+  searchProcessIdx: number;
 }
 
 export enum MainCatType {
@@ -54,3 +55,9 @@ export enum AlgoCatType {
   BFS,
   DFS,
 }
+
+export interface PreserveRefInterface
+  extends React.MutableRefObject<{
+    prevGraph: GraphInterface | undefined;
+    prevAlgo: AlgoCatType | undefined;
+  }> {}
