@@ -17,32 +17,34 @@ import './MapComponent.css';
 const MapComponent = (param: {
   graphType: GraphCatType;
   algoType: AlgoCatType;
+  genericRef: React.MutableRefObject<any>;
 }) => {
-  const MapLayer = () => {
-    const initGraph: GraphInterface = {
-      nodeCount: 0,
-      nodes: {},
-      state: {
-        updated: false,
-        activeNode: undefined,
-        prevActiveNode: undefined,
-        startNode: undefined,
-        endNode: undefined,
-      },
-      buildState: {
-        state: BUILDER_STATES.Uninitialized,
-        counterA: 0,
-        counterB: 0,
-        nodeAddresses: new Map(),
-        nodeDistances: undefined,
-      },
-    };
-    const initPath: PathInterface = {
-      found: false,
-      nodes: [],
-      searchIdx: 0,
-    };
+  const initGraph: GraphInterface = {
+    nodeCount: 0,
+    nodes: {},
+    state: {
+      updated: false,
+      activeNode: undefined,
+      prevActiveNode: undefined,
+      startNode: undefined,
+      endNode: undefined,
+    },
+    buildState: {
+      state: BUILDER_STATES.Uninitialized,
+      counterA: 0,
+      counterB: 0,
+      nodeAddresses: new Map(),
+      nodeDistances: undefined,
+    },
+  };
 
+  const initPath: PathInterface = {
+    found: false,
+    nodes: [],
+    searchIdx: 0,
+  };
+
+  const MapLayer = () => {
     const [graph, setGraph] = useState(initGraph);
     const [path, setPath] = useState(initPath);
 
@@ -62,7 +64,25 @@ const MapComponent = (param: {
     });
 
     useEffect(() => {
-      if (graph.buildState.state < BUILDER_STATES.Ready) {
+      if (graph.buildState.state >= BUILDER_STATES.Ready) {
+        param.genericRef.current['prevGraph'] = graph;
+      }
+    }, [graph]);
+
+    useEffect(() => {
+      if (
+        param.genericRef.current['prevGraph'] &&
+        param.algoType !== param.genericRef.current['prevAlgo']
+      ) {
+        console.log('algo type changed ' + param.algoType);
+        const prevGraphState: GraphInterface =
+          param.genericRef.current['prevGraph'];
+        setGraph({
+          ...prevGraphState,
+          state: { ...prevGraphState.state, updated: true },
+        });
+        param.genericRef.current['prevAlgo'] = param.algoType;
+      } else if (graph.buildState.state < BUILDER_STATES.Ready) {
         switch (param.graphType) {
           case GraphCatType.None:
             break;
@@ -74,6 +94,7 @@ const MapComponent = (param: {
         }
       }
     }, [
+      param.algoType,
       graph.buildState.state,
       graph.buildState.counterA,
       graph.buildState.counterB,
@@ -115,7 +136,4 @@ const MapComponent = (param: {
   );
 };
 
-export default React.memo(
-  MapComponent,
-  (prevProp, nextProp) => prevProp.graphType === nextProp.graphType
-);
+export default React.memo(MapComponent);

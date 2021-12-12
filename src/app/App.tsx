@@ -1,13 +1,13 @@
 import { Layout } from 'antd';
 import 'antd/dist/antd.css';
-import React, { useContext } from 'react';
+import React, { useContext, useRef } from 'react';
 import MapComponent from '../app/map/MapComponent';
 import { MainCatType } from '../interfaces';
 import './App.css';
 import AppMenu from './AppMenu';
 import { storeContext } from './AppStore';
 
-const App = () => {
+const App = (param: { genericRef: React.MutableRefObject<any> }) => {
   const globalState = useContext(storeContext);
   const { appState } = globalState;
 
@@ -32,6 +32,7 @@ const App = () => {
             <MapComponent
               graphType={appState.menu[MainCatType.Graph]}
               algoType={appState.menu[MainCatType.Algo]}
+              genericRef={param.genericRef}
             />
           </Content>
         </Layout>
@@ -40,4 +41,9 @@ const App = () => {
   );
 };
 
-export default App;
+const AppWrapper = () => {
+  const genericRef = useRef({});
+  return <App genericRef={genericRef} />;
+};
+
+export default AppWrapper;
