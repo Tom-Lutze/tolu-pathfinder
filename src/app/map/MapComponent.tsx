@@ -8,6 +8,7 @@ import {
   GraphInterface,
   PathInterface,
   PreserveRefInterface,
+  ProcessIdxInterface,
 } from '../../interfaces';
 import BuilderController from './controller/BuilderController';
 import GraphController from './controller/GraphController';
@@ -53,7 +54,12 @@ const MapComponent = (props: {
   const graphRef = useRef(graph);
   const pathRef = useRef(path);
 
-  // const processIdxRef = useRef({graphIdx: 0, pathIdx: 0})
+  const processIdx: ProcessIdxInterface = {
+    graphIdx: 0,
+    pathIdx: 0,
+  };
+
+  const processIdxRef = useRef(processIdx);
 
   return (
     <MapContainer center={[0, 0]} zoom={13} scrollWheelZoom={false}>
@@ -63,13 +69,17 @@ const MapComponent = (props: {
       />
       <GraphLayer
         graph={graph}
-        graphRef={graphRef}
+        // graphRef={graphRef}
         setGraph={setGraph}
         resetGraph={() => {
-          const newGraph = { ...initGraph, processIdx: graph.processIdx + 1 };
-          graphRef.current = newGraph;
+          const newGraph = { ...initGraph };
+          processIdxRef.current = {
+            ...processIdxRef.current,
+            graphIdx: processIdxRef.current.graphIdx + 1,
+          };
           setGraph(newGraph);
         }}
+        processIdxRef={processIdxRef}
         graphType={props.graphType}
         preserveRef={props.preserveRef}
       />

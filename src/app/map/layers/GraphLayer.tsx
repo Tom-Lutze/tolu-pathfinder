@@ -7,6 +7,7 @@ import {
   GraphInterface,
   PathInterface,
   PreserveRefInterface,
+  ProcessIdxInterface,
 } from '../../../interfaces';
 import BuilderController from '../controller/BuilderController';
 import GraphController from '../controller/GraphController';
@@ -16,12 +17,13 @@ import MarkerWithPopup from './graphLayers/MarkerWithPopup';
 
 const GraphLayer = (props: {
   graph: GraphInterface;
-  graphRef: React.MutableRefObject<GraphInterface>;
+  // graphRef: React.MutableRefObject<GraphInterface>;
   setGraph: React.Dispatch<React.SetStateAction<GraphInterface>>;
   resetGraph: () => void;
   // path: PathInterface;
   preserveRef: PreserveRefInterface;
   graphType: GraphCatType;
+  processIdxRef: React.MutableRefObject<ProcessIdxInterface>;
   // algoType: AlgoCatType;
 }) => {
   useMapEvents({
@@ -97,14 +99,14 @@ const GraphLayer = (props: {
         case GraphCatType.Random:
           BuilderController.buildRandomNetwork(
             props.graph,
-            props.graphRef,
+            props.processIdxRef,
             props.setGraph
           );
           break;
         case GraphCatType.Square:
           BuilderController.buildSquareNetwork(
             props.graph,
-            props.graphRef,
+            props.processIdxRef,
             props.setGraph
           );
       }

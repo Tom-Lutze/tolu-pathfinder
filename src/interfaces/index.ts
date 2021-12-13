@@ -70,3 +70,8 @@ export interface PreserveRefInterface
     prevGraph: GraphInterface | undefined;
     prevAlgo: AlgoCatType | undefined;
   }> {}
+
+export interface ProcessIdxInterface {
+  graphIdx: number;
+  pathIdx: number;
+}
