@@ -36,7 +36,7 @@ class PathControllerHelper {
     setPath: React.Dispatch<React.SetStateAction<PathInterface>>,
     arrayOperation: (array: any) => number[] | undefined
   ) {
-    const startSearchIdx = pathRef.current.searchProcessIdx;
+    const startSearchIdx = pathRef.current.processIdx;
     const startNodeIdx = graph.state.startNode;
     const endNodeIdx = graph.state.endNode;
     if (!startNodeIdx || !endNodeIdx || Object.keys(graph).length < 1)
@@ -45,7 +45,7 @@ class PathControllerHelper {
     const loop = async (nodesArray: number[][]) => {
       if (
         nodesArray.length > 0 &&
-        startSearchIdx === pathRef.current.searchProcessIdx
+        startSearchIdx === pathRef.current.processIdx
       ) {
         const currentNode = arrayOperation(nodesArray);
         if (

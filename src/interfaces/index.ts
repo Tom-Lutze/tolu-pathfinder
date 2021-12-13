@@ -20,6 +20,7 @@ export interface GraphInterface {
     nodeAddresses: Map<string, number> | undefined;
     nodeDistances: number[][] | undefined;
   };
+  processIdx: number;
 }
 
 export interface NodeInterface {
@@ -37,7 +38,7 @@ export interface GraphStateInterface {
 export interface PathInterface {
   found: boolean;
   nodes: number[];
-  searchProcessIdx: number;
+  processIdx: number;
 }
 
 export enum MainCatType {

@@ -24,6 +24,7 @@ export default class GraphController {
     newGraph.nodeCount++;
     newGraph.state.updated = true;
     setGraph(newGraph);
+    return newGraph;
   }
 
   static removeNode(
@@ -47,6 +48,7 @@ export default class GraphController {
     GraphControllerHelper.removeNodeFromState(idx, newGraph);
     newGraph.state.updated = true;
     setGraph(newGraph);
+    return newGraph;
   }
 
   static getNodesIdx(graph: GraphInterface) {
@@ -160,6 +162,7 @@ export default class GraphController {
       }
     });
     if (newGraph.state.updated) setGraph(newGraph);
+    return newGraph;
   }
 
   static connectSelectedNodes(

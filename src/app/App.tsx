@@ -7,7 +7,7 @@ import './App.css';
 import AppMenu from './AppMenu';
 import { storeContext } from './AppStore';
 
-const App = (param: { preserveRef: PreserveRefInterface }) => {
+const App = (props: { preserveRef: PreserveRefInterface }) => {
   const globalState = useContext(storeContext);
   const { appState } = globalState;
 
@@ -32,7 +32,7 @@ const App = (param: { preserveRef: PreserveRefInterface }) => {
             <MapComponent
               graphType={appState.menu[MainCatType.Graph]}
               algoType={appState.menu[MainCatType.Algo]}
-              preserveRef={param.preserveRef}
+              preserveRef={props.preserveRef}
             />
           </Content>
         </Layout>

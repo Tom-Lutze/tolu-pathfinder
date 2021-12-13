@@ -1,12 +1,12 @@
 import { Marker, Popup } from 'react-leaflet';
-import { GraphInterface } from '../../../interfaces';
+import { GraphInterface } from '../../../../interfaces';
 import {
   MarkerIconDefault,
   MarkerIconGreen,
   MarkerIconRed,
-} from '../constants/MarkerIcons';
-import { BUILDER_STATES } from '../constants/Settings';
-import GraphController from '../controller/GraphController';
+} from '../../constants/MarkerIcons';
+import { BUILDER_STATES } from '../../constants/Settings';
+import GraphController from '../../controller/GraphController';
 
 const MarkerWithPopup = (params: {
   nodeIdx: number;
