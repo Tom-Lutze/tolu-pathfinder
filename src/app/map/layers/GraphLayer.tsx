@@ -1,30 +1,22 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useMapEvents } from 'react-leaflet';
 import {
-  AlgoCatType,
   BuilderStates,
   GraphCatType,
   GraphInterface,
-  PathInterface,
   PreserveRefInterface,
   ProcessIdxInterface,
 } from '../../../interfaces';
 import BuilderController from '../controller/BuilderController';
 import GraphController from '../controller/GraphController';
-import PathController from '../controller/PathController';
 import MarkerConnection from './graphLayers/MarkerConnection';
 import MarkerWithPopup from './graphLayers/MarkerWithPopup';
 
 const GraphLayer = (props: {
   graph: GraphInterface;
-  // graphRef: React.MutableRefObject<GraphInterface>;
   setGraph: React.Dispatch<React.SetStateAction<GraphInterface>>;
-  // resetGraph: () => void;
-  // path: PathInterface;
-  preserveRef: PreserveRefInterface;
   graphType: GraphCatType;
   processIdxRef: React.MutableRefObject<ProcessIdxInterface>;
-  // algoType: AlgoCatType;
 }) => {
   useMapEvents({
     click(e) {
@@ -45,13 +37,10 @@ const GraphLayer = (props: {
     if (props.graph.buildState.state == BuilderStates.Uninitialized) {
       const newGraph = { ...props.graph };
       newGraph.buildState.state = BuilderStates.Initialized;
-      // newGraph.processIdx++;
-      // props.graphRef.current = newGraph;
       props.setGraph(newGraph);
     }
     if (props.graph.buildState.state == BuilderStates.Initialized) {
       console.log('uE - build graph: ' + props.graphType);
-      console.log('Process: ' + props.graph.processIdx);
       switch (props.graphType) {
         case GraphCatType.None:
           break;

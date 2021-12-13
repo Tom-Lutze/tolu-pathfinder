@@ -105,19 +105,15 @@ const MapComponent = (props: {
       />
       <GraphLayer
         graph={graph}
-        // graphRef={graphRef}
         setGraph={setGraph}
-        // resetGraph={resetGraph}
-        processIdxRef={processIdxRef}
         graphType={props.graphType}
-        preserveRef={props.preserveRef}
+        processIdxRef={processIdxRef}
       />
 
       <PathLayer
         graph={graph}
         path={path}
         setPath={setPath}
-        // resetPath={resetPath}
         algoType={props.algoType}
         processIdxRef={processIdxRef}
       />
