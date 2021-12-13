@@ -3,12 +3,12 @@ import React, { useEffect, useRef, useState } from 'react';
 import { MapContainer, TileLayer, useMapEvents } from 'react-leaflet';
 import {
   AlgoCatType,
+  BuilderStates,
   GraphCatType,
   GraphInterface,
   PathInterface,
   PreserveRefInterface,
 } from '../../interfaces';
-import { BUILDER_STATES } from './constants/Settings';
 import BuilderController from './controller/BuilderController';
 import GraphController from './controller/GraphController';
 import PathController from './controller/PathController';
@@ -32,7 +32,7 @@ const MapComponent = (props: {
       endNode: undefined,
     },
     buildState: {
-      state: BUILDER_STATES.Uninitialized,
+      state: BuilderStates.Uninitialized,
       counterA: 0,
       counterB: 0,
       nodeAddresses: new Map(),
@@ -53,6 +53,8 @@ const MapComponent = (props: {
   const graphRef = useRef(graph);
   const pathRef = useRef(path);
 
+  // const processIdxRef = useRef({graphIdx: 0, pathIdx: 0})
+
   return (
     <MapContainer center={[0, 0]} zoom={13} scrollWheelZoom={false}>
       <TileLayer
@@ -63,7 +65,11 @@ const MapComponent = (props: {
         graph={graph}
         graphRef={graphRef}
         setGraph={setGraph}
-        resetGraph={() => setGraph(initGraph)}
+        resetGraph={() => {
+          const newGraph = { ...initGraph, processIdx: graph.processIdx + 1 };
+          graphRef.current = newGraph;
+          setGraph(newGraph);
+        }}
         graphType={props.graphType}
         preserveRef={props.preserveRef}
       />

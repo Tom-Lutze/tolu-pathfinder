@@ -2,11 +2,11 @@ import React, { useEffect } from 'react';
 import { Pane, Polyline } from 'react-leaflet';
 import {
   AlgoCatType,
+  BuilderStates,
   GraphInterface,
   PathInterface,
   PreserveRefInterface,
 } from '../../../interfaces';
-import { BUILDER_STATES } from '../constants/Settings';
 import GraphController from '../controller/GraphController';
 import PathController from '../controller/PathController';
 
@@ -25,7 +25,7 @@ const PathLayer = (props: {
    * Preserve graph state for re-render
    */
   useEffect(() => {
-    if (props.graph.buildState.state >= BUILDER_STATES.Ready) {
+    if (props.graph.buildState.state >= BuilderStates.Finalized) {
       props.preserveRef.current.prevGraph = props.graph;
     }
   }, [props.graph]);
@@ -34,7 +34,7 @@ const PathLayer = (props: {
    * Build path
    */
   useEffect(() => {
-    if (props.graph.buildState.state < BUILDER_STATES.Ready) return;
+    if (props.graph.buildState.state < BuilderStates.Finalized) return;
     if (props.graph.state.updated && props.path.nodes.length > 0) {
       props.setPath({
         ...props.initPath,

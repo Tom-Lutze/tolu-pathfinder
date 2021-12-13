@@ -1,13 +1,17 @@
 import { LatLng } from 'leaflet';
-import { GraphInterface } from '../../../interfaces';
+import { BuilderStates, GraphInterface } from '../../../interfaces';
 import { getRandomNumber, sleep } from '../../../utils/Helper';
-import { BUILDER_SETTINGS, BUILDER_STATES } from '../constants/Settings';
+import { BUILDER_SETTINGS } from '../constants/Settings';
 import GraphController from './GraphController';
+
 export default class BuilderController {
   static async buildSquareNetwork(
     graph: GraphInterface,
+    graphRef: React.MutableRefObject<GraphInterface>,
     setGraph: React.Dispatch<React.SetStateAction<GraphInterface>>
   ) {
+    const startProcess = graphRef.current.processIdx;
+    console.log(startProcess);
     const NODES_PER_AXIS = BUILDER_SETTINGS.square.nodesPerAxisMax;
     const buildState = 0;
     let newGraph = { ...graph };
@@ -27,6 +31,7 @@ export default class BuilderController {
           newGraph.nodeCount + 1
         );
         await sleep(30);
+        if (startProcess != graphRef.current.processIdx) return;
         newGraph = GraphController.addNode(
           { position: new LatLng(i / 100, j / 100), edges: undefined },
           newGraph,
@@ -51,18 +56,22 @@ export default class BuilderController {
           nodePairs.push([currentNodeIdx, rightNeighborNodeIdx]);
         if (nodePairs.length > 0) {
           await sleep(30);
+          if (startProcess != graphRef.current.processIdx) return;
           newGraph = GraphController.connectNodes(nodePairs, graph, setGraph);
         }
       }
     }
-    newGraph.buildState.state = BUILDER_STATES.Ready;
+    newGraph.buildState.state = BuilderStates.Finalized;
+    if (startProcess != graphRef.current.processIdx) return;
     setGraph(newGraph);
   }
 
   static async buildRandomNetwork(
     graph: GraphInterface,
+    graphRef: React.MutableRefObject<GraphInterface>,
     setGraph: React.Dispatch<React.SetStateAction<GraphInterface>>
   ) {
+    const startProcess = graphRef.current.processIdx;
     const SETTINGS = BUILDER_SETTINGS.random;
     let newGraph = { ...graph };
     newGraph.buildState.state++;
@@ -71,6 +80,7 @@ export default class BuilderController {
       const randomLat = getRandomNumber(SETTINGS.latFrom, SETTINGS.latTo);
       const randomLng = getRandomNumber(SETTINGS.lngFrom, SETTINGS.lngTo);
       await sleep(30);
+      if (startProcess != graphRef.current.processIdx) return;
       newGraph = GraphController.addNode(
         {
           position: new LatLng(randomLat / 100, randomLng / 100),
@@ -126,10 +136,12 @@ export default class BuilderController {
         }
         newGraph.buildState.counterB--;
         await sleep(30);
+        if (startProcess != graphRef.current.processIdx) return;
         newGraph = GraphController.connectNodes(nodePairs, newGraph, setGraph);
       }
     }
-    newGraph.buildState.state = BUILDER_STATES.Ready;
+    newGraph.buildState.state = BuilderStates.Finalized;
+    if (startProcess != graphRef.current.processIdx) return;
     setGraph(newGraph);
   }
 }

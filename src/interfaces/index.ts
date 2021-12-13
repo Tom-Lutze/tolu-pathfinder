@@ -57,6 +57,14 @@ export enum AlgoCatType {
   DFS,
 }
 
+export enum BuilderStates {
+  Terminated = 0,
+  Uninitialized = 1,
+  Initialized = 2,
+  Building = 3,
+  Finalized = 99,
+}
+
 export interface PreserveRefInterface
   extends React.MutableRefObject<{
     prevGraph: GraphInterface | undefined;

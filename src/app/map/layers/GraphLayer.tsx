@@ -2,12 +2,12 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useMapEvents } from 'react-leaflet';
 import {
   AlgoCatType,
+  BuilderStates,
   GraphCatType,
   GraphInterface,
   PathInterface,
   PreserveRefInterface,
 } from '../../../interfaces';
-import { BUILDER_STATES } from '../constants/Settings';
 import BuilderController from '../controller/BuilderController';
 import GraphController from '../controller/GraphController';
 import PathController from '../controller/PathController';
@@ -26,7 +26,7 @@ const GraphLayer = (props: {
 }) => {
   useMapEvents({
     click(e) {
-      if (props.graph.buildState.state === BUILDER_STATES.Ready) {
+      if (props.graph.buildState.state === BuilderStates.Finalized) {
         GraphController.addNode(
           { position: e.latlng, edges: undefined },
           props.graph,
@@ -81,24 +81,35 @@ const GraphLayer = (props: {
    * Build graph
    */
   useEffect(() => {
-    // if (props.graph.buildState.state < BUILDER_STATES.Ready) {
-    if (props.graph.buildState.state == BUILDER_STATES.Uninitialized) {
+    if (props.graph.buildState.state == BuilderStates.Uninitialized) {
+      const newGraph = { ...props.graph };
+      newGraph.buildState.state = BuilderStates.Initialized;
+      // newGraph.processIdx++;
+      // props.graphRef.current = newGraph;
+      props.setGraph(newGraph);
+    }
+    if (props.graph.buildState.state == BuilderStates.Initialized) {
       console.log('uE - build graph: ' + props.graphType);
+      console.log('Process: ' + props.graph.processIdx);
       switch (props.graphType) {
         case GraphCatType.None:
           break;
         case GraphCatType.Random:
-          BuilderController.buildRandomNetwork(props.graph, props.setGraph);
+          BuilderController.buildRandomNetwork(
+            props.graph,
+            props.graphRef,
+            props.setGraph
+          );
           break;
         case GraphCatType.Square:
-          BuilderController.buildSquareNetwork(props.graph, props.setGraph);
+          BuilderController.buildSquareNetwork(
+            props.graph,
+            props.graphRef,
+            props.setGraph
+          );
       }
     }
-  }, [
-    props.graph.buildState.state,
-    props.graph.buildState.counterA,
-    props.graph.buildState.counterB,
-  ]);
+  }, [props.graph.buildState.state]);
 
   return (
     <>

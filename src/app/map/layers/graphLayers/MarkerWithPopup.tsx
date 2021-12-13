@@ -1,11 +1,10 @@
 import { Marker, Popup } from 'react-leaflet';
-import { GraphInterface } from '../../../../interfaces';
+import { BuilderStates, GraphInterface } from '../../../../interfaces';
 import {
   MarkerIconDefault,
   MarkerIconGreen,
   MarkerIconRed,
 } from '../../constants/MarkerIcons';
-import { BUILDER_STATES } from '../../constants/Settings';
 import GraphController from '../../controller/GraphController';
 
 const MarkerWithPopup = (params: {
@@ -18,7 +17,7 @@ const MarkerWithPopup = (params: {
   const startNode = params.graph.state.startNode;
   const endNode = params.graph.state.endNode;
   const buildStateReady =
-    params.graph.buildState.state === BUILDER_STATES.Ready;
+    params.graph.buildState.state === BuilderStates.Finalized;
   const showConnectOption = () => {
     if (prevActiveNode && activeNode && prevActiveNode !== activeNode) {
       return !(
