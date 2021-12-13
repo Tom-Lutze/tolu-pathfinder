@@ -16,8 +16,8 @@ const MarkerWithPopup = (params: {
   const prevActiveNode = params.graph.state.prevActiveNode;
   const startNode = params.graph.state.startNode;
   const endNode = params.graph.state.endNode;
-  const buildStateReady =
-    params.graph.buildState.state === BuilderStates.Finalized;
+  const buildStateReady = () =>
+    params.graph.buildState.state === BuilderStates.Finalized ? true : false;
   const showConnectOption = () => {
     if (prevActiveNode && activeNode && prevActiveNode !== activeNode) {
       return !(
@@ -33,7 +33,7 @@ const MarkerWithPopup = (params: {
   };
   return (
     <Marker
-      draggable={buildStateReady}
+      draggable={buildStateReady()}
       position={GraphController.getNode(params.nodeIdx, params.graph).position}
       opacity={
         activeNode == params.nodeIdx
@@ -51,7 +51,9 @@ const MarkerWithPopup = (params: {
       }
       eventHandlers={{
         click: (e) => {
-          if (buildStateReady)
+          console.log(JSON.stringify(params.graph.buildState.state));
+          console.log(JSON.stringify(BuilderStates.Finalized));
+          if (buildStateReady())
             GraphController.setActiveNode(
               e.target.options.nodeIdx,
               params.graph,
@@ -59,7 +61,7 @@ const MarkerWithPopup = (params: {
             );
         },
         dragend: (e) => {
-          if (buildStateReady)
+          if (buildStateReady())
             GraphController.setNodePosition(
               e.target.options.nodeIdx,
               e.target.getLatLng(),
@@ -72,7 +74,7 @@ const MarkerWithPopup = (params: {
         nodeIdx: params.nodeIdx,
       }}
     >
-      {buildStateReady && (
+      {buildStateReady() && (
         <Popup>
           <span>
             <a

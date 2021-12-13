@@ -19,7 +19,7 @@ const GraphLayer = (props: {
   graph: GraphInterface;
   // graphRef: React.MutableRefObject<GraphInterface>;
   setGraph: React.Dispatch<React.SetStateAction<GraphInterface>>;
-  resetGraph: () => void;
+  // resetGraph: () => void;
   // path: PathInterface;
   preserveRef: PreserveRefInterface;
   graphType: GraphCatType;
@@ -37,47 +37,6 @@ const GraphLayer = (props: {
       }
     },
   });
-
-  /**
-   * Preserve graph state for re-render
-   */
-  // useEffect(() => {
-  //   console.log('uE - preserve graph');
-  //   if (props.graph.buildState.state >= BUILDER_STATES.Ready) {
-  //     props.preserveRef.current.prevGraph = props.graph;
-  //   }
-  // }, [props.graph]);
-
-  /**
-   * New graph type
-   */
-  // useEffect(() => {
-  //   console.log('uE - new graph type');
-  //   const initGraph: GraphInterface = {
-  //     nodeCount: 0,
-  //     nodes: {},
-  //     state: {
-  //       updated: false,
-  //       activeNode: undefined,
-  //       prevActiveNode: undefined,
-  //       startNode: undefined,
-  //       endNode: undefined,
-  //     },
-  //     buildState: {
-  //       state: BUILDER_STATES.Uninitialized,
-  //       counterA: 0,
-  //       counterB: 0,
-  //       nodeAddresses: new Map(),
-  //       nodeDistances: undefined,
-  //     },
-  //     processIdx: 0,
-  //   };
-  //   props.setGraph(initGraph);
-  // }, [props.graphType]);
-
-  useEffect(() => {
-    props.resetGraph();
-  }, [props.graphType]);
 
   /**
    * Build graph

@@ -1,29 +1,40 @@
-import { GraphInterface, PathInterface } from '../../../interfaces';
+import {
+  GraphInterface,
+  PathInterface,
+  PathSearchStates,
+  ProcessIdxInterface,
+} from '../../../interfaces';
 import { sleep } from '../../../utils/Helper';
 
 export default class PathController {
   static bfs(
     graph: GraphInterface,
-    pathRef: React.MutableRefObject<PathInterface>,
-    setPath: React.Dispatch<React.SetStateAction<PathInterface>>
+    // pathRef: React.MutableRefObject<PathInterface>,
+    path: PathInterface,
+    setPath: React.Dispatch<React.SetStateAction<PathInterface>>,
+    processIdxRef: React.MutableRefObject<ProcessIdxInterface>
   ) {
     PathControllerHelper.searchAlgorithm(
       graph,
-      pathRef,
+      path,
       setPath,
+      processIdxRef,
       (array: number[][]) => array.shift()
     );
   }
 
   static dfs(
     graph: GraphInterface,
-    pathRef: React.MutableRefObject<PathInterface>,
-    setPath: React.Dispatch<React.SetStateAction<PathInterface>>
+    // pathRef: React.MutableRefObject<PathInterface>,
+    path: PathInterface,
+    setPath: React.Dispatch<React.SetStateAction<PathInterface>>,
+    processIdxRef: React.MutableRefObject<ProcessIdxInterface>
   ) {
     PathControllerHelper.searchAlgorithm(
       graph,
-      pathRef,
+      path,
       setPath,
+      processIdxRef,
       (array: number[][]) => array.pop()
     );
   }
@@ -32,11 +43,15 @@ export default class PathController {
 class PathControllerHelper {
   static searchAlgorithm(
     graph: GraphInterface,
-    pathRef: React.MutableRefObject<PathInterface>,
+    // pathRef: React.MutableRefObject<PathInterface>,
+    path: PathInterface,
     setPath: React.Dispatch<React.SetStateAction<PathInterface>>,
+    processIdxRef: React.MutableRefObject<ProcessIdxInterface>,
     arrayOperation: (array: any) => number[] | undefined
   ) {
-    const startSearchIdx = pathRef.current.processIdx;
+    const newPath = { ...path };
+    newPath.state = PathSearchStates.Searching;
+    const startSearchIdx = processIdxRef.current.pathIdx;
     const startNodeIdx = graph.state.startNode;
     const endNodeIdx = graph.state.endNode;
     if (!startNodeIdx || !endNodeIdx || Object.keys(graph).length < 1)
@@ -45,7 +60,7 @@ class PathControllerHelper {
     const loop = async (nodesArray: number[][]) => {
       if (
         nodesArray.length > 0 &&
-        startSearchIdx === pathRef.current.processIdx
+        startSearchIdx === processIdxRef.current.pathIdx
       ) {
         const currentNode = arrayOperation(nodesArray);
         if (
@@ -56,14 +71,15 @@ class PathControllerHelper {
           loop(nodesArray);
         } else {
           setPath({
-            ...pathRef.current,
+            ...newPath,
             found: false,
             nodes: currentNode,
           });
           visitedNodes.add(currentNode[0]);
           if (currentNode[0] == endNodeIdx) {
             return setPath({
-              ...pathRef.current,
+              ...newPath,
+              state: PathSearchStates.Finalized,
               found: true,
               nodes: currentNode,
             });

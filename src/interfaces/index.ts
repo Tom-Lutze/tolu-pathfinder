@@ -39,6 +39,7 @@ export interface PathInterface {
   found: boolean;
   nodes: number[];
   processIdx: number;
+  state: PathSearchStates;
 }
 
 export enum MainCatType {
@@ -62,6 +63,14 @@ export enum BuilderStates {
   Uninitialized = 1,
   Initialized = 2,
   Building = 3,
+  Finalized = 99,
+}
+
+export enum PathSearchStates {
+  Terminated = 0,
+  Uninitialized = 1,
+  Initialized = 2,
+  Searching = 3,
   Finalized = 99,
 }
 

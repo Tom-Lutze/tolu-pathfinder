@@ -7,6 +7,7 @@ import {
   GraphCatType,
   GraphInterface,
   PathInterface,
+  PathSearchStates,
   PreserveRefInterface,
   ProcessIdxInterface,
 } from '../../interfaces';
@@ -46,6 +47,7 @@ const MapComponent = (props: {
     found: false,
     nodes: [],
     processIdx: 0,
+    state: PathSearchStates.Uninitialized,
   };
   const [graph, setGraph] = useState(initGraph);
   // const resetGraph = () => setGraph(initGraph);
@@ -60,6 +62,40 @@ const MapComponent = (props: {
   };
 
   const processIdxRef = useRef(processIdx);
+  const resetGraph = () => {
+    const newGraph = { ...initGraph };
+    processIdxRef.current = {
+      ...processIdxRef.current,
+      graphIdx: processIdxRef.current.graphIdx + 1,
+    };
+    setGraph(newGraph);
+  };
+
+  const resetPath = () => {
+    const newPath = { ...initPath };
+    processIdxRef.current = {
+      ...processIdxRef.current,
+      pathIdx: processIdxRef.current.pathIdx + 1,
+    };
+    setPath(newPath);
+  };
+
+  useEffect(() => {
+    resetPath();
+    resetGraph();
+  }, [props.graphType]);
+
+  useEffect(() => {
+    resetPath();
+  }, [props.algoType]);
+
+  useEffect(() => {
+    if (graph.state.updated) {
+      console.log('uE - reset path from map component');
+      setGraph({ ...graph, state: { ...graph.state, updated: false } });
+      resetPath();
+    }
+  }, [graph.state.updated]);
 
   return (
     <MapContainer center={[0, 0]} zoom={13} scrollWheelZoom={false}>
@@ -71,17 +107,19 @@ const MapComponent = (props: {
         graph={graph}
         // graphRef={graphRef}
         setGraph={setGraph}
-        resetGraph={() => {
-          const newGraph = { ...initGraph };
-          processIdxRef.current = {
-            ...processIdxRef.current,
-            graphIdx: processIdxRef.current.graphIdx + 1,
-          };
-          setGraph(newGraph);
-        }}
+        // resetGraph={resetGraph}
         processIdxRef={processIdxRef}
         graphType={props.graphType}
         preserveRef={props.preserveRef}
+      />
+
+      <PathLayer
+        graph={graph}
+        path={path}
+        setPath={setPath}
+        // resetPath={resetPath}
+        algoType={props.algoType}
+        processIdxRef={processIdxRef}
       />
     </MapContainer>
   );

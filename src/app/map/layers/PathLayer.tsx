@@ -5,67 +5,63 @@ import {
   BuilderStates,
   GraphInterface,
   PathInterface,
+  PathSearchStates,
   PreserveRefInterface,
+  ProcessIdxInterface,
 } from '../../../interfaces';
 import GraphController from '../controller/GraphController';
 import PathController from '../controller/PathController';
 
 const PathLayer = (props: {
   graph: GraphInterface;
-  setGraph: React.Dispatch<React.SetStateAction<GraphInterface>>;
+  // setGraph: React.Dispatch<React.SetStateAction<GraphInterface>>;
   path: PathInterface;
   setPath: React.Dispatch<React.SetStateAction<PathInterface>>;
-  pathRef: React.MutableRefObject<PathInterface>;
-  initPath: PathInterface;
-  preserveRef: PreserveRefInterface;
+  // resetPath: () => void;
+  // pathRef: React.MutableRefObject<PathInterface>;
+  // initPath: PathInterface;
+  // preserveRef: PreserveRefInterface;
   // graphType: GraphCatType;
   algoType: AlgoCatType;
+  processIdxRef: React.MutableRefObject<ProcessIdxInterface>;
 }) => {
-  /**
-   * Preserve graph state for re-render
-   */
-  useEffect(() => {
-    if (props.graph.buildState.state >= BuilderStates.Finalized) {
-      props.preserveRef.current.prevGraph = props.graph;
-    }
-  }, [props.graph]);
-
   /**
    * Build path
    */
   useEffect(() => {
-    if (props.graph.buildState.state < BuilderStates.Finalized) return;
-    if (props.graph.state.updated && props.path.nodes.length > 0) {
-      props.setPath({
-        ...props.initPath,
-        processIdx: props.path.processIdx + 1,
-      });
-    } else if (props.graph.state.updated && props.path.nodes.length < 1) {
-      props.setGraph({
-        ...props.graph,
-        state: { ...props.graph.state, updated: false },
-      });
+    console.log('uE - build path');
+    if (props.path.state == PathSearchStates.Uninitialized) {
+      const newPath = { ...props.path };
+      newPath.state = PathSearchStates.Initialized;
+      props.setPath(newPath);
+    } else if (props.path.state == PathSearchStates.Initialized) {
+      console.log('uE - path finding');
       switch (props.algoType) {
         case AlgoCatType.DFS:
-          PathController.dfs(props.graph, props.pathRef, props.setPath);
+          PathController.dfs(
+            props.graph,
+            props.path,
+            props.setPath,
+            props.processIdxRef
+          );
           break;
         case AlgoCatType.BFS:
-          PathController.bfs(props.graph, props.pathRef, props.setPath);
+          PathController.bfs(
+            props.graph,
+            props.path,
+            props.setPath,
+            props.processIdxRef
+          );
           break;
       }
     }
-  }, [
-    props.graph.buildState.state,
-    props.graph.state.updated,
-    props.path.nodes,
-    props.algoType,
-  ]);
+  }, [props.path.state]);
 
   return (
     <>
-      {!props.graph.state.updated &&
-        !props.path.found &&
-        props.path.nodes.length > 1 && (
+      {
+        /* !props.graph.state.updated && */
+        !props.path.found && props.path.nodes.length > 1 && (
           <Pane name="tolu-search-path-pane">
             <Polyline
               pathOptions={{
@@ -80,10 +76,11 @@ const PathLayer = (props: {
               {...{ zIndex: 9998 }}
             />
           </Pane>
-        )}
-      {!props.graph.state.updated &&
-        props.path.found &&
-        props.path.nodes.length > 1 && (
+        )
+      }
+      {
+        /* !props.graph.state.updated && */
+        props.path.found && props.path.nodes.length > 1 && (
           <Pane name="tolu-path-pane">
             <Polyline
               pathOptions={{
@@ -98,7 +95,8 @@ const PathLayer = (props: {
               {...{ zIndex: 9999 }}
             />
           </Pane>
-        )}
+        )
+      }
     </>
   );
 };
