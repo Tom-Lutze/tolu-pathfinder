@@ -9,7 +9,6 @@ import { sleep } from '../../../utils/Helper';
 export default class PathController {
   static bfs(
     graph: GraphInterface,
-    // pathRef: React.MutableRefObject<PathInterface>,
     path: PathInterface,
     setPath: React.Dispatch<React.SetStateAction<PathInterface>>,
     processIdxRef: React.MutableRefObject<ProcessIdxInterface>
@@ -25,7 +24,6 @@ export default class PathController {
 
   static dfs(
     graph: GraphInterface,
-    // pathRef: React.MutableRefObject<PathInterface>,
     path: PathInterface,
     setPath: React.Dispatch<React.SetStateAction<PathInterface>>,
     processIdxRef: React.MutableRefObject<ProcessIdxInterface>
@@ -41,9 +39,8 @@ export default class PathController {
 }
 
 class PathControllerHelper {
-  static searchAlgorithm(
+  static async searchAlgorithm(
     graph: GraphInterface,
-    // pathRef: React.MutableRefObject<PathInterface>,
     path: PathInterface,
     setPath: React.Dispatch<React.SetStateAction<PathInterface>>,
     processIdxRef: React.MutableRefObject<ProcessIdxInterface>,
@@ -57,44 +54,38 @@ class PathControllerHelper {
     if (!startNodeIdx || !endNodeIdx || Object.keys(graph).length < 1)
       return [];
     const visitedNodes = new Set<number>();
-    const loop = async (nodesArray: number[][]) => {
-      if (
-        nodesArray.length > 0 &&
-        startSearchIdx === processIdxRef.current.pathIdx
-      ) {
-        const currentNode = arrayOperation(nodesArray);
-        if (
-          !currentNode ||
-          !currentNode[0] ||
-          visitedNodes.has(currentNode[0])
-        ) {
-          loop(nodesArray);
-        } else {
-          setPath({
+
+    const nodesArray: number[][] = [[startNodeIdx]];
+    while (
+      nodesArray.length > 0 &&
+      startSearchIdx === processIdxRef.current.pathIdx
+    ) {
+      const currentNode = arrayOperation(nodesArray);
+      if (!currentNode || !currentNode[0] || visitedNodes.has(currentNode[0])) {
+        continue;
+      } else {
+        setPath({
+          ...newPath,
+          found: false,
+          nodes: currentNode,
+        });
+        visitedNodes.add(currentNode[0]);
+        if (currentNode[0] == endNodeIdx) {
+          return setPath({
             ...newPath,
-            found: false,
+            state: PathSearchStates.Finalized,
+            found: true,
             nodes: currentNode,
           });
-          visitedNodes.add(currentNode[0]);
-          if (currentNode[0] == endNodeIdx) {
-            return setPath({
-              ...newPath,
-              state: PathSearchStates.Finalized,
-              found: true,
-              nodes: currentNode,
-            });
-          }
-          const currentNodeEdges = graph.nodes[currentNode[0]].edges;
-          if (currentNodeEdges) {
-            currentNodeEdges.forEach((edge) => {
-              nodesArray.push([edge, ...currentNode]);
-            });
-          }
-          await sleep(200);
-          loop(nodesArray);
         }
+        const currentNodeEdges = graph.nodes[currentNode[0]].edges;
+        if (currentNodeEdges) {
+          currentNodeEdges.forEach((edge) => {
+            nodesArray.push([edge, ...currentNode]);
+          });
+        }
+        await sleep(200);
       }
-    };
-    loop([[startNodeIdx]]);
+    }
   }
 }
