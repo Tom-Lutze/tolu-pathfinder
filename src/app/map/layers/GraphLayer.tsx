@@ -18,8 +18,7 @@ const GraphLayer = (props: {
   graph: GraphInterface;
   graphRef: React.MutableRefObject<GraphInterface>;
   setGraph: React.Dispatch<React.SetStateAction<GraphInterface>>;
-  // resetGraph: () => void;
-  initGraph: GraphInterface;
+  resetGraph: () => void;
   // path: PathInterface;
   preserveRef: PreserveRefInterface;
   graphType: GraphCatType;
@@ -73,6 +72,10 @@ const GraphLayer = (props: {
   //   };
   //   props.setGraph(initGraph);
   // }, [props.graphType]);
+
+  useEffect(() => {
+    props.resetGraph();
+  }, [props.graphType]);
 
   /**
    * Build graph

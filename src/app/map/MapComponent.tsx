@@ -52,7 +52,6 @@ const MapComponent = (props: {
 
   const graphRef = useRef(graph);
   const pathRef = useRef(path);
-  // pathRef.current = path;
 
   return (
     <MapContainer center={[0, 0]} zoom={13} scrollWheelZoom={false}>
@@ -64,7 +63,7 @@ const MapComponent = (props: {
         graph={graph}
         graphRef={graphRef}
         setGraph={setGraph}
-        initGraph={initGraph}
+        resetGraph={() => setGraph(initGraph)}
         graphType={props.graphType}
         preserveRef={props.preserveRef}
       />
