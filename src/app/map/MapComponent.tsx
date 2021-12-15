@@ -1,6 +1,6 @@
 import 'leaflet/dist/leaflet.css';
 import React, { useEffect, useRef, useState } from 'react';
-import { MapContainer, TileLayer, useMapEvents } from 'react-leaflet';
+import { MapContainer, TileLayer } from 'react-leaflet';
 import {
   AlgoCatType,
   BuilderStates,
@@ -8,12 +8,8 @@ import {
   GraphInterface,
   PathInterface,
   PathSearchStates,
-  PreserveRefInterface,
   ProcessIdxInterface,
 } from '../../interfaces';
-import BuilderController from './controller/BuilderController';
-import GraphController from './controller/GraphController';
-import PathController from './controller/PathController';
 import GraphLayer from './layers/GraphLayer';
 import PathLayer from './layers/PathLayer';
 import './MapComponent.css';
@@ -21,7 +17,6 @@ import './MapComponent.css';
 const MapComponent = (props: {
   graphType: GraphCatType;
   algoType: AlgoCatType;
-  preserveRef: PreserveRefInterface;
 }) => {
   const initGraph: GraphInterface = {
     nodeCount: 0,
@@ -50,11 +45,7 @@ const MapComponent = (props: {
     state: PathSearchStates.Uninitialized,
   };
   const [graph, setGraph] = useState(initGraph);
-  // const resetGraph = () => setGraph(initGraph);
   const [path, setPath] = useState(initPath);
-
-  const graphRef = useRef(graph);
-  const pathRef = useRef(path);
 
   const processIdx: ProcessIdxInterface = {
     graphIdx: 0,
@@ -91,7 +82,6 @@ const MapComponent = (props: {
 
   useEffect(() => {
     if (graph.state.updated) {
-      console.log('uE - reset path from map component');
       setGraph({ ...graph, state: { ...graph.state, updated: false } });
       resetPath();
     }

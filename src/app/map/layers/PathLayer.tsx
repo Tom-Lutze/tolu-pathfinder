@@ -21,13 +21,11 @@ const PathLayer = (props: {
    * Build path
    */
   useEffect(() => {
-    console.log('uE - build path');
     if (props.path.state == PathSearchStates.Uninitialized) {
       const newPath = { ...props.path };
       newPath.state = PathSearchStates.Initialized;
       props.setPath(newPath);
     } else if (props.path.state == PathSearchStates.Initialized) {
-      console.log('uE - path finding');
       switch (props.algoType) {
         case AlgoCatType.DFS:
           PathController.dfs(

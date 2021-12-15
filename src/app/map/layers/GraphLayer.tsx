@@ -40,7 +40,6 @@ const GraphLayer = (props: {
       props.setGraph(newGraph);
     }
     if (props.graph.buildState.state == BuilderStates.Initialized) {
-      console.log('uE - build graph: ' + props.graphType);
       switch (props.graphType) {
         case GraphCatType.None:
           break;

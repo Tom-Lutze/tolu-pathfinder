@@ -15,9 +15,7 @@ export default class BuilderController {
     setGraph: React.Dispatch<React.SetStateAction<GraphInterface>>
   ) {
     const startProcess = processIdxRef.current.graphIdx;
-    console.log(startProcess);
     const NODES_PER_AXIS = BUILDER_SETTINGS.square.nodesPerAxisMax;
-    const buildState = 0;
     let newGraph = { ...graph };
     newGraph.buildState.state++;
     for (

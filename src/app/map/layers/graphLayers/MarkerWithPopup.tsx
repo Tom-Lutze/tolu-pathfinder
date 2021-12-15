@@ -51,8 +51,6 @@ const MarkerWithPopup = (params: {
       }
       eventHandlers={{
         click: (e) => {
-          console.log(JSON.stringify(params.graph.buildState.state));
-          console.log(JSON.stringify(BuilderStates.Finalized));
           if (buildStateReady())
             GraphController.setActiveNode(
               e.target.options.nodeIdx,
