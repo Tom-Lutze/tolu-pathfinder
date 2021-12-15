@@ -1,6 +1,6 @@
 import 'leaflet/dist/leaflet.css';
 import React, { useEffect, useRef, useState } from 'react';
-import { MapContainer, TileLayer } from 'react-leaflet';
+import { MapContainer, TileLayer, useMapEvents } from 'react-leaflet';
 import {
   AlgoCatType,
   BuilderStates,
@@ -10,6 +10,7 @@ import {
   PathSearchStates,
   ProcessIdxInterface,
 } from '../../interfaces';
+import GraphController from './controller/GraphController';
 import GraphLayer from './layers/GraphLayer';
 import PathLayer from './layers/PathLayer';
 import './MapComponent.css';
@@ -71,11 +72,17 @@ const MapComponent = (props: {
     setPath(newPath);
   };
 
+  /**
+   * Graph type updated
+   */
   useEffect(() => {
     resetPath();
     resetGraph();
   }, [props.graphType]);
 
+  /**
+   * Algo type updated
+   */
   useEffect(() => {
     resetPath();
   }, [props.algoType]);
@@ -87,8 +94,24 @@ const MapComponent = (props: {
     }
   }, [graph.state.updated]);
 
+  const MapEventHandler = () => {
+    useMapEvents({
+      click(e) {
+        if (graph.buildState.state === BuilderStates.Finalized) {
+          GraphController.addNode(
+            { position: e.latlng, edges: undefined },
+            graph,
+            setGraph
+          );
+        }
+      },
+    });
+    return <></>;
+  };
+
   return (
     <MapContainer center={[0, 0]} zoom={13} scrollWheelZoom={false}>
+      <MapEventHandler />
       <TileLayer
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         url={`${process.env.PUBLIC_URL}/map-tile.png`}
@@ -99,7 +122,6 @@ const MapComponent = (props: {
         graphType={props.graphType}
         processIdxRef={processIdxRef}
       />
-
       <PathLayer
         graph={graph}
         path={path}

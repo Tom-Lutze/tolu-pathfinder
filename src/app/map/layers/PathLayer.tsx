@@ -49,38 +49,42 @@ const PathLayer = (props: {
 
   return (
     <>
-      {!props.path.found && props.path.nodes.length > 1 && (
-        <Pane name="tolu-search-path-pane">
-          <Polyline
-            pathOptions={{
-              color: 'blue',
-              dashArray: '10, 10',
-              dashOffset: '0',
-            }}
-            positions={props.path.nodes.map(
-              (nodeIdx) =>
-                GraphController.getNode(nodeIdx, props.graph).position
-            )}
-            {...{ zIndex: 9998 }}
-          />
-        </Pane>
-      )}
-      {props.path.found && props.path.nodes.length > 1 && (
-        <Pane name="tolu-path-pane">
-          <Polyline
-            pathOptions={{
-              color: 'red',
-              dashArray: '10, 10',
-              dashOffset: '0',
-            }}
-            positions={props.path.nodes.map(
-              (nodeIdx) =>
-                GraphController.getNode(nodeIdx, props.graph).position
-            )}
-            {...{ zIndex: 9999 }}
-          />
-        </Pane>
-      )}
+      {!props.graph.state.updated &&
+        !props.path.found &&
+        props.path.nodes.length > 1 && (
+          <Pane name="tolu-search-path-pane">
+            <Polyline
+              pathOptions={{
+                color: 'blue',
+                dashArray: '10, 10',
+                dashOffset: '0',
+              }}
+              positions={props.path.nodes.map(
+                (nodeIdx) =>
+                  GraphController.getNode(nodeIdx, props.graph).position
+              )}
+              {...{ zIndex: 9998 }}
+            />
+          </Pane>
+        )}
+      {!props.graph.state.updated &&
+        props.path.found &&
+        props.path.nodes.length > 1 && (
+          <Pane name="tolu-path-pane">
+            <Polyline
+              pathOptions={{
+                color: 'red',
+                dashArray: '10, 10',
+                dashOffset: '0',
+              }}
+              positions={props.path.nodes.map(
+                (nodeIdx) =>
+                  GraphController.getNode(nodeIdx, props.graph).position
+              )}
+              {...{ zIndex: 9999 }}
+            />
+          </Pane>
+        )}
     </>
   );
 };

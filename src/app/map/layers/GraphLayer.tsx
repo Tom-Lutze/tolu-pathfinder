@@ -18,18 +18,6 @@ const GraphLayer = (props: {
   graphType: GraphCatType;
   processIdxRef: React.MutableRefObject<ProcessIdxInterface>;
 }) => {
-  useMapEvents({
-    click(e) {
-      if (props.graph.buildState.state === BuilderStates.Finalized) {
-        GraphController.addNode(
-          { position: e.latlng, edges: undefined },
-          props.graph,
-          props.setGraph
-        );
-      }
-    },
-  });
-
   /**
    * Build graph
    */
