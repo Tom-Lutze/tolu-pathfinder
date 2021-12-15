@@ -1,12 +1,11 @@
 import { Marker, Popup } from 'react-leaflet';
-import { GraphInterface } from '../../interfaces/interfaces';
+import { BuilderStates, GraphInterface } from '../../../../interfaces';
 import {
   MarkerIconDefault,
   MarkerIconGreen,
   MarkerIconRed,
-} from '../constants/MarkerIcons';
-import { BUILDER_STATES } from '../constants/Settings';
-import GraphController from '../controller/GraphController';
+} from '../../constants/MarkerIcons';
+import GraphController from '../../controller/GraphController';
 
 const MarkerWithPopup = (params: {
   nodeIdx: number;
@@ -17,8 +16,8 @@ const MarkerWithPopup = (params: {
   const prevActiveNode = params.graph.state.prevActiveNode;
   const startNode = params.graph.state.startNode;
   const endNode = params.graph.state.endNode;
-  const buildStateReady =
-    params.graph.buildState.state === BUILDER_STATES.Ready;
+  const buildStateReady = () =>
+    params.graph.buildState.state === BuilderStates.Finalized ? true : false;
   const showConnectOption = () => {
     if (prevActiveNode && activeNode && prevActiveNode !== activeNode) {
       return !(
@@ -34,7 +33,7 @@ const MarkerWithPopup = (params: {
   };
   return (
     <Marker
-      draggable={buildStateReady}
+      draggable={buildStateReady()}
       position={GraphController.getNode(params.nodeIdx, params.graph).position}
       opacity={
         activeNode == params.nodeIdx
@@ -52,7 +51,7 @@ const MarkerWithPopup = (params: {
       }
       eventHandlers={{
         click: (e) => {
-          if (buildStateReady)
+          if (buildStateReady())
             GraphController.setActiveNode(
               e.target.options.nodeIdx,
               params.graph,
@@ -60,7 +59,7 @@ const MarkerWithPopup = (params: {
             );
         },
         dragend: (e) => {
-          if (buildStateReady)
+          if (buildStateReady())
             GraphController.setNodePosition(
               e.target.options.nodeIdx,
               e.target.getLatLng(),
@@ -73,7 +72,7 @@ const MarkerWithPopup = (params: {
         nodeIdx: params.nodeIdx,
       }}
     >
-      {buildStateReady && (
+      {buildStateReady() && (
         <Popup>
           <span>
             <a
