@@ -56,6 +56,7 @@ export enum GraphCatType {
 export enum AlgoCatType {
   BFS,
   DFS,
+  Djikstra,
 }
 
 export enum BuilderStates {

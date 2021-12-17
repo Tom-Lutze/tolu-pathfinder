@@ -1,5 +1,6 @@
 import {
   GraphInterface,
+  NodeInterface,
   PathInterface,
   PathSearchStates,
   ProcessIdxInterface,
@@ -35,6 +36,35 @@ export default class PathController {
       processIdxRef,
       (array: number[][]) => array.pop()
     );
+  }
+
+  static djikstra(
+    graph: GraphInterface,
+    path: PathInterface,
+    setPath: React.Dispatch<React.SetStateAction<PathInterface>>,
+    processIdxRef: React.MutableRefObject<ProcessIdxInterface>
+  ) {
+    interface DjikstraNodeInterface extends NodeInterface {
+      distanceFromStart: number;
+      parentNode: number | undefined;
+    }
+    const newPath = { ...path };
+    newPath.state = PathSearchStates.Searching;
+    const startSearchIdx = processIdxRef.current.pathIdx;
+    const startNodeIdx = graph.state.startNode;
+    const endNodeIdx = graph.state.endNode;
+    if (!startNodeIdx || !endNodeIdx || Object.keys(graph).length < 1)
+      return [];
+
+    const unvisitedNodes = Object.keys(graph.nodes).map((key) => {
+      const djikstraNode: DjikstraNodeInterface = {
+        ...graph.nodes[key],
+        distanceFromStart:
+          Number(key) === startNodeIdx ? 0 : Number.MAX_SAFE_INTEGER,
+      };
+      return djikstraNode;
+    });
+    const visitedNodes: DjikstraNodeInterface[] = [];
   }
 }
 
