@@ -44,7 +44,7 @@ export default class PathController {
     setPath: React.Dispatch<React.SetStateAction<PathInterface>>,
     processIdxRef: React.MutableRefObject<ProcessIdxInterface>
   ) {
-    interface DjikstraNodeInterface extends NodeInterface {
+    interface DijkstraNodeInterface extends NodeInterface {
       distanceFromStart: number;
       parentNode: number | undefined;
     }
@@ -56,15 +56,33 @@ export default class PathController {
     if (!startNodeIdx || !endNodeIdx || Object.keys(graph).length < 1)
       return [];
 
-    const unvisitedNodes = Object.keys(graph.nodes).map((key) => {
-      const djikstraNode: DjikstraNodeInterface = {
+    const unvisitedNodes: { [idx: number]: DijkstraNodeInterface } = {};
+    Object.keys(graph.nodes).forEach((key) => {
+      const dijkstraNode: DijkstraNodeInterface = {
         ...graph.nodes[key],
         distanceFromStart:
           Number(key) === startNodeIdx ? 0 : Number.MAX_SAFE_INTEGER,
       };
-      return djikstraNode;
+      unvisitedNodes[key] = dijkstraNode;
     });
-    const visitedNodes: DjikstraNodeInterface[] = [];
+    const visitedNodes: { [idx: number]: DijkstraNodeInterface } = {};
+
+    const totalNodes = Object.keys(graph.nodes).length;
+    while (Object.keys(visitedNodes).length < totalNodes) {
+      const nextNodeKey = Object.keys(unvisitedNodes).sort(
+        (nodeA, nodeB) =>
+          unvisitedNodes[nodeA].distanceFromStart -
+          unvisitedNodes[nodeB].distanceFromStart
+      )[0];
+
+      const nextNode: DijkstraNodeInterface = unvisitedNodes[nextNodeKey];
+
+      nextNode?.edges?.forEach((edgeIdx) => {
+        // TODO: calc distances and assign parent node
+      });
+
+      delete unvisitedNodes[nextNodeKey];
+    }
   }
 }
 
