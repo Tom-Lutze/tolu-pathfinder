@@ -43,6 +43,14 @@ const PathLayer = (props: {
             props.processIdxRef
           );
           break;
+        case AlgoCatType.Djikstra:
+          PathController.djikstra(
+            props.graph,
+            props.path,
+            props.setPath,
+            props.processIdxRef
+          );
+          break;
       }
     }
   }, [props.path.state]);

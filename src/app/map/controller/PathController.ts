@@ -46,11 +46,12 @@ export default class PathController {
   ) {
     interface DijkstraNodeInterface extends NodeInterface {
       distanceFromStart: number;
-      parentNode: number | undefined;
+      parentNode: number;
     }
     const newPath = { ...path };
     newPath.state = PathSearchStates.Searching;
-    const startSearchIdx = processIdxRef.current.pathIdx;
+    setPath(newPath);
+    const startSearchIdx = processIdxRef.current.pathIdx; //TODO implement termination and timeout
     const startNodeIdx = graph.state.startNode;
     const endNodeIdx = graph.state.endNode;
     if (!startNodeIdx || !endNodeIdx || Object.keys(graph).length < 1)
@@ -60,6 +61,7 @@ export default class PathController {
     Object.keys(graph.nodes).forEach((key) => {
       const dijkstraNode: DijkstraNodeInterface = {
         ...graph.nodes[key],
+        parentNode: Number(key),
         distanceFromStart:
           Number(key) === startNodeIdx ? 0 : Number.MAX_SAFE_INTEGER,
       };
@@ -78,11 +80,38 @@ export default class PathController {
       const nextNode: DijkstraNodeInterface = unvisitedNodes[nextNodeKey];
 
       nextNode?.edges?.forEach((edgeIdx) => {
-        // TODO: calc distances and assign parent node
+        if (!unvisitedNodes[edgeIdx]) return;
+
+        const distToNext =
+          nextNode.distanceFromStart +
+          nextNode.position.distanceTo(graph.nodes[edgeIdx].position);
+        const currDistFromStart = unvisitedNodes[edgeIdx].distanceFromStart;
+        if (distToNext < currDistFromStart) {
+          unvisitedNodes[edgeIdx].distanceFromStart = distToNext;
+          unvisitedNodes[edgeIdx].parentNode = Number(nextNodeKey);
+        }
       });
 
+      visitedNodes[nextNodeKey] = nextNode;
       delete unvisitedNodes[nextNodeKey];
     }
+
+    if (visitedNodes[endNodeIdx].distanceFromStart < Number.MAX_SAFE_INTEGER) {
+      let currNode = endNodeIdx;
+      const pathNodes = [];
+
+      while (currNode != startNodeIdx) {
+        pathNodes.unshift(currNode);
+        currNode = visitedNodes[currNode].parentNode;
+      }
+      pathNodes.unshift(startNodeIdx);
+      newPath.found = true;
+      newPath.nodes = pathNodes;
+    } else {
+      newPath.found = false;
+    }
+    newPath.state = PathSearchStates.Finalized;
+    setPath(newPath);
   }
 }
 
