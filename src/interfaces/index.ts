@@ -57,6 +57,8 @@ export enum AlgoCatType {
   BFS,
   DFS,
   Dijkstra,
+  AStar1,
+  AStar2,
 }
 
 export enum BuilderStates {
@@ -89,4 +91,8 @@ export interface ProcessIdxInterface {
 export interface DijkstraNodeInterface extends NodeInterface {
   distanceFromStart: number;
   parentNodes: number[];
+}
+
+export interface AStarNodeInterface extends DijkstraNodeInterface {
+  combinedDistanceFromStart: number;
 }

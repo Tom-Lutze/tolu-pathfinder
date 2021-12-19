@@ -51,6 +51,22 @@ const PathLayer = (props: {
             props.processIdxRef
           );
           break;
+        case AlgoCatType.AStar1:
+          PathController.aStarManhatten(
+            props.graph,
+            props.path,
+            props.setPath,
+            props.processIdxRef
+          );
+          break;
+        case AlgoCatType.AStar2:
+          PathController.aStarEuclidean(
+            props.graph,
+            props.path,
+            props.setPath,
+            props.processIdxRef
+          );
+          break;
       }
     }
   }, [props.path.state]);

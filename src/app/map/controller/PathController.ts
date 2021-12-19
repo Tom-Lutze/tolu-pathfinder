@@ -1,4 +1,6 @@
+import { LatLng } from 'leaflet';
 import {
+  AStarNodeInterface,
   DijkstraNodeInterface,
   GraphInterface,
   NodeInterface,
@@ -55,13 +57,13 @@ export default class PathController {
 
     const unvisitedNodes: { [idx: number]: DijkstraNodeInterface } = {};
     Object.keys(graph.nodes).forEach((key) => {
-      const dijkstraNode: DijkstraNodeInterface = {
+      const currNode: DijkstraNodeInterface = {
         ...graph.nodes[key],
         parentNodes: [],
         distanceFromStart:
           Number(key) === startNodeIdx ? 0 : Number.MAX_SAFE_INTEGER,
       };
-      unvisitedNodes[key] = dijkstraNode;
+      unvisitedNodes[key] = currNode;
     });
     const visitedNodes: { [idx: number]: DijkstraNodeInterface } = {};
 
@@ -118,6 +120,40 @@ export default class PathController {
     if (startSearchIdx != processIdxRef.current.pathIdx) return;
     setPath({ ...newPath, state: PathSearchStates.Finalized });
   }
+
+  static async aStarManhatten(
+    graph: GraphInterface,
+    path: PathInterface,
+    setPath: React.Dispatch<React.SetStateAction<PathInterface>>,
+    processIdxRef: React.MutableRefObject<ProcessIdxInterface>,
+    processAll = false
+  ) {
+    PathControllerHelper.aStarAlgorithm(
+      graph,
+      path,
+      setPath,
+      processIdxRef,
+      PathControllerHelper.manhattenDistance,
+      processAll
+    );
+  }
+
+  static async aStarEuclidean(
+    graph: GraphInterface,
+    path: PathInterface,
+    setPath: React.Dispatch<React.SetStateAction<PathInterface>>,
+    processIdxRef: React.MutableRefObject<ProcessIdxInterface>,
+    processAll = false
+  ) {
+    PathControllerHelper.aStarAlgorithm(
+      graph,
+      path,
+      setPath,
+      processIdxRef,
+      (pos1, pos2) => pos1.distanceTo(pos2),
+      processAll
+    );
+  }
 }
 
 class PathControllerHelper {
@@ -170,4 +206,111 @@ class PathControllerHelper {
       }
     }
   }
+
+  static async aStarAlgorithm(
+    graph: GraphInterface,
+    path: PathInterface,
+    setPath: React.Dispatch<React.SetStateAction<PathInterface>>,
+    processIdxRef: React.MutableRefObject<ProcessIdxInterface>,
+    heuristicFunction: (pos1: LatLng, pos2: LatLng) => number,
+    processAll = false
+  ) {
+    const newPath = { ...path, state: PathSearchStates.Searching };
+    const startSearchIdx = processIdxRef.current.pathIdx;
+    const startNodeIdx = graph.state.startNode;
+    const endNodeIdx = graph.state.endNode;
+    if (!startNodeIdx || !endNodeIdx || Object.keys(graph).length < 1)
+      return [];
+
+    const unvisitedNodes: { [idx: number]: AStarNodeInterface } = {};
+    Object.keys(graph.nodes).forEach((key) => {
+      const currNode: AStarNodeInterface = {
+        ...graph.nodes[key],
+        parentNodes: [],
+        distanceFromStart:
+          Number(key) === startNodeIdx ? 0 : Number.MAX_SAFE_INTEGER,
+        combinedDistanceFromStart:
+          Number(key) === startNodeIdx ? 0 : Number.MAX_SAFE_INTEGER,
+      };
+      unvisitedNodes[key] = currNode;
+    });
+    const visitedNodes: { [idx: number]: AStarNodeInterface } = {};
+
+    while (Object.keys(unvisitedNodes).length > 0) {
+      const nextNodeKey = Object.keys(unvisitedNodes).sort(
+        (nodeA, nodeB) =>
+          unvisitedNodes[nodeA].combinedDistanceFromStart -
+          unvisitedNodes[nodeB].combinedDistanceFromStart
+      )[0];
+
+      const nextNode: AStarNodeInterface = unvisitedNodes[nextNodeKey];
+
+      nextNode?.edges?.forEach((edgeIdx) => {
+        if (!unvisitedNodes[edgeIdx]) return;
+        const distToNext =
+          nextNode.distanceFromStart +
+          nextNode.position.distanceTo(graph.nodes[edgeIdx].position);
+
+        const heuristicValue = heuristicFunction(
+          graph.nodes[edgeIdx].position,
+          graph.nodes[endNodeIdx].position
+        );
+
+        const combinedValue = distToNext + heuristicValue;
+        const currCombinedDistFromStart =
+          unvisitedNodes[edgeIdx].combinedDistanceFromStart;
+        if (combinedValue < currCombinedDistFromStart) {
+          unvisitedNodes[edgeIdx].distanceFromStart = distToNext;
+          unvisitedNodes[edgeIdx].combinedDistanceFromStart = combinedValue;
+          unvisitedNodes[edgeIdx].parentNodes = [
+            ...nextNode.parentNodes,
+            Number(nextNodeKey),
+          ];
+        }
+      });
+
+      visitedNodes[nextNodeKey] = nextNode;
+      delete unvisitedNodes[nextNodeKey];
+
+      newPath.found = Number(nextNodeKey) === endNodeIdx;
+      newPath.nodes = [...nextNode.parentNodes, Number(nextNodeKey)];
+
+      if (newPath.found && !processAll) {
+        Object.keys(unvisitedNodes).forEach(
+          (key) => delete unvisitedNodes[key]
+        );
+      } else {
+        await sleep(400);
+        if (startSearchIdx != processIdxRef.current.pathIdx) return;
+        setPath({ ...newPath });
+      }
+    }
+
+    if (visitedNodes[endNodeIdx].parentNodes[0] === startNodeIdx) {
+      newPath.nodes = [...visitedNodes[endNodeIdx].parentNodes, endNodeIdx];
+      newPath.found = true;
+    } else {
+      newPath.nodes = [];
+      newPath.found = false;
+    }
+
+    await sleep(400);
+    if (startSearchIdx != processIdxRef.current.pathIdx) return;
+    setPath({ ...newPath, state: PathSearchStates.Finalized });
+  }
+
+  static manhattenDistance = (pos1: LatLng, pos2: LatLng) => {
+    const R = 6371000;
+    const dLat = Math.abs(pos1.lat - pos2.lat);
+    const dLng = Math.abs(pos1.lng - pos2.lng);
+
+    const aLat = Math.pow(Math.sin(dLat / 2), 2);
+    const aLng = Math.pow(Math.sin(dLng / 2), 2);
+    const cLat = 2 * Math.atan2(Math.sqrt(aLat), Math.sqrt(1 - aLat));
+    const cLng = 2 * Math.atan2(Math.sqrt(aLng), Math.sqrt(1 - aLng));
+    const distLat = R * cLat;
+    const distLng = R * cLng;
+
+    return Math.abs(distLat) + Math.abs(distLng);
+  };
 }
