@@ -30,6 +30,13 @@ const GraphLayer = (props: {
     if (props.graph.buildState.state == BuilderStates.Initialized) {
       switch (props.graphType) {
         case GraphCatType.None:
+          props.setGraph({
+            ...props.graph,
+            buildState: {
+              ...props.graph.buildState,
+              state: BuilderStates.Finalized,
+            },
+          });
           break;
         case GraphCatType.Random:
           BuilderController.buildRandomNetwork(

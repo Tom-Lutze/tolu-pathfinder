@@ -43,7 +43,8 @@ export default class PathController {
     graph: GraphInterface,
     path: PathInterface,
     setPath: React.Dispatch<React.SetStateAction<PathInterface>>,
-    processIdxRef: React.MutableRefObject<ProcessIdxInterface>
+    processIdxRef: React.MutableRefObject<ProcessIdxInterface>,
+    processAll = false
   ) {
     const newPath = { ...path, state: PathSearchStates.Searching };
     const startSearchIdx = processIdxRef.current.pathIdx;
@@ -63,9 +64,8 @@ export default class PathController {
       unvisitedNodes[key] = dijkstraNode;
     });
     const visitedNodes: { [idx: number]: DijkstraNodeInterface } = {};
-    const totalNodes = Object.keys(graph.nodes).length;
 
-    while (Object.keys(visitedNodes).length < totalNodes) {
+    while (Object.keys(unvisitedNodes).length > 0) {
       const nextNodeKey = Object.keys(unvisitedNodes).sort(
         (nodeA, nodeB) =>
           unvisitedNodes[nodeA].distanceFromStart -
@@ -95,9 +95,15 @@ export default class PathController {
       newPath.found = Number(nextNodeKey) === endNodeIdx;
       newPath.nodes = [...nextNode.parentNodes, Number(nextNodeKey)];
 
-      await sleep(400);
-      if (startSearchIdx != processIdxRef.current.pathIdx) return;
-      setPath({ ...newPath });
+      if (newPath.found && !processAll) {
+        Object.keys(unvisitedNodes).forEach(
+          (key) => delete unvisitedNodes[key]
+        );
+      } else {
+        await sleep(400);
+        if (startSearchIdx != processIdxRef.current.pathIdx) return;
+        setPath({ ...newPath });
+      }
     }
 
     if (visitedNodes[endNodeIdx].parentNodes[0] === startNodeIdx) {
