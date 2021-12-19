@@ -4,7 +4,7 @@ import { GraphCatType, AlgoCatType, MainCatType } from '../interfaces';
 const initialState: any = {
   menu: {
     [MainCatType.Graph]: GraphCatType.Random,
-    [MainCatType.Algo]: AlgoCatType.Djikstra,
+    [MainCatType.Algo]: AlgoCatType.Dijkstra,
   },
 };
 

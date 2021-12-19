@@ -1,4 +1,5 @@
 import {
+  DijkstraNodeInterface,
   GraphInterface,
   NodeInterface,
   PathInterface,
@@ -38,19 +39,13 @@ export default class PathController {
     );
   }
 
-  static async djikstra(
+  static async dijkstra(
     graph: GraphInterface,
     path: PathInterface,
     setPath: React.Dispatch<React.SetStateAction<PathInterface>>,
     processIdxRef: React.MutableRefObject<ProcessIdxInterface>
   ) {
-    interface DijkstraNodeInterface extends NodeInterface {
-      distanceFromStart: number;
-      parentNodes: number[];
-    }
-    const newPath = { ...path };
-    newPath.state = PathSearchStates.Searching;
-    setPath(newPath);
+    const newPath = { ...path, state: PathSearchStates.Searching };
     const startSearchIdx = processIdxRef.current.pathIdx;
     const startNodeIdx = graph.state.startNode;
     const endNodeIdx = graph.state.endNode;
@@ -68,8 +63,8 @@ export default class PathController {
       unvisitedNodes[key] = dijkstraNode;
     });
     const visitedNodes: { [idx: number]: DijkstraNodeInterface } = {};
-
     const totalNodes = Object.keys(graph.nodes).length;
+
     while (Object.keys(visitedNodes).length < totalNodes) {
       const nextNodeKey = Object.keys(unvisitedNodes).sort(
         (nodeA, nodeB) =>
@@ -81,7 +76,6 @@ export default class PathController {
 
       nextNode?.edges?.forEach((edgeIdx) => {
         if (!unvisitedNodes[edgeIdx]) return;
-
         const distToNext =
           nextNode.distanceFromStart +
           nextNode.position.distanceTo(graph.nodes[edgeIdx].position);
@@ -101,11 +95,9 @@ export default class PathController {
       newPath.found = Number(nextNodeKey) === endNodeIdx;
       newPath.nodes = [...nextNode.parentNodes, Number(nextNodeKey)];
 
-      // TODO implement timeouts
-      // await sleep(300);
-
+      await sleep(400);
       if (startSearchIdx != processIdxRef.current.pathIdx) return;
-      setPath(newPath);
+      setPath({ ...newPath });
     }
 
     if (visitedNodes[endNodeIdx].parentNodes[0] === startNodeIdx) {
@@ -115,8 +107,10 @@ export default class PathController {
       newPath.nodes = [];
       newPath.found = false;
     }
-    newPath.state = PathSearchStates.Finalized;
-    setPath(newPath);
+
+    await sleep(400);
+    if (startSearchIdx != processIdxRef.current.pathIdx) return;
+    setPath({ ...newPath, state: PathSearchStates.Finalized });
   }
 }
 

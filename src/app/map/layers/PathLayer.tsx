@@ -43,8 +43,8 @@ const PathLayer = (props: {
             props.processIdxRef
           );
           break;
-        case AlgoCatType.Djikstra:
-          PathController.djikstra(
+        case AlgoCatType.Dijkstra:
+          PathController.dijkstra(
             props.graph,
             props.path,
             props.setPath,
@@ -81,7 +81,10 @@ const PathLayer = (props: {
           <Pane name="tolu-path-pane">
             <Polyline
               pathOptions={{
-                color: 'red',
+                color:
+                  props.path.state === PathSearchStates.Finalized
+                    ? 'red'
+                    : 'orange',
                 dashArray: '10, 10',
                 dashOffset: '0',
               }}

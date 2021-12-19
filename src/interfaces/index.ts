@@ -56,7 +56,7 @@ export enum GraphCatType {
 export enum AlgoCatType {
   BFS,
   DFS,
-  Djikstra,
+  Dijkstra,
 }
 
 export enum BuilderStates {
@@ -84,4 +84,9 @@ export interface PreserveRefInterface
 export interface ProcessIdxInterface {
   graphIdx: number;
   pathIdx: number;
+}
+
+export interface DijkstraNodeInterface extends NodeInterface {
+  distanceFromStart: number;
+  parentNodes: number[];
 }
