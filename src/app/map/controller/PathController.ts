@@ -38,7 +38,7 @@ export default class PathController {
     );
   }
 
-  static djikstra(
+  static async djikstra(
     graph: GraphInterface,
     path: PathInterface,
     setPath: React.Dispatch<React.SetStateAction<PathInterface>>,
@@ -46,12 +46,12 @@ export default class PathController {
   ) {
     interface DijkstraNodeInterface extends NodeInterface {
       distanceFromStart: number;
-      parentNode: number;
+      parentNodes: number[];
     }
     const newPath = { ...path };
     newPath.state = PathSearchStates.Searching;
     setPath(newPath);
-    const startSearchIdx = processIdxRef.current.pathIdx; //TODO implement termination and timeout
+    const startSearchIdx = processIdxRef.current.pathIdx;
     const startNodeIdx = graph.state.startNode;
     const endNodeIdx = graph.state.endNode;
     if (!startNodeIdx || !endNodeIdx || Object.keys(graph).length < 1)
@@ -61,7 +61,7 @@ export default class PathController {
     Object.keys(graph.nodes).forEach((key) => {
       const dijkstraNode: DijkstraNodeInterface = {
         ...graph.nodes[key],
-        parentNode: Number(key),
+        parentNodes: [],
         distanceFromStart:
           Number(key) === startNodeIdx ? 0 : Number.MAX_SAFE_INTEGER,
       };
@@ -88,26 +88,31 @@ export default class PathController {
         const currDistFromStart = unvisitedNodes[edgeIdx].distanceFromStart;
         if (distToNext < currDistFromStart) {
           unvisitedNodes[edgeIdx].distanceFromStart = distToNext;
-          unvisitedNodes[edgeIdx].parentNode = Number(nextNodeKey);
+          unvisitedNodes[edgeIdx].parentNodes = [
+            ...nextNode.parentNodes,
+            Number(nextNodeKey),
+          ];
         }
       });
 
       visitedNodes[nextNodeKey] = nextNode;
       delete unvisitedNodes[nextNodeKey];
+
+      newPath.found = Number(nextNodeKey) === endNodeIdx;
+      newPath.nodes = [...nextNode.parentNodes, Number(nextNodeKey)];
+
+      // TODO implement timeouts
+      // await sleep(300);
+
+      if (startSearchIdx != processIdxRef.current.pathIdx) return;
+      setPath(newPath);
     }
 
-    if (visitedNodes[endNodeIdx].distanceFromStart < Number.MAX_SAFE_INTEGER) {
-      let currNode = endNodeIdx;
-      const pathNodes = [];
-
-      while (currNode != startNodeIdx) {
-        pathNodes.unshift(currNode);
-        currNode = visitedNodes[currNode].parentNode;
-      }
-      pathNodes.unshift(startNodeIdx);
+    if (visitedNodes[endNodeIdx].parentNodes[0] === startNodeIdx) {
+      newPath.nodes = [...visitedNodes[endNodeIdx].parentNodes, endNodeIdx];
       newPath.found = true;
-      newPath.nodes = pathNodes;
     } else {
+      newPath.nodes = [];
       newPath.found = false;
     }
     newPath.state = PathSearchStates.Finalized;
