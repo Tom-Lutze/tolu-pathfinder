@@ -75,6 +75,8 @@ const MarkerWithPopup = (params: {
       {buildStateReady() && (
         <Popup>
           <span>
+            {`Node ${params.nodeIdx}`}
+            <br />
             <a
               onClick={() =>
                 GraphController.setStartNode(
