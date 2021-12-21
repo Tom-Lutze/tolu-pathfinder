@@ -88,11 +88,8 @@ export interface ProcessIdxInterface {
   pathIdx: number;
 }
 
-export interface DijkstraNodeInterface extends NodeInterface {
+export interface AStarNodeInterface extends NodeInterface {
   distanceFromStart: number;
-  parentNodes: number[];
-}
-
-export interface AStarNodeInterface extends DijkstraNodeInterface {
   combinedDistanceFromStart: number;
+  parentNodes: number[];
 }

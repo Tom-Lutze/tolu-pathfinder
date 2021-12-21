@@ -1,9 +1,7 @@
 import { LatLng } from 'leaflet';
 import {
   AStarNodeInterface,
-  DijkstraNodeInterface,
   GraphInterface,
-  NodeInterface,
   PathInterface,
   PathSearchStates,
   ProcessIdxInterface,
@@ -48,77 +46,14 @@ export default class PathController {
     processIdxRef: React.MutableRefObject<ProcessIdxInterface>,
     processAll = false
   ) {
-    const newPath = { ...path, state: PathSearchStates.Searching };
-    const startSearchIdx = processIdxRef.current.pathIdx;
-    const startNodeIdx = graph.state.startNode;
-    const endNodeIdx = graph.state.endNode;
-    if (!startNodeIdx || !endNodeIdx || Object.keys(graph).length < 1)
-      return [];
-
-    const unvisitedNodes: { [idx: number]: DijkstraNodeInterface } = {};
-    Object.keys(graph.nodes).forEach((key) => {
-      const currNode: DijkstraNodeInterface = {
-        ...graph.nodes[key],
-        parentNodes: [],
-        distanceFromStart:
-          Number(key) === startNodeIdx ? 0 : Number.MAX_SAFE_INTEGER,
-      };
-      unvisitedNodes[key] = currNode;
-    });
-    const visitedNodes: { [idx: number]: DijkstraNodeInterface } = {};
-
-    while (Object.keys(unvisitedNodes).length > 0) {
-      const nextNodeKey = Object.keys(unvisitedNodes).sort(
-        (nodeA, nodeB) =>
-          unvisitedNodes[nodeA].distanceFromStart -
-          unvisitedNodes[nodeB].distanceFromStart
-      )[0];
-
-      const nextNode: DijkstraNodeInterface = unvisitedNodes[nextNodeKey];
-
-      nextNode?.edges?.forEach((edgeIdx) => {
-        if (!unvisitedNodes[edgeIdx]) return;
-        const distToNext =
-          nextNode.distanceFromStart +
-          nextNode.position.distanceTo(graph.nodes[edgeIdx].position);
-        const currDistFromStart = unvisitedNodes[edgeIdx].distanceFromStart;
-        if (distToNext < currDistFromStart) {
-          unvisitedNodes[edgeIdx].distanceFromStart = distToNext;
-          unvisitedNodes[edgeIdx].parentNodes = [
-            ...nextNode.parentNodes,
-            Number(nextNodeKey),
-          ];
-        }
-      });
-
-      visitedNodes[nextNodeKey] = nextNode;
-      delete unvisitedNodes[nextNodeKey];
-
-      newPath.found = Number(nextNodeKey) === endNodeIdx;
-      newPath.nodes = [...nextNode.parentNodes, Number(nextNodeKey)];
-
-      if (newPath.found && !processAll) {
-        Object.keys(unvisitedNodes).forEach(
-          (key) => delete unvisitedNodes[key]
-        );
-      } else {
-        await sleep(400);
-        if (startSearchIdx != processIdxRef.current.pathIdx) return;
-        setPath({ ...newPath });
-      }
-    }
-
-    if (visitedNodes[endNodeIdx].parentNodes[0] === startNodeIdx) {
-      newPath.nodes = [...visitedNodes[endNodeIdx].parentNodes, endNodeIdx];
-      newPath.found = true;
-    } else {
-      newPath.nodes = [];
-      newPath.found = false;
-    }
-
-    await sleep(400);
-    if (startSearchIdx != processIdxRef.current.pathIdx) return;
-    setPath({ ...newPath, state: PathSearchStates.Finalized });
+    PathControllerHelper.aStarAlgorithm(
+      graph,
+      path,
+      setPath,
+      processIdxRef,
+      () => 0,
+      processAll
+    );
   }
 
   static async aStarManhatten(
@@ -300,17 +235,18 @@ class PathControllerHelper {
   }
 
   static manhattenDistance = (pos1: LatLng, pos2: LatLng) => {
-    const R = 6371000;
-    const dLat = Math.abs(pos1.lat - pos2.lat);
-    const dLng = Math.abs(pos1.lng - pos2.lng);
+    const haversine = (p1: number, p2: number) => {
+      const R = 6371000;
+      const d = Math.abs(p1 - p2);
+      const a = Math.pow(Math.sin(d / 2), 2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      const dist = R * c;
+      return dist;
+    };
 
-    const aLat = Math.pow(Math.sin(dLat / 2), 2);
-    const aLng = Math.pow(Math.sin(dLng / 2), 2);
-    const cLat = 2 * Math.atan2(Math.sqrt(aLat), Math.sqrt(1 - aLat));
-    const cLng = 2 * Math.atan2(Math.sqrt(aLng), Math.sqrt(1 - aLng));
-    const distLat = R * cLat;
-    const distLng = R * cLng;
-
-    return Math.abs(distLat) + Math.abs(distLng);
+    return (
+      Math.abs(haversine(pos1.lat, pos2.lat)) +
+      Math.abs(haversine(pos1.lng, pos2.lng))
+    );
   };
 }
