@@ -3,7 +3,7 @@ export const BUILDER_SETTINGS = {
     nodesPerAxisMax: 3,
   },
   random: {
-    nodesMax: 5,
+    nodesMax: 10,
     latFrom: -5,
     latTo: 5,
     lngFrom: -5,
