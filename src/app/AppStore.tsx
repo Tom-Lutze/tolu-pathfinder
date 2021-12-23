@@ -1,10 +1,10 @@
 import React, { createContext, useReducer } from 'react';
-import { GraphCatType, AlgoCatType, MainCatType } from '../interfaces';
+import { GraphTypes, AlgoTypes, MenuTypes } from '../interfaces';
 
 const initialState: any = {
   menu: {
-    [MainCatType.Graph]: GraphCatType.Random,
-    [MainCatType.Algo]: AlgoCatType.AStar1,
+    [MenuTypes.Graph]: GraphTypes.Random,
+    [MenuTypes.Algo]: AlgoTypes.AStarEuclidean,
   },
 };
 

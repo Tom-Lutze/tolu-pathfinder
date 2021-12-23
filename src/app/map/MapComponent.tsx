@@ -2,9 +2,9 @@ import 'leaflet/dist/leaflet.css';
 import React, { useEffect, useRef, useState } from 'react';
 import { MapContainer, TileLayer, useMapEvents } from 'react-leaflet';
 import {
-  AlgoCatType,
+  AlgoTypes,
   BuilderStates,
-  GraphCatType,
+  GraphTypes,
   GraphInterface,
   PathInterface,
   PathSearchStates,
@@ -16,8 +16,8 @@ import PathLayer from './layers/PathLayer';
 import './MapComponent.css';
 
 const MapComponent = (props: {
-  graphType: GraphCatType;
-  algoType: AlgoCatType;
+  graphType: GraphTypes;
+  algoType: AlgoTypes;
 }) => {
   const initGraph: GraphInterface = {
     nodeCount: 0,

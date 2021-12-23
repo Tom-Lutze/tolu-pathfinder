@@ -42,23 +42,23 @@ export interface PathInterface {
   state: PathSearchStates;
 }
 
-export enum MainCatType {
+export enum MenuTypes {
   Graph,
   Algo,
 }
 
-export enum GraphCatType {
+export enum GraphTypes {
   None,
-  Square,
+  Grid,
   Random,
 }
 
-export enum AlgoCatType {
+export enum AlgoTypes {
   BFS,
   DFS,
   Dijkstra,
-  AStar1,
-  AStar2,
+  AStarManhatten,
+  AStarEuclidean,
 }
 
 export enum BuilderStates {
@@ -80,7 +80,7 @@ export enum PathSearchStates {
 export interface PreserveRefInterface
   extends React.MutableRefObject<{
     prevGraph: GraphInterface | undefined;
-    prevAlgo: AlgoCatType | undefined;
+    prevAlgo: AlgoTypes | undefined;
   }> {}
 
 export interface ProcessIdxInterface {

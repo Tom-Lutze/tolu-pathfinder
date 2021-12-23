@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useMapEvents } from 'react-leaflet';
 import {
   BuilderStates,
-  GraphCatType,
+  GraphTypes,
   GraphInterface,
   PreserveRefInterface,
   ProcessIdxInterface,
@@ -15,7 +15,7 @@ import MarkerWithPopup from './graphLayers/MarkerWithPopup';
 const GraphLayer = (props: {
   graph: GraphInterface;
   setGraph: React.Dispatch<React.SetStateAction<GraphInterface>>;
-  graphType: GraphCatType;
+  graphType: GraphTypes;
   processIdxRef: React.MutableRefObject<ProcessIdxInterface>;
 }) => {
   /**
@@ -29,7 +29,7 @@ const GraphLayer = (props: {
     }
     if (props.graph.buildState.state == BuilderStates.Initialized) {
       switch (props.graphType) {
-        case GraphCatType.None:
+        case GraphTypes.None:
           props.setGraph({
             ...props.graph,
             buildState: {
@@ -38,14 +38,14 @@ const GraphLayer = (props: {
             },
           });
           break;
-        case GraphCatType.Random:
+        case GraphTypes.Random:
           BuilderController.buildRandomNetwork(
             props.graph,
             props.processIdxRef,
             props.setGraph
           );
           break;
-        case GraphCatType.Square:
+        case GraphTypes.Grid:
           BuilderController.buildSquareNetwork(
             props.graph,
             props.processIdxRef,

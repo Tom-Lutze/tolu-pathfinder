@@ -2,7 +2,7 @@ import { Layout } from 'antd';
 import 'antd/dist/antd.css';
 import React, { useContext } from 'react';
 import MapComponent from '../app/map/MapComponent';
-import { MainCatType } from '../interfaces';
+import { MenuTypes } from '../interfaces';
 import './App.css';
 import AppMenu from './AppMenu';
 import { storeContext } from './AppStore';
@@ -30,8 +30,8 @@ const App = () => {
             }}
           >
             <MapComponent
-              graphType={appState.menu[MainCatType.Graph]}
-              algoType={appState.menu[MainCatType.Algo]}
+              graphType={appState.menu[MenuTypes.Graph]}
+              algoType={appState.menu[MenuTypes.Algo]}
             />
           </Content>
         </Layout>

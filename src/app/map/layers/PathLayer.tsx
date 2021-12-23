@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Pane, Polyline } from 'react-leaflet';
 import {
-  AlgoCatType,
+  AlgoTypes,
   GraphInterface,
   PathInterface,
   PathSearchStates,
@@ -14,7 +14,7 @@ const PathLayer = (props: {
   graph: GraphInterface;
   path: PathInterface;
   setPath: React.Dispatch<React.SetStateAction<PathInterface>>;
-  algoType: AlgoCatType;
+  algoType: AlgoTypes;
   processIdxRef: React.MutableRefObject<ProcessIdxInterface>;
 }) => {
   /**
@@ -27,7 +27,7 @@ const PathLayer = (props: {
       props.setPath(newPath);
     } else if (props.path.state == PathSearchStates.Initialized) {
       switch (props.algoType) {
-        case AlgoCatType.DFS:
+        case AlgoTypes.DFS:
           PathController.dfs(
             props.graph,
             props.path,
@@ -35,7 +35,7 @@ const PathLayer = (props: {
             props.processIdxRef
           );
           break;
-        case AlgoCatType.BFS:
+        case AlgoTypes.BFS:
           PathController.bfs(
             props.graph,
             props.path,
@@ -43,7 +43,7 @@ const PathLayer = (props: {
             props.processIdxRef
           );
           break;
-        case AlgoCatType.Dijkstra:
+        case AlgoTypes.Dijkstra:
           PathController.dijkstra(
             props.graph,
             props.path,
@@ -51,7 +51,7 @@ const PathLayer = (props: {
             props.processIdxRef
           );
           break;
-        case AlgoCatType.AStar1:
+        case AlgoTypes.AStarManhatten:
           PathController.aStarManhatten(
             props.graph,
             props.path,
@@ -59,7 +59,7 @@ const PathLayer = (props: {
             props.processIdxRef
           );
           break;
-        case AlgoCatType.AStar2:
+        case AlgoTypes.AStarEuclidean:
           PathController.aStarEuclidean(
             props.graph,
             props.path,
