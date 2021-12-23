@@ -6,6 +6,7 @@ import {
   MarkerIconRed,
 } from '../../constants/MarkerIcons';
 import GraphController from '../../controller/GraphController';
+import { DeleteOutlined } from '@ant-design/icons';
 
 const MarkerWithPopup = (params: {
   nodeIdx: number;
@@ -18,19 +19,82 @@ const MarkerWithPopup = (params: {
   const endNode = params.graph.state.endNode;
   const buildStateReady = () =>
     params.graph.buildState.state === BuilderStates.Finalized ? true : false;
-  const showConnectOption = () => {
-    if (prevActiveNode && activeNode && prevActiveNode !== activeNode) {
-      return !(
-        GraphController.getNode(prevActiveNode, params.graph).edges?.has(
-          activeNode
-        ) ||
-        GraphController.getNode(activeNode, params.graph).edges?.has(
-          prevActiveNode
-        )
+
+  const StartButton = () => {
+    if (params.graph.state.startNode == params.nodeIdx) {
+      return <span style={{ color: 'gray' }}>Start{' | '}</span>;
+    } else {
+      return (
+        <>
+          <a
+            onClick={() =>
+              GraphController.setStartNode(
+                params.nodeIdx,
+                params.graph,
+                params.setGraph
+              )
+            }
+          >
+            Start
+          </a>
+          {' | '}
+        </>
       );
     }
-    return false;
   };
+
+  const ConnectButton = () => {
+    const showConnectOption = () => {
+      if (prevActiveNode && activeNode && prevActiveNode !== activeNode) {
+        return !(
+          GraphController.getNode(prevActiveNode, params.graph).edges?.has(
+            activeNode
+          ) ||
+          GraphController.getNode(activeNode, params.graph).edges?.has(
+            prevActiveNode
+          )
+        );
+      }
+      return false;
+    };
+    if (showConnectOption()) {
+      return (
+        <a
+          onClick={() =>
+            GraphController.connectSelectedNodes(params.graph, params.setGraph)
+          }
+        >
+          Connect
+        </a>
+      );
+    } else {
+      return <span style={{ color: 'gray' }}>Connect</span>;
+    }
+  };
+
+  const EndButton = () => {
+    if (params.graph.state.endNode == params.nodeIdx) {
+      return <span style={{ color: 'gray' }}>{' | '}End</span>;
+    } else {
+      return (
+        <>
+          {' | '}
+          <a
+            onClick={() =>
+              GraphController.setEndNode(
+                params.nodeIdx,
+                params.graph,
+                params.setGraph
+              )
+            }
+          >
+            End
+          </a>
+        </>
+      );
+    }
+  };
+
   return (
     <Marker
       draggable={buildStateReady()}
@@ -74,60 +138,26 @@ const MarkerWithPopup = (params: {
     >
       {buildStateReady() && (
         <Popup>
-          <span>
-            {`Node ${params.nodeIdx}`}
+          <div>
+            <StartButton />
+            <ConnectButton />
+            <EndButton />
             <br />
-            <a
-              onClick={() =>
-                GraphController.setStartNode(
-                  params.nodeIdx,
-                  params.graph,
-                  params.setGraph
-                )
-              }
-            >
-              Start
-            </a>
-            {' | '}
-            {showConnectOption() && (
-              <>
-                <a
-                  onClick={() =>
-                    GraphController.connectSelectedNodes(
-                      params.graph,
-                      params.setGraph
-                    )
-                  }
-                >
-                  Connect
-                </a>
-                {' | '}
-              </>
-            )}
-            <a
-              onClick={() =>
-                GraphController.setEndNode(
-                  params.nodeIdx,
-                  params.graph,
-                  params.setGraph
-                )
-              }
-            >
-              End
-            </a>
-            <br />
-            <a
-              onClick={() =>
-                GraphController.removeNode(
-                  params.nodeIdx,
-                  params.graph,
-                  params.setGraph
-                )
-              }
-            >
-              Remove
-            </a>
-          </span>
+            {`(ID: ${params.nodeIdx})`}
+            <span style={{ float: 'right' }}>
+              <a
+                onClick={() =>
+                  GraphController.removeNode(
+                    params.nodeIdx,
+                    params.graph,
+                    params.setGraph
+                  )
+                }
+              >
+                <DeleteOutlined />
+              </a>
+            </span>
+          </div>
         </Popup>
       )}
     </Marker>
