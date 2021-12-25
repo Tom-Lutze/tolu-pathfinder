@@ -4,7 +4,7 @@ import {
   MarkerIconDefault,
   MarkerIconGreen,
   MarkerIconRed,
-} from '../../constants/MarkerIcons';
+} from '../../../constants/MarkerIcons';
 import GraphController from '../../controller/GraphController';
 import { DeleteOutlined } from '@ant-design/icons';
 

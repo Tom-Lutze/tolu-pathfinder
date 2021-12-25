@@ -1,4 +1,4 @@
-import { AlgoTypes, GraphTypes, MenuTypes } from '../../../interfaces';
+import { AlgoTypes, GraphTypes, MenuTypes } from '../../interfaces';
 
 export const mainMenuStrings = {
   [MenuTypes.Graph]: 'Graph',

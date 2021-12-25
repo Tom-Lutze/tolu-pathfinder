@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
-import { AlgoTypes, GraphTypes, MenuTypes } from '../interfaces';
-import { storeContext } from './AppStore';
+import { AlgoTypes, GraphTypes, MenuTypes } from '../../interfaces';
+import { storeContext } from '../../utils/Store';
 import {
   algoMenuStrings,
   graphMenuStrings,
   mainMenuStrings,
-} from './map/constants/Strings';
+} from '../constants/Strings';
 import { BranchesOutlined, CompassOutlined } from '@ant-design/icons';
 import SubMenu from 'antd/lib/menu/SubMenu';
 import { Menu } from 'antd';

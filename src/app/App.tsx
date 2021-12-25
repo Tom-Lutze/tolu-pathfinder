@@ -4,8 +4,8 @@ import React, { useContext } from 'react';
 import MapComponent from '../app/map/MapComponent';
 import { MenuTypes } from '../interfaces';
 import './App.css';
-import AppMenu from './AppMenu';
-import { storeContext } from './AppStore';
+import AppMenu from './ui/Menu';
+import { storeContext } from '../utils/Store';
 
 const App = () => {
   const globalState = useContext(storeContext);

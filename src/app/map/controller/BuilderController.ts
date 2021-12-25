@@ -5,7 +5,7 @@ import {
   ProcessIdxInterface,
 } from '../../../interfaces';
 import { getRandomNumber, sleep } from '../../../utils/Helper';
-import { BUILDER_SETTINGS } from '../constants/Settings';
+import { BUILDER_SETTINGS } from '../../constants/Settings';
 import GraphController from './GraphController';
 
 export default class BuilderController {

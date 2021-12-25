@@ -1,16 +1,14 @@
 import React, { useEffect } from 'react';
-import { useMapEvents } from 'react-leaflet';
 import {
   BuilderStates,
-  GraphTypes,
   GraphInterface,
-  PreserveRefInterface,
+  GraphTypes,
   ProcessIdxInterface,
 } from '../../../interfaces';
 import BuilderController from '../controller/BuilderController';
 import GraphController from '../controller/GraphController';
-import MarkerConnection from './graphLayers/MarkerConnection';
-import MarkerWithPopup from './graphLayers/MarkerWithPopup';
+import MarkerConnection from './subLayers/MarkerConnection';
+import MarkerWithPopup from './subLayers/MarkerWithPopup';
 
 const GraphLayer = (props: {
   graph: GraphInterface;
