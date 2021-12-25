@@ -6,11 +6,12 @@ import {
   graphMenuStrings,
   mainMenuStrings,
 } from '../constants/Strings';
-import { BranchesOutlined, CompassOutlined } from '@ant-design/icons';
-import SubMenu from 'antd/lib/menu/SubMenu';
-import { Menu } from 'antd';
-import 'antd/dist/antd.css';
-import './App.css';
+import {
+  BranchesOutlined,
+  CompassOutlined,
+  SettingOutlined,
+} from '@ant-design/icons';
+import { Menu, Slider } from 'antd';
 
 const menuParams = {
   [MenuTypes.Graph]: {
@@ -23,6 +24,19 @@ const menuParams = {
     icon: <CompassOutlined />,
     strings: algoMenuStrings,
   },
+  [MenuTypes.Settings]: {
+    icon: <SettingOutlined />,
+    children: [
+      {
+        name: 'build-speed',
+        component: <Slider defaultValue={30} disabled={false} />,
+      },
+      {
+        name: 'max-nodes',
+        component: <Slider defaultValue={30} disabled={false} />,
+      },
+    ],
+  },
 };
 
 const AppMenu = () => {
@@ -31,8 +45,12 @@ const AppMenu = () => {
   const subMenuitems = [];
   for (const menuType in MenuTypes) {
     if (!isNaN(Number(menuType))) continue;
+
     const menuItems = [];
     const menuParam = menuParams[MenuTypes[menuType]];
+
+    if (!menuParam) continue;
+
     for (const currType in menuParam.type) {
       if (!isNaN(Number(currType))) continue;
       const menuItem = (
@@ -42,20 +60,32 @@ const AppMenu = () => {
       );
       menuItems.push(menuItem);
     }
+
+    if (menuParam.children) {
+      menuParam.children.forEach((currChild: any) => {
+        const menuItem = (
+          <Menu.Item key={currChild.name}>{currChild.component}</Menu.Item>
+        );
+        menuItems.push(menuItem);
+      });
+    }
+
     const subMenu = (
-      <SubMenu
+      <Menu.SubMenu
         key={`${menuType}`}
         icon={menuParam.icon}
         title={`${mainMenuStrings[MenuTypes[menuType]]}`}
       >
         {menuItems}
-      </SubMenu>
+      </Menu.SubMenu>
     );
     subMenuitems.push(subMenu);
   }
+
   return (
     <Menu
       mode="inline"
+      inlineIndent={14}
       selectedKeys={[
         GraphTypes[appState.menu[MenuTypes.Graph]],
         AlgoTypes[appState.menu[MenuTypes.Algo]],
@@ -64,13 +94,13 @@ const AppMenu = () => {
       style={{ height: '100%', borderRight: 0 }}
       onClick={(e) => {
         const storeActionType = MenuTypes[e.keyPath[1]];
-        dispatch({
-          type: 'menu',
-          settings: [
-            storeActionType,
-            menuParams[storeActionType].type[e.keyPath[0]],
-          ],
-        });
+        const menuParam = menuParams[storeActionType];
+        if (menuParam.type) {
+          dispatch({
+            type: 'menu',
+            settings: [storeActionType, menuParam.type[e.keyPath[0]]],
+          });
+        }
       }}
       children={subMenuitems}
     />

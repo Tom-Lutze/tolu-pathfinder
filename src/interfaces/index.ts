@@ -45,6 +45,7 @@ export interface PathInterface {
 export enum MenuTypes {
   Graph,
   Algo,
+  Settings,
 }
 
 export enum GraphTypes {

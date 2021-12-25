@@ -3,6 +3,7 @@ import { AlgoTypes, GraphTypes, MenuTypes } from '../../interfaces';
 export const mainMenuStrings = {
   [MenuTypes.Graph]: 'Graph',
   [MenuTypes.Algo]: 'Algorithm',
+  [MenuTypes.Settings]: 'Settings',
 };
 
 export const graphMenuStrings = {
