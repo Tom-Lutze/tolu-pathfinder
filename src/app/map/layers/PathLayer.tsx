@@ -3,6 +3,7 @@ import { Pane, Polyline } from 'react-leaflet';
 import {
   AlgoTypes,
   GraphInterface,
+  MenuTypes,
   PathInterface,
   PathSearchStates,
   ProcessIdxInterface,
@@ -20,12 +21,16 @@ const PathLayer = (props: {
   algoType: AlgoTypes;
   processIdxRef: React.MutableRefObject<ProcessIdxInterface>;
 }) => {
-  const { stateVal } = useContext(SettingContexts[SettingTypes.SearchSpeed]);
-  const searchSpeedRef = useRef(stateVal);
+  const searchSpeedContext: any = useContext(
+    SettingContexts[MenuTypes.Settings][SettingTypes.SearchSpeed]
+  );
+  const searchSpeed = searchSpeedContext.stateVal;
+  const searchSpeedRef = useRef(searchSpeed);
 
   useEffect(() => {
-    searchSpeedRef.current = stateVal;
-  }, [stateVal]);
+    console.log(`speed: ${searchSpeed}`);
+    searchSpeedRef.current = searchSpeed;
+  }, [searchSpeed]);
 
   /**
    * Build path

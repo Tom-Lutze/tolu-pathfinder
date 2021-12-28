@@ -5,11 +5,11 @@ import MapComponent from '../app/map/MapComponent';
 import { MenuTypes } from '../interfaces';
 import './App.css';
 import AppMenu from './ui/Menu';
-import { storeContext } from '../utils/Store';
+// import { storeContext } from '../utils/Store';
 
 const App = () => {
-  const globalState = useContext(storeContext);
-  const { appState } = globalState;
+  // const globalState = useContext(storeContext);
+  // const { appState } = globalState;
 
   const { Header, Content, Sider } = Layout;
   return (
@@ -30,8 +30,8 @@ const App = () => {
             }}
           >
             <MapComponent
-              graphType={appState.menu[MenuTypes.Graph]}
-              algoType={appState.menu[MenuTypes.Algo]}
+            // graphType={appState.menu[MenuTypes.Graph]}
+            // algoType={appState.menu[MenuTypes.Algo]}
             />
           </Content>
         </Layout>

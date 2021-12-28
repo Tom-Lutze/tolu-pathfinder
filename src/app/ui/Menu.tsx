@@ -5,7 +5,7 @@ import {
   MenuTypes,
   SettingTypes,
 } from '../../interfaces';
-import { storeContext } from '../../utils/Store';
+// import { storeContext } from '../../utils/Store';
 import { SettingContexts } from '../../utils/SettingsProvider';
 import {
   algoMenuStrings,
@@ -40,7 +40,7 @@ const menuParams = {
 
 const AppMenu = () => {
   // const globalState = ;
-  const { appState, dispatch } = useContext(storeContext);
+  // const { appState, dispatch } = useContext(storeContext);
   const subMenuitems = [];
 
   for (const menuType in MenuTypes) {
@@ -93,6 +93,7 @@ const AppMenu = () => {
                 disabled={false}
                 onAfterChange={(value) => {
                   setStateVal(value);
+                  console.log('set' + value);
                 }}
               />
             </Menu.Item>
@@ -114,24 +115,26 @@ const AppMenu = () => {
     subMenuitems.push(subMenu);
   }
 
+  const algoContext: any = useContext(SettingContexts[MenuTypes.Algo]);
+  const graphContext: any = useContext(SettingContexts[MenuTypes.Graph]);
+
   return (
     <Menu
       mode="inline"
       inlineIndent={14}
       selectedKeys={[
-        GraphTypes[appState.menu[MenuTypes.Graph]],
-        AlgoTypes[appState.menu[MenuTypes.Algo]],
+        GraphTypes[graphContext.stateVal],
+        AlgoTypes[algoContext.stateVal],
       ]}
       defaultOpenKeys={[MenuTypes[MenuTypes.Graph], MenuTypes[MenuTypes.Algo]]}
       style={{ height: '100%', borderRight: 0 }}
       onClick={(e) => {
         const menuType = MenuTypes[e.keyPath[1]];
         const menuParam = menuParams[menuType];
-        if (menuType == MenuTypes.Algo || menuType == MenuTypes.Graph) {
-          dispatch({
-            type: 'menu',
-            settings: [menuType, menuParam.type[e.keyPath[0]]],
-          });
+        if (menuType == MenuTypes.Algo) {
+          algoContext.setStateVal(menuParam.type[e.keyPath[0]]);
+        } else if (menuType == MenuTypes.Graph) {
+          graphContext.setStateVal(menuParam.type[e.keyPath[0]]);
         }
       }}
       children={subMenuitems}

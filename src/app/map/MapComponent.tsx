@@ -1,24 +1,26 @@
 import 'leaflet/dist/leaflet.css';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { MapContainer, TileLayer, useMapEvents } from 'react-leaflet';
 import {
   AlgoTypes,
   BuilderStates,
   GraphInterface,
   GraphTypes,
+  MenuTypes,
   PathInterface,
   PathSearchStates,
   ProcessIdxInterface,
 } from '../../interfaces';
+import { SettingContexts } from '../../utils/SettingsProvider';
 import GraphController from './controller/GraphController';
 import GraphLayer from './layers/GraphLayer';
 import PathLayer from './layers/PathLayer';
 import './MapComponent.css';
 
-const MapComponent = (props: {
+const MapComponent = (/* props: {
   graphType: GraphTypes;
   algoType: AlgoTypes;
-}) => {
+} */) => {
   const initGraph: GraphInterface = {
     nodeCount: 0,
     nodes: {},
@@ -72,20 +74,25 @@ const MapComponent = (props: {
     setPath(newPath);
   };
 
+  const algoContext: any = useContext(SettingContexts[MenuTypes.Algo]);
+  const algoType = algoContext.stateVal;
+  const grapContext: any = useContext(SettingContexts[MenuTypes.Graph]);
+  const graphType = grapContext.stateVal;
+
   /**
    * Graph type updated
    */
   useEffect(() => {
     resetPath();
     resetGraph();
-  }, [props.graphType]);
+  }, [graphType]);
 
   /**
    * Algo type updated
    */
   useEffect(() => {
     resetPath();
-  }, [props.algoType]);
+  }, [algoType]);
 
   useEffect(() => {
     if (graph.state.updated) {
@@ -119,14 +126,14 @@ const MapComponent = (props: {
       <GraphLayer
         graph={graph}
         setGraph={setGraph}
-        graphType={props.graphType}
+        graphType={graphType}
         processIdxRef={processIdxRef}
       />
       <PathLayer
         graph={graph}
         path={path}
         setPath={setPath}
-        algoType={props.algoType}
+        algoType={algoType}
         processIdxRef={processIdxRef}
       />
     </MapContainer>
