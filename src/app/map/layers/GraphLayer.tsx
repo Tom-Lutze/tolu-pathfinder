@@ -1,10 +1,13 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 import {
   BuilderStates,
   GraphInterface,
   GraphTypes,
+  MenuTypes,
   ProcessIdxInterface,
+  SettingTypes,
 } from '../../../interfaces';
+import { SettingContexts } from '../../../utils/SettingsProvider';
 import BuilderController from '../controller/BuilderController';
 import GraphController from '../controller/GraphController';
 import MarkerConnection from './subLayers/MarkerConnection';
@@ -16,6 +19,17 @@ const GraphLayer = (props: {
   graphType: GraphTypes;
   processIdxRef: React.MutableRefObject<ProcessIdxInterface>;
 }) => {
+  const buildSpeedContext: any = useContext(
+    SettingContexts[MenuTypes.Settings][SettingTypes.BuildSpeed]
+  );
+  const buildSpeed = buildSpeedContext.stateVal;
+  const buildSpeedRef = useRef(buildSpeed);
+
+  useEffect(() => {
+    console.log(`speed: ${buildSpeed}`);
+    buildSpeedRef.current = buildSpeed;
+  }, [buildSpeed]);
+
   /**
    * Build graph
    */
@@ -40,14 +54,16 @@ const GraphLayer = (props: {
           BuilderController.buildRandomNetwork(
             props.graph,
             props.processIdxRef,
-            props.setGraph
+            props.setGraph,
+            buildSpeedRef
           );
           break;
         case GraphTypes.Grid:
           BuilderController.buildSquareNetwork(
             props.graph,
             props.processIdxRef,
-            props.setGraph
+            props.setGraph,
+            buildSpeedRef
           );
       }
     }
