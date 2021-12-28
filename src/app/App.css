@@ -14,3 +14,7 @@
 .site-layout-background {
   background: #fff;
 }
+
+.ant-menu-submenu-inline .tolu-settings-slider-parent .ant-menu-title-content {
+  padding: 0 6px;
+}
