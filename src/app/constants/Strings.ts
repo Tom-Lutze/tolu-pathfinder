@@ -18,7 +18,7 @@ export const graphMenuStrings = {
 };
 
 export const algoMenuStrings = {
-  [AlgoTypes.BFS]: 'Breath-First-Search',
+  [AlgoTypes.BFS]: 'Breadth-First-Search',
   [AlgoTypes.DFS]: 'Depth-First-Search',
   [AlgoTypes.Dijkstra]: 'Dijkstra',
   [AlgoTypes.AStarEuclidean]: 'A* (Euclidean)',
@@ -28,5 +28,5 @@ export const algoMenuStrings = {
 export const settingMenuStrings = {
   [SettingTypes.BuildSpeed]: 'Build speed',
   [SettingTypes.SearchSpeed]: 'Search speed',
-  [SettingTypes.MaxNodes]: 'Nodes count',
+  [SettingTypes.MaxNodes]: 'Build nodes',
 };

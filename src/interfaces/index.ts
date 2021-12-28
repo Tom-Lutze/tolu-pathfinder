@@ -63,8 +63,8 @@ export enum AlgoTypes {
 }
 
 export enum SettingTypes {
-  BuildSpeed,
   SearchSpeed,
+  BuildSpeed,
   MaxNodes,
 }
 
