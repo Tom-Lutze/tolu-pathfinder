@@ -13,14 +13,16 @@ export default class PathController {
     graph: GraphInterface,
     path: PathInterface,
     setPath: React.Dispatch<React.SetStateAction<PathInterface>>,
-    processIdxRef: React.MutableRefObject<ProcessIdxInterface>
+    processIdxRef: React.MutableRefObject<ProcessIdxInterface>,
+    searchSpeed: React.MutableRefObject<any>
   ) {
     PathControllerHelper.searchAlgorithm(
       graph,
       path,
       setPath,
       processIdxRef,
-      (array: number[][]) => array.shift()
+      (array: number[][]) => array.shift(),
+      searchSpeed
     );
   }
 
@@ -28,14 +30,16 @@ export default class PathController {
     graph: GraphInterface,
     path: PathInterface,
     setPath: React.Dispatch<React.SetStateAction<PathInterface>>,
-    processIdxRef: React.MutableRefObject<ProcessIdxInterface>
+    processIdxRef: React.MutableRefObject<ProcessIdxInterface>,
+    searchSpeed: React.MutableRefObject<any>
   ) {
     PathControllerHelper.searchAlgorithm(
       graph,
       path,
       setPath,
       processIdxRef,
-      (array: number[][]) => array.pop()
+      (array: number[][]) => array.pop(),
+      searchSpeed
     );
   }
 
@@ -44,6 +48,7 @@ export default class PathController {
     path: PathInterface,
     setPath: React.Dispatch<React.SetStateAction<PathInterface>>,
     processIdxRef: React.MutableRefObject<ProcessIdxInterface>,
+    searchSpeed: React.MutableRefObject<any>,
     processAll = false
   ) {
     PathControllerHelper.aStarAlgorithm(
@@ -52,6 +57,7 @@ export default class PathController {
       setPath,
       processIdxRef,
       () => 0,
+      searchSpeed,
       processAll
     );
   }
@@ -61,6 +67,7 @@ export default class PathController {
     path: PathInterface,
     setPath: React.Dispatch<React.SetStateAction<PathInterface>>,
     processIdxRef: React.MutableRefObject<ProcessIdxInterface>,
+    searchSpeed: React.MutableRefObject<any>,
     processAll = false
   ) {
     PathControllerHelper.aStarAlgorithm(
@@ -69,6 +76,7 @@ export default class PathController {
       setPath,
       processIdxRef,
       PathControllerHelper.manhattenDistance,
+      searchSpeed,
       processAll
     );
   }
@@ -78,6 +86,7 @@ export default class PathController {
     path: PathInterface,
     setPath: React.Dispatch<React.SetStateAction<PathInterface>>,
     processIdxRef: React.MutableRefObject<ProcessIdxInterface>,
+    searchSpeed: React.MutableRefObject<any>,
     processAll = false
   ) {
     PathControllerHelper.aStarAlgorithm(
@@ -86,6 +95,7 @@ export default class PathController {
       setPath,
       processIdxRef,
       (pos1, pos2) => pos1.distanceTo(pos2),
+      searchSpeed,
       processAll
     );
   }
@@ -97,7 +107,8 @@ class PathControllerHelper {
     path: PathInterface,
     setPath: React.Dispatch<React.SetStateAction<PathInterface>>,
     processIdxRef: React.MutableRefObject<ProcessIdxInterface>,
-    arrayOperation: (array: any) => number[] | undefined
+    arrayOperation: (array: any) => number[] | undefined,
+    searchSpeed: React.MutableRefObject<any>
   ) {
     const newPath = { ...path };
     newPath.state = PathSearchStates.Searching;
@@ -137,7 +148,8 @@ class PathControllerHelper {
             nodesArray.push([edge, ...currentNode]);
           });
         }
-        await sleep(200);
+        const sleeptime = 800 * (1 - searchSpeed.current / 100);
+        await sleep(sleeptime);
       }
     }
   }
@@ -148,6 +160,7 @@ class PathControllerHelper {
     setPath: React.Dispatch<React.SetStateAction<PathInterface>>,
     processIdxRef: React.MutableRefObject<ProcessIdxInterface>,
     heuristicFunction: (pos1: LatLng, pos2: LatLng) => number,
+    searchSpeed: React.MutableRefObject<any>,
     processAll = false
   ) {
     const newPath = { ...path, state: PathSearchStates.Searching };
@@ -215,7 +228,8 @@ class PathControllerHelper {
           (key) => delete unvisitedNodes[key]
         );
       } else {
-        await sleep(400);
+        const sleeptime = 800 * (1 - searchSpeed.current / 100);
+        await sleep(sleeptime);
         if (startSearchIdx != processIdxRef.current.pathIdx) return;
         setPath({ ...newPath });
       }

@@ -20,6 +20,17 @@ const StoreProvider = ({ children }: any) => {
             ...state,
             menu: { ...state.menu, [action.settings[0]]: action.settings[1] },
           };
+        case 'menu-s':
+          return {
+            ...state,
+            menu: {
+              ...state.menu,
+              [action.settings[0]]: {
+                ...[action.settings[0]],
+                [action.settings[1]]: action.settings[2],
+              },
+            },
+          };
         default:
           throw new Error('Action type is not defined');
       }

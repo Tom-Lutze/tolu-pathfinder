@@ -1,4 +1,9 @@
-import { AlgoTypes, GraphTypes, MenuTypes } from '../../interfaces';
+import {
+  AlgoTypes,
+  GraphTypes,
+  MenuTypes,
+  SettingTypes,
+} from '../../interfaces';
 
 export const mainMenuStrings = {
   [MenuTypes.Graph]: 'Graph',
@@ -18,4 +23,10 @@ export const algoMenuStrings = {
   [AlgoTypes.Dijkstra]: 'Dijkstra',
   [AlgoTypes.AStarEuclidean]: 'A* (Euclidean)',
   [AlgoTypes.AStarManhatten]: 'A* (Manhatten)',
+};
+
+export const settingMenuStrings = {
+  [SettingTypes.BuildSpeed]: 'Build speed',
+  [SettingTypes.SearchSpeed]: 'Search speed',
+  [SettingTypes.MaxNodes]: 'Nodes count',
 };

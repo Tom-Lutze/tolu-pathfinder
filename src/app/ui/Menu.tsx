@@ -1,10 +1,17 @@
-import React, { useContext } from 'react';
-import { AlgoTypes, GraphTypes, MenuTypes } from '../../interfaces';
+import React, { useContext, useState } from 'react';
+import {
+  AlgoTypes,
+  GraphTypes,
+  MenuTypes,
+  SettingTypes,
+} from '../../interfaces';
 import { storeContext } from '../../utils/Store';
+import { SettingContexts } from '../../utils/SettingsProvider';
 import {
   algoMenuStrings,
   graphMenuStrings,
   mainMenuStrings,
+  settingMenuStrings,
 } from '../constants/Strings';
 import {
   BranchesOutlined,
@@ -26,23 +33,16 @@ const menuParams = {
   },
   [MenuTypes.Settings]: {
     icon: <SettingOutlined />,
-    children: [
-      {
-        name: 'build-speed',
-        component: <Slider defaultValue={30} disabled={false} />,
-      },
-      {
-        name: 'max-nodes',
-        component: <Slider defaultValue={30} disabled={false} />,
-      },
-    ],
+    type: SettingTypes,
+    strings: settingMenuStrings,
   },
 };
 
 const AppMenu = () => {
-  const globalState = useContext(storeContext);
-  const { appState, dispatch } = globalState;
+  // const globalState = ;
+  const { appState, dispatch } = useContext(storeContext);
   const subMenuitems = [];
+
   for (const menuType in MenuTypes) {
     if (!isNaN(Number(menuType))) continue;
 
@@ -53,21 +53,53 @@ const AppMenu = () => {
 
     for (const currType in menuParam.type) {
       if (!isNaN(Number(currType))) continue;
-      const menuItem = (
-        <Menu.Item key={`${currType}`}>
-          {menuParam.strings[menuParam.type[currType]]}
-        </Menu.Item>
-      );
-      menuItems.push(menuItem);
-    }
-
-    if (menuParam.children) {
-      menuParam.children.forEach((currChild: any) => {
+      if (
+        menuType == MenuTypes[MenuTypes.Algo] ||
+        menuType == MenuTypes[MenuTypes.Graph]
+      ) {
         const menuItem = (
-          <Menu.Item key={currChild.name}>{currChild.component}</Menu.Item>
+          <Menu.Item key={`${currType}`}>
+            {menuParam.strings[menuParam.type[currType]]}
+          </Menu.Item>
         );
         menuItems.push(menuItem);
-      });
+      } else if (menuType == MenuTypes[MenuTypes.Settings]) {
+        // const SettingProvider = SettingContexts[currType];
+        // const [searchSpeed, setSearchSpeed] = useState(50);
+        // const searchSpeedValues = { searchSpeed, setSearchSpeed };
+
+        const { stateVal, setStateVal } = useContext(
+          SettingContexts[MenuTypes.Settings][menuParam.type[currType]]
+        );
+
+        const menuItem = (
+          <Menu.ItemGroup
+            key={`mig-${currType}`}
+            title={menuParam.strings[menuParam.type[currType]]}
+          >
+            <Menu.Item key={`mi-${currType}`}>
+              {/*               <Slider
+                defaultValue={30}
+                disabled={false}
+                onAfterChange={(value) => {
+                  dispatch({
+                    type: 'menu-s',
+                    settings: [menuType, menuParam.type[currType], value],
+                  });
+                }}
+              /> */}
+              <Slider
+                defaultValue={stateVal}
+                disabled={false}
+                onAfterChange={(value) => {
+                  setStateVal(value);
+                }}
+              />
+            </Menu.Item>
+          </Menu.ItemGroup>
+        );
+        menuItems.push(menuItem);
+      }
     }
 
     const subMenu = (
@@ -93,12 +125,12 @@ const AppMenu = () => {
       defaultOpenKeys={[MenuTypes[MenuTypes.Graph], MenuTypes[MenuTypes.Algo]]}
       style={{ height: '100%', borderRight: 0 }}
       onClick={(e) => {
-        const storeActionType = MenuTypes[e.keyPath[1]];
-        const menuParam = menuParams[storeActionType];
-        if (menuParam.type) {
+        const menuType = MenuTypes[e.keyPath[1]];
+        const menuParam = menuParams[menuType];
+        if (menuType == MenuTypes.Algo || menuType == MenuTypes.Graph) {
           dispatch({
             type: 'menu',
-            settings: [storeActionType, menuParam.type[e.keyPath[0]]],
+            settings: [menuType, menuParam.type[e.keyPath[0]]],
           });
         }
       }}

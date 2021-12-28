@@ -62,6 +62,12 @@ export enum AlgoTypes {
   AStarEuclidean,
 }
 
+export enum SettingTypes {
+  BuildSpeed,
+  SearchSpeed,
+  MaxNodes,
+}
+
 export enum BuilderStates {
   Terminated = 0,
   Uninitialized = 1,

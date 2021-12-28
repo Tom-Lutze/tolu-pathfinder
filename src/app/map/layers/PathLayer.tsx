@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 import { Pane, Polyline } from 'react-leaflet';
 import {
   AlgoTypes,
@@ -6,7 +6,10 @@ import {
   PathInterface,
   PathSearchStates,
   ProcessIdxInterface,
+  SettingTypes,
 } from '../../../interfaces';
+import { SettingContexts } from '../../../utils/SettingsProvider';
+// import { SettingContexts } from '../../../utils/SettingsStore';
 import GraphController from '../controller/GraphController';
 import PathController from '../controller/PathController';
 
@@ -17,6 +20,13 @@ const PathLayer = (props: {
   algoType: AlgoTypes;
   processIdxRef: React.MutableRefObject<ProcessIdxInterface>;
 }) => {
+  const { stateVal } = useContext(SettingContexts[SettingTypes.SearchSpeed]);
+  const searchSpeedRef = useRef(stateVal);
+
+  useEffect(() => {
+    searchSpeedRef.current = stateVal;
+  }, [stateVal]);
+
   /**
    * Build path
    */
@@ -32,7 +42,8 @@ const PathLayer = (props: {
             props.graph,
             props.path,
             props.setPath,
-            props.processIdxRef
+            props.processIdxRef,
+            searchSpeedRef
           );
           break;
         case AlgoTypes.BFS:
@@ -40,7 +51,8 @@ const PathLayer = (props: {
             props.graph,
             props.path,
             props.setPath,
-            props.processIdxRef
+            props.processIdxRef,
+            searchSpeedRef
           );
           break;
         case AlgoTypes.Dijkstra:
@@ -48,7 +60,8 @@ const PathLayer = (props: {
             props.graph,
             props.path,
             props.setPath,
-            props.processIdxRef
+            props.processIdxRef,
+            searchSpeedRef
           );
           break;
         case AlgoTypes.AStarManhatten:
@@ -56,7 +69,8 @@ const PathLayer = (props: {
             props.graph,
             props.path,
             props.setPath,
-            props.processIdxRef
+            props.processIdxRef,
+            searchSpeedRef
           );
           break;
         case AlgoTypes.AStarEuclidean:
@@ -64,12 +78,13 @@ const PathLayer = (props: {
             props.graph,
             props.path,
             props.setPath,
-            props.processIdxRef
+            props.processIdxRef,
+            searchSpeedRef
           );
           break;
       }
     }
-  }, [props.path.state]);
+  }, [props.path.state, searchSpeedRef]);
 
   return (
     <>

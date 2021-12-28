@@ -4,8 +4,8 @@ import { MapContainer, TileLayer, useMapEvents } from 'react-leaflet';
 import {
   AlgoTypes,
   BuilderStates,
-  GraphTypes,
   GraphInterface,
+  GraphTypes,
   PathInterface,
   PathSearchStates,
   ProcessIdxInterface,
