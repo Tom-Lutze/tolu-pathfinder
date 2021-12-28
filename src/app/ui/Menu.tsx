@@ -1,11 +1,16 @@
-import React, { useContext, useState } from 'react';
+import {
+  BranchesOutlined,
+  CompassOutlined,
+  SettingOutlined,
+} from '@ant-design/icons';
+import { Menu, Slider } from 'antd';
+import React, { useContext } from 'react';
 import {
   AlgoTypes,
   GraphTypes,
   MenuTypes,
   SettingTypes,
 } from '../../interfaces';
-// import { storeContext } from '../../utils/Store';
 import { SettingContexts } from '../../utils/SettingsProvider';
 import {
   algoMenuStrings,
@@ -13,12 +18,6 @@ import {
   mainMenuStrings,
   settingMenuStrings,
 } from '../constants/Strings';
-import {
-  BranchesOutlined,
-  CompassOutlined,
-  SettingOutlined,
-} from '@ant-design/icons';
-import { Menu, Slider } from 'antd';
 
 const menuParams = {
   [MenuTypes.Graph]: {
@@ -39,8 +38,6 @@ const menuParams = {
 };
 
 const AppMenu = () => {
-  // const globalState = ;
-  // const { appState, dispatch } = useContext(storeContext);
   const subMenuitems = [];
 
   for (const menuType in MenuTypes) {
@@ -64,10 +61,6 @@ const AppMenu = () => {
         );
         menuItems.push(menuItem);
       } else if (menuType == MenuTypes[MenuTypes.Settings]) {
-        // const SettingProvider = SettingContexts[currType];
-        // const [searchSpeed, setSearchSpeed] = useState(50);
-        // const searchSpeedValues = { searchSpeed, setSearchSpeed };
-
         const { stateVal, setStateVal } = useContext(
           SettingContexts[MenuTypes.Settings][menuParam.type[currType]]
         );
@@ -77,17 +70,10 @@ const AppMenu = () => {
             key={`mig-${currType}`}
             title={menuParam.strings[menuParam.type[currType]]}
           >
-            <Menu.Item key={`mi-${currType}`}>
-              {/*               <Slider
-                defaultValue={30}
-                disabled={false}
-                onAfterChange={(value) => {
-                  dispatch({
-                    type: 'menu-s',
-                    settings: [menuType, menuParam.type[currType], value],
-                  });
-                }}
-              /> */}
+            <Menu.Item
+              key={`mi-${currType}`}
+              className="tolu-settings-slider-parent"
+            >
               <Slider
                 defaultValue={stateVal}
                 disabled={false}
