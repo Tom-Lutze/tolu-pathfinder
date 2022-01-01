@@ -4,4 +4,5 @@ export const BUILDER_SETTINGS = {
     connectionsMin: 2,
     connectionsMax: 4,
   },
+  baseSleepDuration: 800,
 };

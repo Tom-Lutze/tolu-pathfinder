@@ -17,7 +17,8 @@ export default class BuilderController {
     buildSpeed: React.MutableRefObject<any>
   ) {
     const startProcess = processIdxRef.current.graphIdx;
-    const sleepTime = () => 800 * (1 - buildSpeed.current / 100);
+    const sleepTime = () =>
+      BUILDER_SETTINGS.baseSleepDuration * (1 - buildSpeed.current / 100);
     let newGraph = { ...graph };
     newGraph.buildState.state++;
     for (let i = 0; i < gridNodes; i++) {
@@ -77,7 +78,8 @@ export default class BuilderController {
     const startProcess = processIdxRef.current.graphIdx;
     const SETTINGS = BUILDER_SETTINGS.random;
     let newGraph = { ...graph };
-    const sleepTime = () => 800 * (1 - buildSpeed.current / 100);
+    const sleepTime = () =>
+      BUILDER_SETTINGS.baseSleepDuration * (1 - buildSpeed.current / 100);
     newGraph.buildState.state++;
 
     for (let i = 0; i < randomNodes; i++) {

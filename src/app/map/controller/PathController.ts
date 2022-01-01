@@ -7,6 +7,7 @@ import {
   ProcessIdxInterface,
 } from '../../../interfaces';
 import { sleep } from '../../../utils/Helper';
+import { BUILDER_SETTINGS } from '../../constants/Settings';
 
 export default class PathController {
   static bfs(
@@ -148,7 +149,8 @@ class PathControllerHelper {
             nodesArray.push([edge, ...currentNode]);
           });
         }
-        const sleeptime = 800 * (1 - searchSpeed.current / 100);
+        const sleeptime =
+          BUILDER_SETTINGS.baseSleepDuration * (1 - searchSpeed.current / 100);
         await sleep(sleeptime);
       }
     }
@@ -228,8 +230,9 @@ class PathControllerHelper {
           (key) => delete unvisitedNodes[key]
         );
       } else {
-        const sleeptime = 800 * (1 - searchSpeed.current / 100);
-        await sleep(sleeptime);
+        const sleepTime =
+          BUILDER_SETTINGS.baseSleepDuration * (1 - searchSpeed.current / 100);
+        await sleep(sleepTime);
         if (startSearchIdx != processIdxRef.current.pathIdx) return;
         setPath({ ...newPath });
       }
@@ -243,14 +246,14 @@ class PathControllerHelper {
       newPath.found = false;
     }
 
-    await sleep(400);
+    await sleep(BUILDER_SETTINGS.baseSleepDuration);
     if (startSearchIdx != processIdxRef.current.pathIdx) return;
     setPath({ ...newPath, state: PathSearchStates.Finalized });
   }
 
   static manhattenDistance = (pos1: LatLng, pos2: LatLng) => {
     const haversine = (p1: number, p2: number) => {
-      const R = 6371000;
+      const R = 6371000; // earth radius
       const d = Math.abs(p1 - p2);
       const a = Math.pow(Math.sin(d / 2), 2);
       const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
