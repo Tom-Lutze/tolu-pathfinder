@@ -1,8 +1,13 @@
 import 'leaflet/dist/leaflet.css';
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { MapContainer, TileLayer, useMapEvents } from 'react-leaflet';
 import {
-  AlgoTypes,
+  FeatureGroup,
+  MapContainer,
+  TileLayer,
+  useMap,
+  useMapEvents,
+} from 'react-leaflet';
+import {
   BuilderStates,
   GraphInterface,
   GraphTypes,
@@ -10,6 +15,7 @@ import {
   PathInterface,
   PathSearchStates,
   ProcessIdxInterface,
+  SettingTypes,
 } from '../../interfaces';
 import { SettingContexts } from '../../utils/SettingsProvider';
 import GraphController from './controller/GraphController';
@@ -78,22 +84,44 @@ const MapComponent = (/* props: {
   const algoType = algoContext.stateVal;
   const grapContext: any = useContext(SettingContexts[MenuTypes.Graph]);
   const graphType = grapContext.stateVal;
+  const gridNodesContext: any = useContext(
+    SettingContexts[MenuTypes.Settings][SettingTypes.MaxNodesGrid]
+  );
+  const gridNodes = gridNodesContext.stateVal;
 
-  /**
-   * Graph type updated
-   */
+  const randomNodesContext: any = useContext(
+    SettingContexts[MenuTypes.Settings][SettingTypes.MaxNodesRandom]
+  );
+  const randomNodes = randomNodesContext.stateVal;
+
+  /** Graph type updated */
   useEffect(() => {
     resetPath();
     resetGraph();
   }, [graphType]);
 
-  /**
-   * Algo type updated
-   */
+  /** Algo type updated */
   useEffect(() => {
     resetPath();
   }, [algoType]);
 
+  /** Max graph nodes setting updated */
+  useEffect(() => {
+    if (graphType == GraphTypes.Grid) {
+      resetPath();
+      resetGraph();
+    }
+  }, [gridNodes]);
+
+  /** Max random nodes setting updated */
+  useEffect(() => {
+    if (graphType == GraphTypes.Random) {
+      resetPath();
+      resetGraph();
+    }
+  }, [randomNodes]);
+
+  /** Graph state updated */
   useEffect(() => {
     if (graph.state.updated) {
       setGraph({ ...graph, state: { ...graph.state, updated: false } });
@@ -101,7 +129,17 @@ const MapComponent = (/* props: {
     }
   }, [graph.state.updated]);
 
+  const graphFeatureGroup = useRef<any>();
+
   const MapEventHandler = () => {
+    const map = useMap();
+    if (graphFeatureGroup.current) {
+      const bounds = graphFeatureGroup.current.getBounds();
+
+      if (Object.keys(bounds).length !== 0) {
+        map.fitBounds(graphFeatureGroup.current.getBounds());
+      }
+    }
     useMapEvents({
       click(e) {
         if (graph.buildState.state === BuilderStates.Finalized) {
@@ -123,12 +161,14 @@ const MapComponent = (/* props: {
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         url={`${process.env.PUBLIC_URL}/map-tile.png`}
       />
-      <GraphLayer
-        graph={graph}
-        setGraph={setGraph}
-        graphType={graphType}
-        processIdxRef={processIdxRef}
-      />
+      <FeatureGroup ref={graphFeatureGroup}>
+        <GraphLayer
+          graph={graph}
+          setGraph={setGraph}
+          graphType={graphType}
+          processIdxRef={processIdxRef}
+        />
+      </FeatureGroup>
       <PathLayer
         graph={graph}
         path={path}

@@ -9,19 +9,19 @@ import { BUILDER_SETTINGS } from '../../constants/Settings';
 import GraphController from './GraphController';
 
 export default class BuilderController {
-  static async buildSquareNetwork(
+  static async buildGridNetwork(
     graph: GraphInterface,
     processIdxRef: React.MutableRefObject<ProcessIdxInterface>,
     setGraph: React.Dispatch<React.SetStateAction<GraphInterface>>,
+    gridNodes: number,
     buildSpeed: React.MutableRefObject<any>
   ) {
     const startProcess = processIdxRef.current.graphIdx;
-    const NODES_PER_AXIS = BUILDER_SETTINGS.square.nodesPerAxisMax;
     const sleepTime = () => 800 * (1 - buildSpeed.current / 100);
     let newGraph = { ...graph };
     newGraph.buildState.state++;
-    for (let i = NODES_PER_AXIS; i >= -NODES_PER_AXIS; i--) {
-      for (let j = -NODES_PER_AXIS; j <= NODES_PER_AXIS; j++) {
+    for (let i = 0; i < gridNodes; i++) {
+      for (let j = 0; j < gridNodes; j++) {
         const nextNodeIdx = newGraph.nodeCount + 1;
         newGraph.buildState.nodeAddresses?.set(`${i}#${j}`, nextNodeIdx);
         await sleep(sleepTime());
@@ -35,8 +35,8 @@ export default class BuilderController {
       }
     }
 
-    for (let k = NODES_PER_AXIS; k >= -NODES_PER_AXIS; k--) {
-      for (let l = -NODES_PER_AXIS; l <= NODES_PER_AXIS; l++) {
+    for (let k = 0; k < gridNodes; k++) {
+      for (let l = 0; l < gridNodes; l++) {
         const currentNodeIdx = newGraph.buildState.nodeAddresses?.get(
           `${k}#${l}`
         );
@@ -71,6 +71,7 @@ export default class BuilderController {
     graph: GraphInterface,
     processIdxRef: React.MutableRefObject<ProcessIdxInterface>,
     setGraph: React.Dispatch<React.SetStateAction<GraphInterface>>,
+    randomNodes: number,
     buildSpeed: React.MutableRefObject<any>
   ) {
     const startProcess = processIdxRef.current.graphIdx;
@@ -79,7 +80,7 @@ export default class BuilderController {
     const sleepTime = () => 800 * (1 - buildSpeed.current / 100);
     newGraph.buildState.state++;
 
-    for (let i = 0; i < SETTINGS.nodesMax; i++) {
+    for (let i = 0; i < randomNodes; i++) {
       const randomLat = getRandomNumber(SETTINGS.latFrom, SETTINGS.latTo);
       const randomLng = getRandomNumber(SETTINGS.lngFrom, SETTINGS.lngTo);
       await sleep(sleepTime());
@@ -94,11 +95,11 @@ export default class BuilderController {
         false
       );
     }
-    const adjacencyMatrix = [...Array(SETTINGS.nodesMax)].map(() =>
-      Array(SETTINGS.nodesMax)
+    const adjacencyMatrix = [...Array(randomNodes)].map(() =>
+      Array(randomNodes)
     );
-    for (let i = 0; i < SETTINGS.nodesMax; i++) {
-      for (let j = 0; j < SETTINGS.nodesMax; j++) {
+    for (let i = 0; i < randomNodes; i++) {
+      for (let j = 0; j < randomNodes; j++) {
         if (i == j) {
           adjacencyMatrix[i][j] = undefined;
         } else if (!adjacencyMatrix[i][j]) {
@@ -117,7 +118,7 @@ export default class BuilderController {
         .map((node) => node.idx); //TODO improve performance
     });
 
-    for (let i = 0; i < SETTINGS.nodesMax; i++) {
+    for (let i = 0; i < randomNodes; i++) {
       const connections = getRandomNumber(
         SETTINGS.connectionsMin,
         SETTINGS.connectionsMax

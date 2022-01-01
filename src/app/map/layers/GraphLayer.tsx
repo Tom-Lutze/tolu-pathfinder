@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useRef } from 'react';
+import { useMap } from 'react-leaflet';
 import {
   BuilderStates,
   GraphInterface,
@@ -24,6 +25,16 @@ const GraphLayer = (props: {
   );
   const buildSpeed = buildSpeedContext.stateVal;
   const buildSpeedRef = useRef(buildSpeed);
+
+  const gridNodesContext: any = useContext(
+    SettingContexts[MenuTypes.Settings][SettingTypes.MaxNodesGrid]
+  );
+  const gridNodes = gridNodesContext.stateVal;
+
+  const randomNodesContext: any = useContext(
+    SettingContexts[MenuTypes.Settings][SettingTypes.MaxNodesRandom]
+  );
+  const randomNodes = randomNodesContext.stateVal;
 
   useEffect(() => {
     console.log(`speed: ${buildSpeed}`);
@@ -55,14 +66,16 @@ const GraphLayer = (props: {
             props.graph,
             props.processIdxRef,
             props.setGraph,
+            randomNodes,
             buildSpeedRef
           );
           break;
         case GraphTypes.Grid:
-          BuilderController.buildSquareNetwork(
+          BuilderController.buildGridNetwork(
             props.graph,
             props.processIdxRef,
             props.setGraph,
+            gridNodes,
             buildSpeedRef
           );
       }
