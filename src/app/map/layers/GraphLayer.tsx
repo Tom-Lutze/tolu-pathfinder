@@ -9,6 +9,7 @@ import {
   SettingTypes,
 } from '../../../interfaces';
 import { SettingContexts } from '../../../utils/SettingsProvider';
+import { BUILDER_SETTINGS } from '../../constants/Settings';
 import BuilderController from '../controller/BuilderController';
 import GraphController from '../controller/GraphController';
 import MarkerConnection from './subLayers/MarkerConnection';
@@ -36,14 +37,14 @@ const GraphLayer = (props: {
   );
   const randomNodes = randomNodesContext.stateVal;
 
+  const map = useMap();
+
+  /** Update build speed setting */
   useEffect(() => {
-    console.log(`speed: ${buildSpeed}`);
     buildSpeedRef.current = buildSpeed;
   }, [buildSpeed]);
 
-  /**
-   * Build graph
-   */
+  /** Build graph */
   useEffect(() => {
     if (props.graph.buildState.state == BuilderStates.Uninitialized) {
       const newGraph = { ...props.graph };
@@ -69,6 +70,13 @@ const GraphLayer = (props: {
             randomNodes,
             buildSpeedRef
           );
+          map.fitBounds([
+            [0, 0],
+            [
+              BUILDER_SETTINGS.random.latLngMax / 100,
+              BUILDER_SETTINGS.random.latLngMax / 100,
+            ],
+          ]);
           break;
         case GraphTypes.Grid:
           BuilderController.buildGridNetwork(
@@ -78,6 +86,11 @@ const GraphLayer = (props: {
             gridNodes,
             buildSpeedRef
           );
+          map.fitBounds([
+            [0, 0],
+            [gridNodes / 100, gridNodes / 100],
+          ]);
+          break;
       }
     }
   }, [props.graph.buildState.state]);

@@ -132,14 +132,6 @@ const MapComponent = (/* props: {
   const graphFeatureGroup = useRef<any>();
 
   const MapEventHandler = () => {
-    const map = useMap();
-    if (graphFeatureGroup.current) {
-      const bounds = graphFeatureGroup.current.getBounds();
-
-      if (Object.keys(bounds).length !== 0) {
-        map.fitBounds(graphFeatureGroup.current.getBounds());
-      }
-    }
     useMapEvents({
       click(e) {
         if (graph.buildState.state === BuilderStates.Finalized) {
