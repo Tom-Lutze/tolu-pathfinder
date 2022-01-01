@@ -1,5 +1,5 @@
 import React, { createContext, useState } from 'react';
-import { menuParams } from '../app/constants/Settings';
+import { menuParams } from '../app/constants/MenuParams';
 import { MenuTypes, SettingTypes } from '../interfaces';
 
 const SettingContexts: any = {

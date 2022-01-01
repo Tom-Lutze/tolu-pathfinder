@@ -2,8 +2,8 @@ import { Menu, Slider } from 'antd';
 import React, { useContext } from 'react';
 import { AlgoTypes, GraphTypes, MenuTypes } from '../../interfaces';
 import { SettingContexts } from '../../utils/SettingsProvider';
-import { menuParams } from '../constants/Settings';
 import { mainMenuStrings } from '../constants/Strings';
+import { menuParams } from '../constants/MenuParams';
 
 const AppMenu = () => {
   const subMenuitems = [];
