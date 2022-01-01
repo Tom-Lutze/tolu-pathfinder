@@ -81,8 +81,10 @@ export default class BuilderController {
     newGraph.buildState.state++;
 
     for (let i = 0; i < randomNodes; i++) {
-      const randomLat = getRandomNumber(0, BUILDER_SETTINGS.random.latLngMax);
-      const randomLng = getRandomNumber(0, BUILDER_SETTINGS.random.latLngMax);
+      const randomLat =
+        getRandomNumber(0, BUILDER_SETTINGS.random.latLngMax * 100) / 100;
+      const randomLng =
+        getRandomNumber(0, BUILDER_SETTINGS.random.latLngMax * 100) / 100;
       await sleep(sleepTime());
       if (startProcess != processIdxRef.current.graphIdx) return;
       newGraph = GraphController.addNode(
