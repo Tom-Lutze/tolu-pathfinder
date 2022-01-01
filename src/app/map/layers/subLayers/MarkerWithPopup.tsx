@@ -7,6 +7,7 @@ import {
 } from './MarkerIcons';
 import GraphController from '../../controller/GraphController';
 import { DeleteOutlined } from '@ant-design/icons';
+import { appStrings } from '../../../constants/Strings';
 
 const MarkerWithPopup = (params: {
   nodeIdx: number;
@@ -22,7 +23,12 @@ const MarkerWithPopup = (params: {
 
   const StartButton = () => {
     if (params.graph.state.startNode == params.nodeIdx) {
-      return <span style={{ color: 'gray' }}>Start{' | '}</span>;
+      return (
+        <span style={{ color: 'gray' }}>
+          {appStrings.start}
+          {' | '}
+        </span>
+      );
     } else {
       return (
         <>
@@ -35,7 +41,7 @@ const MarkerWithPopup = (params: {
               )
             }
           >
-            Start
+            {appStrings.start}
           </a>
           {' | '}
         </>
@@ -64,17 +70,22 @@ const MarkerWithPopup = (params: {
             GraphController.connectSelectedNodes(params.graph, params.setGraph)
           }
         >
-          Connect
+          {appStrings.connect}
         </a>
       );
     } else {
-      return <span style={{ color: 'gray' }}>Connect</span>;
+      return <span style={{ color: 'gray' }}>{appStrings.connect}</span>;
     }
   };
 
   const EndButton = () => {
     if (params.graph.state.endNode == params.nodeIdx) {
-      return <span style={{ color: 'gray' }}>{' | '}End</span>;
+      return (
+        <span style={{ color: 'gray' }}>
+          {' | '}
+          {appStrings.end}
+        </span>
+      );
     } else {
       return (
         <>
@@ -88,7 +99,7 @@ const MarkerWithPopup = (params: {
               )
             }
           >
-            End
+            {appStrings.end}
           </a>
         </>
       );

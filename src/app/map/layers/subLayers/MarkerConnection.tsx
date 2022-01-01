@@ -1,5 +1,6 @@
 import { Polyline, Popup } from 'react-leaflet';
 import { BuilderStates, GraphInterface } from '../../../../interfaces';
+import { appStrings } from '../../../constants/Strings';
 import GraphController from '../../controller/GraphController';
 
 const MarkerConnection = (params: {
@@ -43,7 +44,7 @@ const MarkerConnection = (params: {
                       )
                     }
                   >
-                    Disconnect
+                    {appStrings.disconnect}
                   </a>
                 </span>
               </Popup>

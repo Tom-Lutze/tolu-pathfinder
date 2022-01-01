@@ -31,3 +31,11 @@ export const settingMenuStrings = {
   [SettingTypes.MaxNodesGrid]: 'Grid Nodes (x²)',
   [SettingTypes.MaxNodesRandom]: 'Random Nodes',
 };
+
+export const appStrings = {
+  start: 'Start',
+  end: 'End',
+  connect: 'Connect',
+  disconnect: 'Disconnect',
+  remove: 'Remove',
+};
