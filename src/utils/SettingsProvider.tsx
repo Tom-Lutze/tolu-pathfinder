@@ -1,4 +1,5 @@
 import React, { createContext, useState } from 'react';
+import { menuParams } from '../app/constants/Settings';
 import { MenuTypes, SettingTypes } from '../interfaces';
 
 const SettingContexts: any = {
@@ -19,7 +20,11 @@ const SettingContexts: any = {
       stateVal: 0,
       setStateVal: () => {},
     }),
-    [SettingTypes.MaxNodes]: createContext({
+    [SettingTypes.MaxNodesGrid]: createContext({
+      stateVal: 0,
+      setStateVal: () => {},
+    }),
+    [SettingTypes.MaxNodesRandom]: createContext({
       stateVal: 0,
       setStateVal: () => {},
     }),
@@ -42,7 +47,9 @@ const SettingsProvider = ({ children }: any) => {
       for (const settingType in SettingTypes) {
         const currSettingType = Number(settingType);
         if (isNaN(currSettingType)) continue;
-        const [stateVal, setStateVal] = useState(50);
+        const [stateVal, setStateVal] = useState(
+          menuParams[MenuTypes.Settings].children[settingType].initialVal
+        );
         const Provider = SettingContexts[menuType][currSettingType].Provider;
         ProviderParent = (
           <Provider value={{ stateVal, setStateVal }}>

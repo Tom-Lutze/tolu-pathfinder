@@ -28,5 +28,6 @@ export const algoMenuStrings = {
 export const settingMenuStrings = {
   [SettingTypes.BuildSpeed]: 'Build speed',
   [SettingTypes.SearchSpeed]: 'Search speed',
-  [SettingTypes.MaxNodes]: 'Build nodes',
+  [SettingTypes.MaxNodesGrid]: 'Grid Nodes (x²)',
+  [SettingTypes.MaxNodesRandom]: 'Random Nodes',
 };

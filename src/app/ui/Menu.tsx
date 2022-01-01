@@ -1,41 +1,9 @@
-import {
-  BranchesOutlined,
-  CompassOutlined,
-  SettingOutlined,
-} from '@ant-design/icons';
 import { Menu, Slider } from 'antd';
 import React, { useContext } from 'react';
-import {
-  AlgoTypes,
-  GraphTypes,
-  MenuTypes,
-  SettingTypes,
-} from '../../interfaces';
+import { AlgoTypes, GraphTypes, MenuTypes } from '../../interfaces';
 import { SettingContexts } from '../../utils/SettingsProvider';
-import {
-  algoMenuStrings,
-  graphMenuStrings,
-  mainMenuStrings,
-  settingMenuStrings,
-} from '../constants/Strings';
-
-const menuParams = {
-  [MenuTypes.Graph]: {
-    type: GraphTypes,
-    icon: <BranchesOutlined />,
-    strings: graphMenuStrings,
-  },
-  [MenuTypes.Algo]: {
-    type: AlgoTypes,
-    icon: <CompassOutlined />,
-    strings: algoMenuStrings,
-  },
-  [MenuTypes.Settings]: {
-    icon: <SettingOutlined />,
-    type: SettingTypes,
-    strings: settingMenuStrings,
-  },
-};
+import { menuParams } from '../constants/Settings';
+import { mainMenuStrings } from '../constants/Strings';
 
 const AppMenu = () => {
   const subMenuitems = [];
@@ -65,6 +33,9 @@ const AppMenu = () => {
           SettingContexts[MenuTypes.Settings][menuParam.type[currType]]
         );
 
+        const menuChildParam =
+          menuParams[MenuTypes.Settings].children[menuParam.type[currType]];
+
         const menuItem = (
           <Menu.ItemGroup
             key={`mig-${currType}`}
@@ -79,8 +50,10 @@ const AppMenu = () => {
                 disabled={false}
                 onAfterChange={(value) => {
                   setStateVal(value);
-                  console.log('set' + value);
                 }}
+                min={menuChildParam.min}
+                max={menuChildParam.max}
+                step={menuChildParam.step}
               />
             </Menu.Item>
           </Menu.ItemGroup>
@@ -106,6 +79,7 @@ const AppMenu = () => {
 
   return (
     <Menu
+      theme="dark"
       mode="inline"
       inlineIndent={14}
       selectedKeys={[
@@ -113,7 +87,7 @@ const AppMenu = () => {
         AlgoTypes[algoContext.stateVal],
       ]}
       defaultOpenKeys={[MenuTypes[MenuTypes.Graph], MenuTypes[MenuTypes.Algo]]}
-      style={{ height: '100%', borderRight: 0 }}
+      style={{ /* height: '100%', */ borderRight: 0 }}
       onClick={(e) => {
         const menuType = MenuTypes[e.keyPath[1]];
         const menuParam = menuParams[menuType];
