@@ -1,3 +1,7 @@
+@import '~antd/lib/style/themes/default.less';
+
+@gray-text: #595959;
+
 .leaflet-container {
   width: 100wh;
   height: 100vh;
@@ -17,22 +21,22 @@
 
 .leaflet-popup-content-wrapper {
   border-radius: initial;
-  background-color: #001529;
-  color: #096dd9;
+  background-color: @layout-header-background;
+  color: @gray-text;
 }
 
 .leaflet-popup-tip {
-  background-color: #001529;
+  background-color: @layout-header-background;
 }
 
 .leaflet-container a.leaflet-popup-close-button,
 .leaflet-container a {
-  color: #40a9ff;
+  color: @text-color-secondary-dark;
 }
 
 .leaflet-container a.leaflet-popup-close-button:hover,
 .leaflet-container a:hover {
-  color: #91d5ff;
+  color: @white;
 }
 
 .leaflet-container a.leaflet-popup-close-button {
@@ -42,5 +46,5 @@
 }
 
 .tolu-text-disabled {
-  color: #096dd9;
+  color: @gray-text;
 }
