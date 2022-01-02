@@ -10,7 +10,7 @@ export const MarkerIconDefault = Leaflet.icon({
   shadowUrl: iconShadow,
   iconSize: [25, 41],
   iconAnchor: [13, 41],
-  popupAnchor: [2, -40],
+  popupAnchor: [-1, -40],
 });
 Leaflet.Marker.prototype.options.icon = MarkerIconDefault;
 
