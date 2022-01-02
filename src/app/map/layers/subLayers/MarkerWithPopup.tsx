@@ -6,8 +6,9 @@ import {
   MarkerIconRed,
 } from './MarkerIcons';
 import GraphController from '../../controller/GraphController';
-import { DeleteOutlined } from '@ant-design/icons';
+import { DeleteOutlined, CloseOutlined } from '@ant-design/icons';
 import { appStrings } from '../../../constants/Strings';
+import { useRef } from 'react';
 
 const MarkerWithPopup = (params: {
   nodeIdx: number;
@@ -24,7 +25,7 @@ const MarkerWithPopup = (params: {
   const StartButton = () => {
     if (params.graph.state.startNode == params.nodeIdx) {
       return (
-        <span style={{ color: 'gray' }}>
+        <span className="tolu-text-disabled">
           {appStrings.start}
           {' | '}
         </span>
@@ -33,6 +34,7 @@ const MarkerWithPopup = (params: {
       return (
         <>
           <a
+            title={appStrings.startTooltip}
             onClick={() =>
               GraphController.setStartNode(
                 params.nodeIdx,
@@ -66,6 +68,7 @@ const MarkerWithPopup = (params: {
     if (showConnectOption()) {
       return (
         <a
+          title={appStrings.connectTooltip}
           onClick={() =>
             GraphController.connectSelectedNodes(params.graph, params.setGraph)
           }
@@ -74,14 +77,14 @@ const MarkerWithPopup = (params: {
         </a>
       );
     } else {
-      return <span style={{ color: 'gray' }}>{appStrings.connect}</span>;
+      return <span className="tolu-text-disabled">{appStrings.connect}</span>;
     }
   };
 
   const EndButton = () => {
     if (params.graph.state.endNode == params.nodeIdx) {
       return (
-        <span style={{ color: 'gray' }}>
+        <span className="tolu-text-disabled">
           {' | '}
           {appStrings.end}
         </span>
@@ -91,6 +94,7 @@ const MarkerWithPopup = (params: {
         <>
           {' | '}
           <a
+            title={appStrings.endTooltip}
             onClick={() =>
               GraphController.setEndNode(
                 params.nodeIdx,
@@ -105,6 +109,8 @@ const MarkerWithPopup = (params: {
       );
     }
   };
+
+  const popupRef = useRef<any>();
 
   return (
     <Marker
@@ -148,15 +154,11 @@ const MarkerWithPopup = (params: {
       }}
     >
       {buildStateReady() && (
-        <Popup>
-          <div>
-            <StartButton />
-            <ConnectButton />
-            <EndButton />
-            <br />
-            {`(ID: ${params.nodeIdx})`}
-            <span style={{ float: 'right' }}>
+        <Popup closeButton={false} ref={popupRef}>
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <span>
               <a
+                title={appStrings.removeTooltip}
                 onClick={() =>
                   GraphController.removeNode(
                     params.nodeIdx,
@@ -168,6 +170,24 @@ const MarkerWithPopup = (params: {
                 <DeleteOutlined />
               </a>
             </span>
+            <span
+              title={appStrings.nodeIdentifierTooltip}
+            >{`${appStrings.nodeIdentifier} ${params.nodeIdx}`}</span>
+            <span>
+              <a
+                title={appStrings.closeTooltip}
+                onClick={() => {
+                  popupRef.current._close();
+                }}
+              >
+                <CloseOutlined />
+              </a>
+            </span>
+          </div>
+          <div style={{ marginTop: '6px' }}>
+            <StartButton />
+            <ConnectButton />
+            <EndButton />
           </div>
         </Popup>
       )}

@@ -10,3 +10,37 @@
 .tolu-path-pane {
   z-index: 550;
 }
+
+.leaflet-popup-content {
+  margin: 8px;
+}
+
+.leaflet-popup-content-wrapper {
+  border-radius: initial;
+  background-color: #001529;
+  color: #096dd9;
+}
+
+.leaflet-popup-tip {
+  background-color: #001529;
+}
+
+.leaflet-container a.leaflet-popup-close-button,
+.leaflet-container a {
+  color: #40a9ff;
+}
+
+.leaflet-container a.leaflet-popup-close-button:hover,
+.leaflet-container a:hover {
+  color: #91d5ff;
+}
+
+.leaflet-container a.leaflet-popup-close-button {
+  top: 8px;
+  right: 6px;
+  padding: initial;
+}
+
+.tolu-text-disabled {
+  color: #096dd9;
+}

@@ -1,7 +1,9 @@
+import { useRef } from 'react';
 import { Polyline, Popup } from 'react-leaflet';
 import { BuilderStates, GraphInterface } from '../../../../interfaces';
 import { appStrings } from '../../../constants/Strings';
 import GraphController from '../../controller/GraphController';
+import { CloseOutlined } from '@ant-design/icons';
 
 const MarkerConnection = (params: {
   nodeIdx: number;
@@ -13,6 +15,7 @@ const MarkerConnection = (params: {
   const drawnEdges = new Set<string>();
   const buildStateReady =
     params.graph.buildState.state === BuilderStates.Finalized;
+  const popupRef = useRef<any>();
 
   if (node && node.edges && node.edges.size) {
     return Array.from(node.edges).reduce((prevValue: any, edgeIdx: number) => {
@@ -32,21 +35,36 @@ const MarkerConnection = (params: {
             interactive={true}
           >
             {buildStateReady && (
-              <Popup>
-                <span>
-                  <a
-                    onClick={() =>
-                      GraphController.disconnectNodes(
-                        nodeIdx,
-                        edgeIdx,
-                        params.graph,
-                        params.setGraph
-                      )
-                    }
-                  >
-                    {appStrings.disconnect}
-                  </a>
-                </span>
+              <Popup ref={popupRef} closeButton={false}>
+                <div
+                  style={{ display: 'flex', justifyContent: 'space-between' }}
+                >
+                  <span style={{ marginRight: '6px' }}>
+                    <a
+                      title={appStrings.disconnectTooltip}
+                      onClick={() =>
+                        GraphController.disconnectNodes(
+                          nodeIdx,
+                          edgeIdx,
+                          params.graph,
+                          params.setGraph
+                        )
+                      }
+                    >
+                      {appStrings.disconnect}
+                    </a>
+                  </span>
+                  <span>
+                    <a
+                      title={appStrings.closeTooltip}
+                      onClick={() => {
+                        popupRef.current._close();
+                      }}
+                    >
+                      <CloseOutlined />
+                    </a>
+                  </span>
+                </div>
               </Popup>
             )}
           </Polyline>

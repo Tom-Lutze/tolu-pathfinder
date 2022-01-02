@@ -34,8 +34,16 @@ export const settingMenuStrings = {
 
 export const appStrings = {
   start: 'Start',
+  startTooltip: 'Set as start node',
   end: 'End',
+  endTooltip: 'Set as end node',
   connect: 'Connect',
+  connectTooltip: 'Connect with previous node',
   disconnect: 'Disconnect',
+  disconnectTooltip: 'Disconnect nodes',
   remove: 'Remove',
+  removeTooltip: 'Delete this node',
+  nodeIdentifier: 'Node',
+  nodeIdentifierTooltip: 'Node identifier',
+  closeTooltip: 'Close',
 };
