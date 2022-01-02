@@ -156,7 +156,13 @@ const MarkerWithPopup = (params: {
     >
       {buildStateReady() && (
         <Popup closeButton={false} ref={popupRef}>
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              paddingBottom: '6px',
+            }}
+          >
             <span>
               <a
                 title={appStrings.removeTooltip}
@@ -185,7 +191,7 @@ const MarkerWithPopup = (params: {
               </a>
             </span>
           </div>
-          <div style={{ marginTop: '6px' }}>
+          <div className="tolu-popup-actions">
             <StartButton />
             <ConnectButton />
             <EndButton />
