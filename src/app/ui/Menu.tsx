@@ -48,7 +48,7 @@ const AppMenu = () => {
               <Slider
                 defaultValue={stateVal}
                 disabled={false}
-                onAfterChange={(value) => {
+                onAfterChange={(value: number) => {
                   setStateVal(value);
                 }}
                 min={menuChildParam.min}

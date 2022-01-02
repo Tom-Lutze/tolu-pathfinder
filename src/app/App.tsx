@@ -1,8 +1,8 @@
 import { Layout } from 'antd';
-import 'antd/dist/antd.css';
+import 'antd/dist/antd.less';
 import React from 'react';
 import MapComponent from '../app/map/MapComponent';
-import './App.css';
+import './App.less';
 import AppMenu from './ui/Menu';
 
 const App = () => {

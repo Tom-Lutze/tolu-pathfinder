@@ -21,7 +21,7 @@ import { SettingContexts } from '../../utils/SettingsProvider';
 import GraphController from './controller/GraphController';
 import GraphLayer from './layers/GraphLayer';
 import PathLayer from './layers/PathLayer';
-import './MapComponent.css';
+import './MapComponent.less';
 
 const MapComponent = (/* props: {
   graphType: GraphTypes;

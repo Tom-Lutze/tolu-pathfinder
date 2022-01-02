@@ -4,6 +4,7 @@ import { BuilderStates, GraphInterface } from '../../../../interfaces';
 import { appStrings } from '../../../constants/Strings';
 import GraphController from '../../controller/GraphController';
 import { CloseOutlined } from '@ant-design/icons';
+import React from 'react';
 
 const MarkerConnection = (params: {
   nodeIdx: number;

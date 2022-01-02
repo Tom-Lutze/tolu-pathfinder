@@ -14,6 +14,7 @@ import {
   graphMenuStrings,
   settingMenuStrings,
 } from './Strings';
+import React from 'react';
 
 export const menuParams = {
   [MenuTypes.Graph]: {

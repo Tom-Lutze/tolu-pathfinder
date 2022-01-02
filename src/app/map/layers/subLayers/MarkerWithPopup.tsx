@@ -9,6 +9,7 @@ import GraphController from '../../controller/GraphController';
 import { DeleteOutlined, CloseOutlined } from '@ant-design/icons';
 import { appStrings } from '../../../constants/Strings';
 import { useRef } from 'react';
+import React from 'react';
 
 const MarkerWithPopup = (params: {
   nodeIdx: number;
