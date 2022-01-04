@@ -99,7 +99,7 @@ const PathLayer = (props: {
           <Pane name="tolu-search-path-pane">
             <Polyline
               pathOptions={{
-                color: 'blue',
+                color: 'yellow',
                 dashArray: '10, 10',
                 dashOffset: '0',
               }}
@@ -120,7 +120,7 @@ const PathLayer = (props: {
               pathOptions={{
                 color:
                   props.path.state === PathSearchStates.Finalized
-                    ? 'red'
+                    ? 'lime'
                     : 'orange',
                 dashArray: '10, 10',
                 dashOffset: '0',
