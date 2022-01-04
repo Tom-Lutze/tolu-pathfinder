@@ -1,16 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './app/App';
-// import { StoreProvider } from './utils/Store';
 import reportWebVitals from './reportWebVitals';
 import { SettingsProvider } from './utils/SettingsProvider';
 
 ReactDOM.render(
   // <React.StrictMode>
   <SettingsProvider>
-    {/* <StoreProvider> */}
     <App />
-    {/* </StoreProvider> */}
   </SettingsProvider>,
   // </React.StrictMode>,
   document.getElementById('root')
