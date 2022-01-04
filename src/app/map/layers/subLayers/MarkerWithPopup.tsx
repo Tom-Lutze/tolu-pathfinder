@@ -160,7 +160,7 @@ const MarkerWithPopup = (params: {
             style={{
               display: 'flex',
               justifyContent: 'space-between',
-              paddingBottom: '6px',
+              paddingBottom: '5px',
             }}
           >
             <span>

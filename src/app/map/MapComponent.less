@@ -19,6 +19,18 @@
   margin: 8px;
 }
 
+.leaflet-bar a {
+  :hover {
+    background-color: @layout-header-background;
+  }
+  background-color: @layout-header-background;
+  color: @gray-text;
+}
+
+.leaflet-bar a:hover {
+  background-color: @layout-header-background;
+}
+
 .leaflet-popup-content-wrapper {
   border-radius: initial;
   background-color: @layout-header-background;
@@ -52,4 +64,13 @@
 .tolu-popup-actions {
   padding-top: 8px;
   border-top: solid 1px @gray-text;
+}
+
+.leaflet-control-attribution a,
+.leaflet-control-attribution a:hover {
+  color: #0078a8;
+}
+
+.leaflet-control-zoom.leaflet-bar {
+  border: none;
 }
