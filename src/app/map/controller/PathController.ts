@@ -172,6 +172,9 @@ class PathControllerHelper {
     if (!startNodeIdx || !endNodeIdx || Object.keys(graph).length < 1)
       return [];
 
+    const sleepTime =
+      BUILDER_SETTINGS.baseSleepDuration * (1 - searchSpeed.current / 100);
+
     const unvisitedNodes: { [idx: number]: AStarNodeInterface } = {};
     Object.keys(graph.nodes).forEach((key) => {
       const currNode: AStarNodeInterface = {
@@ -230,8 +233,6 @@ class PathControllerHelper {
           (key) => delete unvisitedNodes[key]
         );
       } else {
-        const sleepTime =
-          BUILDER_SETTINGS.baseSleepDuration * (1 - searchSpeed.current / 100);
         await sleep(sleepTime);
         if (startSearchIdx != processIdxRef.current.pathIdx) return;
         setPath({ ...newPath });
@@ -246,7 +247,7 @@ class PathControllerHelper {
       newPath.found = false;
     }
 
-    await sleep(BUILDER_SETTINGS.baseSleepDuration);
+    await sleep(sleepTime);
     if (startSearchIdx != processIdxRef.current.pathIdx) return;
     setPath({ ...newPath, state: PathSearchStates.Finalized });
   }
