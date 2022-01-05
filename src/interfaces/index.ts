@@ -2,7 +2,7 @@ import { LatLng } from 'leaflet';
 import React from 'react';
 
 export interface GraphInterface {
-  nodeCount: number;
+  nodeIndexer: number;
   nodes: {
     [idx: number]: NodeInterface;
   };
@@ -40,6 +40,7 @@ export interface PathInterface {
   nodes: number[];
   processIdx: number;
   state: PathSearchStates;
+  visitedNodesCounter: number;
 }
 
 export enum MenuTypes {

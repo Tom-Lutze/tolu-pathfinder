@@ -23,7 +23,7 @@ export default class BuilderController {
     newGraph.buildState.state++;
     for (let i = 0; i < gridNodes; i++) {
       for (let j = 0; j < gridNodes; j++) {
-        const nextNodeIdx = newGraph.nodeCount + 1;
+        const nextNodeIdx = newGraph.nodeIndexer + 1;
         newGraph.buildState.nodeAddresses?.set(`${i}#${j}`, nextNodeIdx);
         await sleep(sleepTime());
         if (startProcess != processIdxRef.current.graphIdx) return;

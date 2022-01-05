@@ -26,7 +26,7 @@ import './MapComponent.less';
 
 const MapComponent = () => {
   const initGraph: GraphInterface = {
-    nodeCount: 0,
+    nodeIndexer: 0,
     nodes: {},
     state: {
       updated: false,
@@ -49,6 +49,7 @@ const MapComponent = () => {
     found: false,
     nodes: [],
     processIdx: 0,
+    visitedNodesCounter: 0,
     state: PathSearchStates.Uninitialized,
   };
   const [graph, setGraph] = useState(initGraph);

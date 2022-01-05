@@ -129,17 +129,19 @@ class PathControllerHelper {
       if (!currentNode || !currentNode[0] || visitedNodes.has(currentNode[0])) {
         continue;
       } else {
-        setPath({
-          ...newPath,
-          found: false,
-          nodes: currentNode,
-        });
         visitedNodes.add(currentNode[0]);
+        newPath.visitedNodesCounter++;
         if (currentNode[0] == endNodeIdx) {
           return setPath({
             ...newPath,
             state: PathSearchStates.Finalized,
             found: true,
+            nodes: currentNode,
+          });
+        } else {
+          setPath({
+            ...newPath,
+            found: false,
             nodes: currentNode,
           });
         }
@@ -228,6 +230,7 @@ class PathControllerHelper {
       newPath.found = Number(nextNodeKey) === endNodeIdx;
       newPath.nodes = [...nextNode.parentNodes, Number(nextNodeKey)];
 
+      newPath.visitedNodesCounter++;
       if (newPath.found && !processAll) {
         Object.keys(unvisitedNodes).forEach(
           (key) => delete unvisitedNodes[key]
@@ -235,7 +238,9 @@ class PathControllerHelper {
       } else {
         await sleep(sleepTime);
         if (startSearchIdx != processIdxRef.current.pathIdx) return;
-        setPath({ ...newPath });
+        setPath({
+          ...newPath,
+        });
       }
     }
 

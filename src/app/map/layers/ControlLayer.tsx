@@ -37,6 +37,25 @@ export const ControlLayer = (params: {
                 }
               />
             </Col>
+            <Col span={12}>
+              <Statistic
+                title="Visited"
+                value={params.path.visitedNodesCounter}
+              />
+            </Col>
+            {/* <Col span={12}>
+              <Statistic
+                title="Account Balance (CNY)"
+                value={112893}
+                precision={2}
+              />
+              <Button style={{ marginTop: 16 }} type="primary">
+                Recharge
+              </Button>
+            </Col>
+            <Col span={12}>
+              <Statistic title="Active Users" value={112893} loading />
+            </Col> */}
           </Row>
         </Card>
       </div>

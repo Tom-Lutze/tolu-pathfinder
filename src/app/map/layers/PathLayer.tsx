@@ -28,7 +28,6 @@ const PathLayer = (props: {
   const searchSpeedRef = useRef(searchSpeed);
 
   useEffect(() => {
-    console.log(`speed: ${searchSpeed}`);
     searchSpeedRef.current = searchSpeed;
   }, [searchSpeed]);
 
