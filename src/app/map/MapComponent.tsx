@@ -147,7 +147,7 @@ const MapComponent = (/* props: {
   };
 
   return (
-    <MapContainer center={[0, 0]} zoom={13} scrollWheelZoom={false}>
+    <MapContainer center={[0, 0]} zoom={13} scrollWheelZoom={true}>
       <MapEventHandler />
       <TileLayer
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
