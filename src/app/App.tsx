@@ -27,6 +27,8 @@ const App = () => {
               src={`${process.env.PUBLIC_URL}/${
                 menuCollapsed ? 'logo48' : 'logo168'
               }.png`}
+              width="100%"
+              height="auto"
             />
           </div>
           <AppMenu />
