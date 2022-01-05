@@ -19,14 +19,12 @@ import {
 } from '../../interfaces';
 import { SettingContexts } from '../../utils/SettingsProvider';
 import GraphController from './controller/GraphController';
+import { ControlLayer } from './layers/ControlLayer';
 import GraphLayer from './layers/GraphLayer';
 import PathLayer from './layers/PathLayer';
 import './MapComponent.less';
 
-const MapComponent = (/* props: {
-  graphType: GraphTypes;
-  algoType: AlgoTypes;
-} */) => {
+const MapComponent = () => {
   const initGraph: GraphInterface = {
     nodeCount: 0,
     nodes: {},
@@ -168,6 +166,7 @@ const MapComponent = (/* props: {
         algoType={algoType}
         processIdxRef={processIdxRef}
       />
+      <ControlLayer graph={graph} path={path} />
     </MapContainer>
   );
 };
