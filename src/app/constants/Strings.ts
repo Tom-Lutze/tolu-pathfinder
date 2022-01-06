@@ -46,4 +46,5 @@ export const appStrings = {
   nodeIdentifier: 'Node',
   nodeIdentifierTooltip: 'Node identifier',
   closeTooltip: 'Close',
+  spinTip: 'Building graph ...',
 };

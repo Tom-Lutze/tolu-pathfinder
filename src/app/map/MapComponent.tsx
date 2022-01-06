@@ -1,3 +1,4 @@
+import { Spin } from 'antd';
 import 'leaflet/dist/leaflet.css';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import {
@@ -18,6 +19,7 @@ import {
   SettingTypes,
 } from '../../interfaces';
 import { SettingContexts } from '../../utils/SettingsProvider';
+import { appStrings } from '../constants/Strings';
 import GraphController from './controller/GraphController';
 import { ControlLayer } from './layers/ControlLayer';
 import GraphLayer from './layers/GraphLayer';
@@ -146,29 +148,36 @@ const MapComponent = () => {
   };
 
   return (
-    <MapContainer center={[0, 0]} zoom={13} scrollWheelZoom={true}>
-      <MapEventHandler />
-      <TileLayer
-        attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-        url={`${process.env.PUBLIC_URL}/map-tile.png`}
-      />
-      <FeatureGroup ref={graphFeatureGroup}>
-        <GraphLayer
+    <Spin
+      spinning={graph.buildState.state < BuilderStates.Finalized}
+      size="large"
+      tip={appStrings.spinTip}
+      style={{ maxHeight: '100%' }}
+    >
+      <MapContainer center={[0, 0]} zoom={13} scrollWheelZoom={true}>
+        <MapEventHandler />
+        <TileLayer
+          attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+          url={`${process.env.PUBLIC_URL}/map-tile.png`}
+        />
+        <FeatureGroup ref={graphFeatureGroup}>
+          <GraphLayer
+            graph={graph}
+            setGraph={setGraph}
+            graphType={graphType}
+            processIdxRef={processIdxRef}
+          />
+        </FeatureGroup>
+        <PathLayer
           graph={graph}
-          setGraph={setGraph}
-          graphType={graphType}
+          path={path}
+          setPath={setPath}
+          algoType={algoType}
           processIdxRef={processIdxRef}
         />
-      </FeatureGroup>
-      <PathLayer
-        graph={graph}
-        path={path}
-        setPath={setPath}
-        algoType={algoType}
-        processIdxRef={processIdxRef}
-      />
-      <ControlLayer graph={graph} path={path} />
-    </MapContainer>
+        <ControlLayer graph={graph} path={path} />
+      </MapContainer>
+    </Spin>
   );
 };
 
