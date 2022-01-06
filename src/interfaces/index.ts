@@ -35,12 +35,18 @@ export interface GraphStateInterface {
   endNode: number | undefined;
 }
 
+interface PathSearchHistoryInterface {
+  algo: AlgoTypes;
+  visitedNodes: number;
+}
+
 export interface PathInterface {
   found: boolean;
   nodes: number[];
   processIdx: number;
   state: PathSearchStates;
   visitedNodesCounter: number;
+  history: PathSearchHistoryInterface[];
 }
 
 export enum MenuTypes {

@@ -47,7 +47,8 @@ const PathLayer = (props: {
             props.path,
             props.setPath,
             props.processIdxRef,
-            searchSpeedRef
+            searchSpeedRef,
+            props.algoType
           );
           break;
         case AlgoTypes.BFS:
@@ -56,7 +57,8 @@ const PathLayer = (props: {
             props.path,
             props.setPath,
             props.processIdxRef,
-            searchSpeedRef
+            searchSpeedRef,
+            props.algoType
           );
           break;
         case AlgoTypes.Dijkstra:
@@ -65,7 +67,8 @@ const PathLayer = (props: {
             props.path,
             props.setPath,
             props.processIdxRef,
-            searchSpeedRef
+            searchSpeedRef,
+            props.algoType
           );
           break;
         case AlgoTypes.AStarManhatten:
@@ -74,7 +77,8 @@ const PathLayer = (props: {
             props.path,
             props.setPath,
             props.processIdxRef,
-            searchSpeedRef
+            searchSpeedRef,
+            props.algoType
           );
           break;
         case AlgoTypes.AStarEuclidean:
@@ -83,7 +87,8 @@ const PathLayer = (props: {
             props.path,
             props.setPath,
             props.processIdxRef,
-            searchSpeedRef
+            searchSpeedRef,
+            props.algoType
           );
           break;
       }

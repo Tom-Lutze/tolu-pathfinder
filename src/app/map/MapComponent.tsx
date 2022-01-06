@@ -53,6 +53,7 @@ const MapComponent = () => {
     processIdx: 0,
     visitedNodesCounter: 0,
     state: PathSearchStates.Uninitialized,
+    history: [],
   };
   const [graph, setGraph] = useState(initGraph);
   const [path, setPath] = useState(initPath);
@@ -72,8 +73,9 @@ const MapComponent = () => {
     setGraph(newGraph);
   };
 
-  const resetPath = () => {
+  const resetPath = (keepHistory = false) => {
     const newPath = { ...initPath };
+    if (keepHistory) newPath.history = path.history;
     processIdxRef.current = {
       ...processIdxRef.current,
       pathIdx: processIdxRef.current.pathIdx + 1,
@@ -103,7 +105,7 @@ const MapComponent = () => {
 
   /** Algo type updated */
   useEffect(() => {
-    resetPath();
+    resetPath(true);
   }, [algoType]);
 
   /** Max graph nodes setting updated */

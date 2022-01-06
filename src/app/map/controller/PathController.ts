@@ -1,5 +1,6 @@
 import { LatLng } from 'leaflet';
 import {
+  AlgoTypes,
   AStarNodeInterface,
   GraphInterface,
   PathInterface,
@@ -15,7 +16,8 @@ export default class PathController {
     path: PathInterface,
     setPath: React.Dispatch<React.SetStateAction<PathInterface>>,
     processIdxRef: React.MutableRefObject<ProcessIdxInterface>,
-    searchSpeed: React.MutableRefObject<any>
+    searchSpeed: React.MutableRefObject<any>,
+    algoType: AlgoTypes
   ) {
     PathControllerHelper.searchAlgorithm(
       graph,
@@ -23,7 +25,8 @@ export default class PathController {
       setPath,
       processIdxRef,
       (array: number[][]) => array.shift(),
-      searchSpeed
+      searchSpeed,
+      algoType
     );
   }
 
@@ -32,7 +35,8 @@ export default class PathController {
     path: PathInterface,
     setPath: React.Dispatch<React.SetStateAction<PathInterface>>,
     processIdxRef: React.MutableRefObject<ProcessIdxInterface>,
-    searchSpeed: React.MutableRefObject<any>
+    searchSpeed: React.MutableRefObject<any>,
+    algoType: AlgoTypes
   ) {
     PathControllerHelper.searchAlgorithm(
       graph,
@@ -40,7 +44,8 @@ export default class PathController {
       setPath,
       processIdxRef,
       (array: number[][]) => array.pop(),
-      searchSpeed
+      searchSpeed,
+      algoType
     );
   }
 
@@ -50,6 +55,7 @@ export default class PathController {
     setPath: React.Dispatch<React.SetStateAction<PathInterface>>,
     processIdxRef: React.MutableRefObject<ProcessIdxInterface>,
     searchSpeed: React.MutableRefObject<any>,
+    algoType: AlgoTypes,
     processAll = false
   ) {
     PathControllerHelper.aStarAlgorithm(
@@ -59,6 +65,7 @@ export default class PathController {
       processIdxRef,
       () => 0,
       searchSpeed,
+      algoType,
       processAll
     );
   }
@@ -69,6 +76,7 @@ export default class PathController {
     setPath: React.Dispatch<React.SetStateAction<PathInterface>>,
     processIdxRef: React.MutableRefObject<ProcessIdxInterface>,
     searchSpeed: React.MutableRefObject<any>,
+    algoType: AlgoTypes,
     processAll = false
   ) {
     PathControllerHelper.aStarAlgorithm(
@@ -78,6 +86,7 @@ export default class PathController {
       processIdxRef,
       PathControllerHelper.manhattenDistance,
       searchSpeed,
+      algoType,
       processAll
     );
   }
@@ -88,6 +97,7 @@ export default class PathController {
     setPath: React.Dispatch<React.SetStateAction<PathInterface>>,
     processIdxRef: React.MutableRefObject<ProcessIdxInterface>,
     searchSpeed: React.MutableRefObject<any>,
+    algoType: AlgoTypes,
     processAll = false
   ) {
     PathControllerHelper.aStarAlgorithm(
@@ -97,6 +107,7 @@ export default class PathController {
       processIdxRef,
       (pos1, pos2) => pos1.distanceTo(pos2),
       searchSpeed,
+      algoType,
       processAll
     );
   }
@@ -109,7 +120,8 @@ class PathControllerHelper {
     setPath: React.Dispatch<React.SetStateAction<PathInterface>>,
     processIdxRef: React.MutableRefObject<ProcessIdxInterface>,
     arrayOperation: (array: any) => number[] | undefined,
-    searchSpeed: React.MutableRefObject<any>
+    searchSpeed: React.MutableRefObject<any>,
+    algoType: AlgoTypes
   ) {
     const newPath = { ...path };
     newPath.state = PathSearchStates.Searching;
@@ -137,6 +149,10 @@ class PathControllerHelper {
             state: PathSearchStates.Finalized,
             found: true,
             nodes: currentNode,
+            history: [
+              { algo: algoType, visitedNodes: newPath.visitedNodesCounter },
+              ...newPath.history,
+            ],
           });
         } else {
           setPath({
@@ -165,6 +181,7 @@ class PathControllerHelper {
     processIdxRef: React.MutableRefObject<ProcessIdxInterface>,
     heuristicFunction: (pos1: LatLng, pos2: LatLng) => number,
     searchSpeed: React.MutableRefObject<any>,
+    algoType: AlgoTypes,
     processAll = false
   ) {
     const newPath = { ...path, state: PathSearchStates.Searching };
@@ -254,7 +271,14 @@ class PathControllerHelper {
 
     await sleep(sleepTime);
     if (startSearchIdx != processIdxRef.current.pathIdx) return;
-    setPath({ ...newPath, state: PathSearchStates.Finalized });
+    setPath({
+      ...newPath,
+      state: PathSearchStates.Finalized,
+      history: [
+        { algo: algoType, visitedNodes: newPath.visitedNodesCounter },
+        ...newPath.history,
+      ],
+    });
   }
 
   static manhattenDistance = (pos1: LatLng, pos2: LatLng) => {
