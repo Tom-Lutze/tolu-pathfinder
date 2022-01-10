@@ -1,6 +1,9 @@
-import { Card, Col, Divider, Row, Statistic, Table } from 'antd';
+import { Card, Col, Row, Statistic, Table } from 'antd';
+import L from 'leaflet';
+import { useEffect, useRef, useState } from 'react';
 import { GraphInterface, PathInterface } from '../../../interfaces';
-import { algoMenuStrings, appStrings } from '../../constants/Strings';
+import { algoMenuStrings, algoMenuStringsShort } from '../../constants/Strings';
+import { AreaChartOutlined, CaretUpOutlined } from '@ant-design/icons';
 
 const POSITION_CLASSES = {
   bottomleft: 'leaflet-bottom leaflet-left',
@@ -13,11 +16,38 @@ export const ControlLayer = (params: {
   graph: GraphInterface;
   path: PathInterface;
 }) => {
-  return (
-    <div className={POSITION_CLASSES.topright}>
-      <div className="leaflet-control leaflet-bar">
-        <Card>
-          <Row gutter={2}>
+  const [showStatistics, setShowStatistics] = useState(false);
+  const controlLayerRef = useRef<any>();
+
+  useEffect(() => {
+    if (controlLayerRef) {
+      L.DomEvent.disableClickPropagation(controlLayerRef.current);
+      L.DomEvent.disableScrollPropagation(controlLayerRef.current);
+    }
+  });
+
+  const StatisticsLayer = () => {
+    if (!showStatistics) {
+      return (
+        <Card className="tolu-statistics collapsed">
+          <span className="extend-button">
+            <a onClick={() => setShowStatistics(true)}>
+              <AreaChartOutlined />
+            </a>
+          </span>
+        </Card>
+      );
+    } else {
+      return (
+        <Card className="tolu-statistics">
+          <Row justify="end">
+            <Col>
+              <a onClick={() => setShowStatistics(false)}>
+                <CaretUpOutlined />
+              </a>
+            </Col>
+          </Row>
+          <Row gutter={[16, 40]}>
             <Col span={8}>
               <Statistic
                 title="Nodes"
@@ -44,32 +74,23 @@ export const ControlLayer = (params: {
                 value={params.path.visitedNodesCounter}
               />
             </Col>
+          </Row>
+          <Row style={{ marginTop: '16px' }}>
             <Col span={24}>
-              <Divider orientation="left">{appStrings.resultsTitle}</Divider>
-            </Col>
-            <Col span={24}>
-              {/* <List
-                size="small"
-                header={<div>Results</div>}
-                dataSource={params.path.history.sort(
-                  (a, b) => a.visitedNodes - b.visitedNodes
-                )}
-                renderItem={(item) => (
-                  <List.Item>{`${item.visitedNodes} - ${
-                    AlgoTypes[item.algo]
-                  }`}</List.Item>
-                )}
-              /> */}
               <Table
                 className="tolu-results-table"
-                showHeader={false}
+                bordered={true}
                 size="small"
                 tableLayout="auto"
                 pagination={false}
                 dataSource={params.path.history
                   .sort((a, b) => a.visitedNodes - b.visitedNodes)
                   .map((ele) => {
-                    return { ...ele, algo: algoMenuStrings[ele.algo] };
+                    return {
+                      ...ele,
+                      algo: ele.algo,
+                      key: ele.algo,
+                    };
                   })}
                 columns={[
                   {
@@ -79,14 +100,29 @@ export const ControlLayer = (params: {
                   },
                   {
                     title: 'Algorithm',
+                    render: (algo: number) => (
+                      <span key={algo} title={algoMenuStrings[algo]}>
+                        {algoMenuStringsShort[algo]}
+                      </span>
+                    ),
                     dataIndex: 'algo',
                     key: 'algo',
                   },
                 ]}
+                rowClassName={(record) =>
+                  record.isCurrent ? 'selected-row' : ''
+                }
               />
             </Col>
           </Row>
         </Card>
+      );
+    }
+  };
+  return (
+    <div className={POSITION_CLASSES.topright} ref={controlLayerRef}>
+      <div className="leaflet-control leaflet-bar">
+        <StatisticsLayer />
       </div>
     </div>
   );

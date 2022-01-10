@@ -1,5 +1,4 @@
 import { Layout } from 'antd';
-import 'antd/dist/antd.less';
 import React, { useState } from 'react';
 import MapComponent from '../app/map/MapComponent';
 import './App.less';

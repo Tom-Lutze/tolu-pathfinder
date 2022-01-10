@@ -150,8 +150,16 @@ class PathControllerHelper {
             found: true,
             nodes: currentNode,
             history: [
-              { algo: algoType, visitedNodes: newPath.visitedNodesCounter },
-              ...newPath.history,
+              {
+                algo: algoType,
+                visitedNodes: newPath.visitedNodesCounter,
+                isCurrent: true,
+              },
+              ...newPath.history
+                .filter((ele) => ele.algo != algoType)
+                .map((ele) => {
+                  return { ...ele, isCurrent: false };
+                }),
             ],
           });
         } else {
@@ -275,8 +283,16 @@ class PathControllerHelper {
       ...newPath,
       state: PathSearchStates.Finalized,
       history: [
-        { algo: algoType, visitedNodes: newPath.visitedNodesCounter },
-        ...newPath.history,
+        {
+          algo: algoType,
+          visitedNodes: newPath.visitedNodesCounter,
+          isCurrent: true,
+        },
+        ...newPath.history
+          .filter((ele) => ele.algo != algoType)
+          .map((ele) => {
+            return { ...ele, isCurrent: false };
+          }),
       ],
     });
   }

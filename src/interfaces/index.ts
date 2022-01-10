@@ -38,6 +38,7 @@ export interface GraphStateInterface {
 interface PathSearchHistoryInterface {
   algo: AlgoTypes;
   visitedNodes: number;
+  isCurrent?: boolean;
 }
 
 export interface PathInterface {

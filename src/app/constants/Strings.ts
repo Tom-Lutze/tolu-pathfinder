@@ -25,6 +25,14 @@ export const algoMenuStrings = {
   [AlgoTypes.AStarManhatten]: 'A* (Manhatten)',
 };
 
+export const algoMenuStringsShort = {
+  [AlgoTypes.BFS]: 'BFS',
+  [AlgoTypes.DFS]: 'DFS',
+  [AlgoTypes.Dijkstra]: 'Dijk',
+  [AlgoTypes.AStarEuclidean]: 'A* (E)',
+  [AlgoTypes.AStarManhatten]: 'A* (M)',
+};
+
 export const settingMenuStrings = {
   [SettingTypes.BuildSpeed]: 'Build speed',
   [SettingTypes.SearchSpeed]: 'Search speed',

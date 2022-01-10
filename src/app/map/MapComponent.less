@@ -1,4 +1,4 @@
-@import '~antd/lib/style/themes/default.less';
+@import '~antd/lib/style/themes/dark.less';
 
 @gray-text: #595959;
 
@@ -21,24 +21,24 @@
 
 .leaflet-bar a {
   :hover {
-    background-color: @layout-header-background;
+    background-color: @component-background;
   }
-  background-color: @layout-header-background;
+  background-color: @component-background;
   color: @gray-text;
 }
 
 .leaflet-bar a:hover {
-  background-color: @layout-header-background;
+  background-color: @component-background;
 }
 
 .leaflet-popup-content-wrapper {
   border-radius: initial;
-  background-color: @layout-header-background;
+  background-color: @component-background;
   color: @gray-text;
 }
 
 .leaflet-popup-tip {
-  background-color: @layout-header-background;
+  background-color: @component-background;
 }
 
 .leaflet-container a.leaflet-popup-close-button,
@@ -71,10 +71,73 @@
   color: #0078a8;
 }
 
-.leaflet-control-zoom.leaflet-bar {
+.leaflet-bar.leaflet-control {
   border: none;
 }
 
-.tolu-results-table table {
-  // width: auto;
+// .tolu-results-table {
+//   background-color: @layout-header-background;
+
+//   .ant-table-bordered {
+//     background-color: @layout-header-background;
+
+//     .ant-table-container .ant-table-content table thead tr th,
+//     .ant-table-container .ant-table-content table,
+//     .ant-table-container {
+//       border-color: @gray-text;
+
+//       .ant-table-content > table > tbody > tr > td {
+//         border-color: @gray-text;
+//       }
+//     }
+
+//     .ant-table-container table {
+//       border-radius: 0;
+//     }
+
+//     .ant-table-container table thead tr:first-child th:first-child,
+//     .ant-table-container table thead tr:first-child th:last-child {
+//       border-top-left-radius: 0;
+//       border-top-right-radius: 0;
+//     }
+//   }
+
+//   .ant-table-thead .ant-table-cell {
+//     background-color: @layout-header-background;
+//     color: @gray-text;
+//   }
+// }
+
+.tolu-statistics.collapsed {
+  .ant-card-body {
+    padding: 4px;
+  }
+
+  .extend-button {
+    font-size: 24px;
+  }
+}
+
+.tolu-statistics {
+  border: none;
+  // background-color: @layout-header-background;
+  // color: @gray-text;
+
+  .ant-card-body {
+    padding: 12px;
+  }
+
+  // .ant-statistic-title {
+  //   color: @gray-text;
+  // }
+
+  // .ant-statistic-content {
+  //   text-align: center;
+  //   color: @gray-text;
+  // }
+
+  .selected-row {
+    // background-color: #e6f7ff;
+    background-color: @table-row-hover-bg;
+  }
 }

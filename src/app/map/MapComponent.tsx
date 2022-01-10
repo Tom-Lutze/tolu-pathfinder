@@ -157,7 +157,6 @@ const MapComponent = () => {
       style={{ maxHeight: '100%' }}
     >
       <MapContainer center={[0, 0]} zoom={13} scrollWheelZoom={true}>
-        <MapEventHandler />
         <TileLayer
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           url={`${process.env.PUBLIC_URL}/map-tile.png`}
@@ -177,7 +176,10 @@ const MapComponent = () => {
           algoType={algoType}
           processIdxRef={processIdxRef}
         />
+        {/* <FeatureGroup eventHandlers={{ click: () => console.log('c') }}> */}
         <ControlLayer graph={graph} path={path} />
+        {/* </FeatureGroup> */}
+        <MapEventHandler />
       </MapContainer>
     </Spin>
   );
