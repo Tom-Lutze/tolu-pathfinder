@@ -42,9 +42,11 @@ export const ControlLayer = (params: {
         <Card className="tolu-statistics">
           <Row justify="end">
             <Col>
-              <a onClick={() => setShowStatistics(false)}>
-                <CaretUpOutlined />
-              </a>
+              <span className="collapse-button">
+                <a onClick={() => setShowStatistics(false)}>
+                  <CaretUpOutlined />
+                </a>
+              </span>
             </Col>
           </Row>
           <Row gutter={[16, 40]}>

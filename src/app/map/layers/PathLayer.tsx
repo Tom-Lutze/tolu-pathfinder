@@ -119,24 +119,22 @@ const PathLayer = (props: {
       {!props.graph.state.updated &&
         props.path.found &&
         props.path.nodes.length > 1 && (
-          <Pane name="tolu-path-pane">
-            <Polyline
-              pathOptions={{
-                color:
-                  props.path.state === PathSearchStates.Finalized
-                    ? 'lime'
-                    : 'orange',
-                dashArray: '10, 10',
-                dashOffset: '0',
-              }}
-              positions={props.path.nodes.map(
-                (nodeIdx) =>
-                  GraphController.getNode(nodeIdx, props.graph).position
-              )}
-              {...{ zIndex: 9999 }}
-              interactive={false}
-            />
-          </Pane>
+          <Polyline
+            pathOptions={{
+              color:
+                props.path.state === PathSearchStates.Finalized
+                  ? 'lime'
+                  : 'orange',
+              dashArray: '10, 10',
+              dashOffset: '0',
+            }}
+            positions={props.path.nodes.map(
+              (nodeIdx) =>
+                GraphController.getNode(nodeIdx, props.graph).position
+            )}
+            {...{ zIndex: 9999 }}
+            interactive={false}
+          />
         )}
     </>
   );

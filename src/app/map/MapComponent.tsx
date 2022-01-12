@@ -24,7 +24,6 @@ import GraphController from './controller/GraphController';
 import { ControlLayer } from './layers/ControlLayer';
 import GraphLayer from './layers/GraphLayer';
 import PathLayer from './layers/PathLayer';
-import './MapComponent.less';
 
 const MapComponent = () => {
   const initGraph: GraphInterface = {
@@ -176,9 +175,9 @@ const MapComponent = () => {
           algoType={algoType}
           processIdxRef={processIdxRef}
         />
-        {/* <FeatureGroup eventHandlers={{ click: () => console.log('c') }}> */}
-        <ControlLayer graph={graph} path={path} />
-        {/* </FeatureGroup> */}
+        <div className="leaflet-control-container">
+          <ControlLayer graph={graph} path={path} />
+        </div>
         <MapEventHandler />
       </MapContainer>
     </Spin>

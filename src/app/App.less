@@ -1,19 +1,147 @@
-@import '~antd/dist/antd.less';
 @import '~antd/lib/style/themes/dark.less';
+@import '~antd/dist/antd.less';
 
-.logo {
-  padding: 16px;
-  border-bottom: solid 1px #595959;
+@popover-background: #001529;
+@component-background: #000c17;
+@gray-tolu: #595959;
+
+.tolu-text-disabled {
+  color: @gray-tolu;
 }
 
-.site-layout-background {
-  background: #fff;
+.ant-layout {
+  .ant-layout-sider {
+    .ant-layout-sider-children {
+      height: auto;
+
+      .logo {
+        padding: 16px;
+        border-bottom: solid 1px #595959;
+      }
+
+      .ant-menu {
+        .ant-menu-submenu-inline
+          .tolu-settings-slider-parent
+          .ant-menu-title-content {
+          padding: 0 6px;
+        }
+      }
+    }
+
+    .ant-layout-sider-trigger {
+      background-color: #002140;
+    }
+  }
+
+  .site-layout {
+    .ant-layout-content {
+      &.site-layout-background {
+        background: #fff;
+      }
+    }
+  }
 }
 
-.ant-menu-submenu-inline .tolu-settings-slider-parent .ant-menu-title-content {
-  padding: 0 6px;
-}
+.leaflet-container {
+  width: 100wh;
+  height: 100vh;
 
-.ant-layout-sider-children {
-  height: auto;
+  &.leaflet-grab {
+    cursor: crosshair;
+  }
+
+  a {
+    color: @text-color-secondary-dark;
+    &:hover {
+      color: @white;
+    }
+  }
+
+  .leaflet-map-pane {
+    .leaflet-popup-pane {
+      .leaflet-popup {
+        .leaflet-container a.leaflet-popup-close-button {
+          top: 8px;
+          right: 6px;
+          padding: initial;
+        }
+
+        .leaflet-popup-content-wrapper {
+          border-radius: initial;
+          background-color: @component-background;
+          color: @gray-tolu;
+
+          .leaflet-popup-content {
+            margin: 8px;
+
+            .tolu-popup-actions {
+              padding-top: 8px;
+              border-top: solid 1px @gray-tolu;
+            }
+          }
+        }
+
+        .leaflet-popup-tip {
+          background-color: @component-background;
+        }
+      }
+    }
+  }
+
+  .leaflet-control-container {
+    .leaflet-bar {
+      border: solid 1px @gray-tolu;
+      a,
+      a:hover {
+        background-color: @component-background;
+      }
+    }
+
+    .leaflet-top.leaflet-right {
+      .tolu-statistics {
+        border: none;
+
+        &.ant-card,
+        .ant-table,
+        .leaflet-bar a:hover {
+          background-color: @component-background;
+        }
+
+        .ant-card-body {
+          padding: 12px;
+        }
+
+        .ant-statistic-content {
+          text-align: center;
+        }
+
+        .selected-row {
+          background-color: @table-row-hover-bg;
+        }
+
+        &.collapsed .ant-card-body {
+          padding: 4px;
+        }
+
+        .extend-button {
+          font-size: 24px;
+        }
+
+        .collapse-button a {
+          height: 20px;
+          width: 15px;
+          line-height: normal;
+        }
+      }
+    }
+
+    .leaflet-bottom.leaflet-right {
+      .leaflet-control-attribution {
+        a,
+        a:hover {
+          color: #0078a8;
+        }
+      }
+    }
+  }
 }
