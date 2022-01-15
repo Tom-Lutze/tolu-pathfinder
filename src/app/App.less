@@ -3,10 +3,10 @@
 
 @popover-background: #001529;
 @component-background: #000c17;
-@gray-tolu: #595959;
+@tolu-gray: #595959;
 
 .tolu-text-disabled {
-  color: @gray-tolu;
+  color: @tolu-gray;
 }
 
 .ant-layout {
@@ -69,14 +69,14 @@
         .leaflet-popup-content-wrapper {
           border-radius: initial;
           background-color: @component-background;
-          color: @gray-tolu;
+          color: @tolu-gray;
 
           .leaflet-popup-content {
             margin: 8px;
 
             .tolu-popup-actions {
               padding-top: 8px;
-              border-top: solid 1px @gray-tolu;
+              border-top: solid 1px @tolu-gray;
             }
           }
         }
@@ -90,7 +90,7 @@
 
   .leaflet-control-container {
     .leaflet-bar {
-      border: solid 1px @gray-tolu;
+      border: solid 1px @tolu-gray;
       a,
       a:hover {
         background-color: @component-background;
@@ -144,4 +144,31 @@
       }
     }
   }
+}
+
+/** Animations **/
+.tolu-fade-comp {
+  transform-origin: top center;
+}
+.tolu-fade-enter {
+  opacity: 0;
+  transform: scaleY(0);
+}
+.tolu-fade-exit {
+  opacity: 1;
+  transform: scaleY(1);
+}
+.tolu-fade-enter-active {
+  opacity: 1;
+  transform: scaleY(1);
+}
+.tolu-fade-exit-active {
+  opacity: 0;
+  transform: scaleY(0);
+}
+.tolu-fade-enter-active {
+  transition: opacity 500ms, transform 500ms;
+}
+.tolu-fade-exit-active {
+  transition: opacity 200ms, transform 200ms;
 }

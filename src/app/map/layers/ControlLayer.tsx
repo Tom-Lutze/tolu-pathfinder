@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { GraphInterface, PathInterface } from '../../../interfaces';
 import { algoMenuStrings, algoMenuStringsShort } from '../../constants/Strings';
 import { AreaChartOutlined, CaretUpOutlined } from '@ant-design/icons';
+import { CSSTransition, SwitchTransition } from 'react-transition-group';
 
 const POSITION_CLASSES = {
   bottomleft: 'leaflet-bottom leaflet-left',
@@ -24,7 +25,7 @@ export const ControlLayer = (params: {
       L.DomEvent.disableClickPropagation(controlLayerRef.current);
       L.DomEvent.disableScrollPropagation(controlLayerRef.current);
     }
-  });
+  }, [showStatistics]);
 
   const StatisticsLayer = () => {
     if (!showStatistics) {
@@ -122,10 +123,22 @@ export const ControlLayer = (params: {
     }
   };
   return (
-    <div className={POSITION_CLASSES.topright} ref={controlLayerRef}>
-      <div className="leaflet-control leaflet-bar">
-        <StatisticsLayer />
-      </div>
+    <div ref={controlLayerRef}>
+      <SwitchTransition>
+        <CSSTransition
+          key={showStatistics ? 'show' : 'hide'}
+          addEndListener={(node, done) =>
+            node.addEventListener('transitionend', done, false)
+          }
+          classNames="tolu-fade"
+        >
+          <div className={`${POSITION_CLASSES.topright} tolu-fade-comp`}>
+            <div className="leaflet-control leaflet-bar">
+              <StatisticsLayer />
+            </div>
+          </div>
+        </CSSTransition>
+      </SwitchTransition>
     </div>
   );
 };
