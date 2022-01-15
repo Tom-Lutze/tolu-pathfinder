@@ -156,7 +156,7 @@ const MapComponent = () => {
     >
       <MapContainer center={[0, 0]} zoom={13} scrollWheelZoom={true}>
         <TileLayer
-          attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+          attribution='&copy; <a href="https://lutze-it.com" title="For more info visit lutze-it.com" target="_blank">LUTZE-IT</a>'
           url={`${process.env.PUBLIC_URL}/map-tile.png`}
         />
         <FeatureGroup ref={graphFeatureGroup}>
