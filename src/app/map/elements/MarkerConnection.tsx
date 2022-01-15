@@ -1,10 +1,9 @@
-import { useRef } from 'react';
-import { Polyline, Popup } from 'react-leaflet';
-import { BuilderStates, GraphInterface } from '../../../../interfaces';
-import { appStrings } from '../../../constants/Strings';
-import GraphController from '../../controller/GraphController';
 import { CloseOutlined } from '@ant-design/icons';
-import React from 'react';
+import React, { useRef } from 'react';
+import { Polyline, Popup } from 'react-leaflet';
+import { BuilderStates, GraphInterface } from '../../../interfaces';
+import { appStrings } from '../../constants/Strings';
+import GraphController from '../controller/GraphController';
 
 const MarkerConnection = (params: {
   nodeIdx: number;

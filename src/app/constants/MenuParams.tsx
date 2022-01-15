@@ -1,20 +1,20 @@
 import {
+  BranchesOutlined,
+  CompassOutlined,
+  SettingOutlined,
+} from '@ant-design/icons';
+import React from 'react';
+import {
   AlgoTypes,
   GraphTypes,
   MenuTypes,
   SettingTypes,
 } from '../../interfaces';
 import {
-  BranchesOutlined,
-  CompassOutlined,
-  SettingOutlined,
-} from '@ant-design/icons';
-import {
   algoMenuStrings,
   graphMenuStrings,
   settingMenuStrings,
 } from './Strings';
-import React from 'react';
 
 export const menuParams = {
   [MenuTypes.Graph]: {
@@ -41,7 +41,7 @@ export const menuParams = {
         step: 1,
       },
       [SettingTypes.BuildSpeed]: {
-        initialVal: 75,
+        initialVal: 90,
         min: 0,
         max: 100,
         step: 1,
@@ -53,7 +53,7 @@ export const menuParams = {
         step: 1,
       },
       [SettingTypes.MaxNodesRandom]: {
-        initialVal: 10,
+        initialVal: 20,
         min: 0,
         max: 100,
         step: 1,

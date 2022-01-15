@@ -5,7 +5,6 @@ import {
   FeatureGroup,
   MapContainer,
   TileLayer,
-  useMap,
   useMapEvents,
 } from 'react-leaflet';
 import {
@@ -21,9 +20,9 @@ import {
 import { SettingContexts } from '../../utils/SettingsProvider';
 import { appStrings } from '../constants/Strings';
 import GraphController from './controller/GraphController';
-import { ControlLayer } from './layers/ControlLayer';
 import GraphLayer from './layers/GraphLayer';
 import PathLayer from './layers/PathLayer';
+import { StatisticsLayer } from './layers/StatisticsLayer';
 
 const MapComponent = () => {
   const initGraph: GraphInterface = {
@@ -176,7 +175,7 @@ const MapComponent = () => {
           processIdxRef={processIdxRef}
         />
         <div className="leaflet-control-container">
-          <ControlLayer graph={graph} path={path} />
+          <StatisticsLayer graph={graph} path={path} />
         </div>
         <MapEventHandler />
       </MapContainer>

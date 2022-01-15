@@ -1,19 +1,12 @@
+import { AreaChartOutlined, CaretUpOutlined } from '@ant-design/icons';
 import { Card, Col, Row, Statistic, Table } from 'antd';
 import L from 'leaflet';
 import { useEffect, useRef, useState } from 'react';
+import { CSSTransition, SwitchTransition } from 'react-transition-group';
 import { GraphInterface, PathInterface } from '../../../interfaces';
 import { algoMenuStrings, algoMenuStringsShort } from '../../constants/Strings';
-import { AreaChartOutlined, CaretUpOutlined } from '@ant-design/icons';
-import { CSSTransition, SwitchTransition } from 'react-transition-group';
 
-const POSITION_CLASSES = {
-  bottomleft: 'leaflet-bottom leaflet-left',
-  bottomright: 'leaflet-bottom leaflet-right',
-  topleft: 'leaflet-top leaflet-left',
-  topright: 'leaflet-top leaflet-right',
-};
-
-export const ControlLayer = (params: {
+export const StatisticsLayer = (params: {
   graph: GraphInterface;
   path: PathInterface;
 }) => {
@@ -27,7 +20,7 @@ export const ControlLayer = (params: {
     }
   }, [showStatistics]);
 
-  const StatisticsLayer = () => {
+  const StatisticsContent = () => {
     if (!showStatistics) {
       return (
         <Card className="tolu-statistics collapsed">
@@ -132,9 +125,9 @@ export const ControlLayer = (params: {
           }
           classNames="tolu-fade"
         >
-          <div className={`${POSITION_CLASSES.topright} tolu-fade-comp`}>
+          <div className="leaflet-top leaflet-right tolu-fade-comp">
             <div className="leaflet-control leaflet-bar">
-              <StatisticsLayer />
+              <StatisticsContent />
             </div>
           </div>
         </CSSTransition>

@@ -2,8 +2,8 @@ import { Menu, Slider } from 'antd';
 import React, { useContext } from 'react';
 import { AlgoTypes, GraphTypes, MenuTypes } from '../../interfaces';
 import { SettingContexts } from '../../utils/SettingsProvider';
-import { mainMenuStrings } from '../constants/Strings';
 import { menuParams } from '../constants/MenuParams';
+import { mainMenuStrings } from '../constants/Strings';
 
 const AppMenu = () => {
   const subMenuitems = [];
@@ -87,7 +87,7 @@ const AppMenu = () => {
         AlgoTypes[algoContext.stateVal],
       ]}
       defaultOpenKeys={[MenuTypes[MenuTypes.Graph], MenuTypes[MenuTypes.Algo]]}
-      style={{ /* height: '100%', */ borderRight: 0 }}
+      style={{ borderRight: 0 }}
       onClick={(e) => {
         const menuType = MenuTypes[e.keyPath[1]];
         const menuParam = menuParams[menuType];

@@ -1,15 +1,14 @@
+import { CloseOutlined, DeleteOutlined } from '@ant-design/icons';
+import React, { useRef } from 'react';
 import { Marker, Popup } from 'react-leaflet';
-import { BuilderStates, GraphInterface } from '../../../../interfaces';
+import { BuilderStates, GraphInterface } from '../../../interfaces';
+import { appStrings } from '../../constants/Strings';
+import GraphController from '../controller/GraphController';
 import {
   MarkerIconDefault,
   MarkerIconGreen,
   MarkerIconRed,
 } from './MarkerIcons';
-import GraphController from '../../controller/GraphController';
-import { DeleteOutlined, CloseOutlined } from '@ant-design/icons';
-import { appStrings } from '../../../constants/Strings';
-import { useRef } from 'react';
-import React from 'react';
 
 const MarkerWithPopup = (params: {
   nodeIdx: number;

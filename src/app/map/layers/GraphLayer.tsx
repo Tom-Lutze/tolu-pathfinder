@@ -12,8 +12,8 @@ import { SettingContexts } from '../../../utils/SettingsProvider';
 import { BUILDER_SETTINGS } from '../../constants/Settings';
 import BuilderController from '../controller/BuilderController';
 import GraphController from '../controller/GraphController';
-import MarkerConnection from './subLayers/MarkerConnection';
-import MarkerWithPopup from './subLayers/MarkerWithPopup';
+import MarkerConnection from '../elements/MarkerConnection';
+import MarkerWithPopup from '../elements/MarkerWithPopup';
 
 const GraphLayer = (props: {
   graph: GraphInterface;

@@ -1,7 +1,6 @@
 import { Layout } from 'antd';
 import React, { useState } from 'react';
 import MapComponent from '../app/map/MapComponent';
-import './App.less';
 import AppMenu from './ui/Menu';
 
 const App = () => {
