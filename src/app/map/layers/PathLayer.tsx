@@ -111,7 +111,6 @@ const PathLayer = (props: {
                 (nodeIdx) =>
                   GraphController.getNode(nodeIdx, props.graph).position
               )}
-              {...{ zIndex: 9998 }}
               interactive={false}
             />
           </Pane>
@@ -132,7 +131,6 @@ const PathLayer = (props: {
               (nodeIdx) =>
                 GraphController.getNode(nodeIdx, props.graph).position
             )}
-            {...{ zIndex: 9999 }}
             interactive={false}
           />
         )}

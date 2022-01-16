@@ -125,7 +125,13 @@ const MapComponent = () => {
   /** Graph state updated */
   useEffect(() => {
     if (graph.state.updated) {
-      setGraph({ ...graph, state: { ...graph.state, updated: false } });
+      setGraph({
+        ...graph,
+        state: {
+          ...graph.state,
+          updated: false,
+        },
+      });
       resetPath();
     }
   }, [graph.state.updated]);
@@ -137,7 +143,10 @@ const MapComponent = () => {
       click(e) {
         if (graph.buildState.state === BuilderStates.Finalized) {
           GraphController.addNode(
-            { position: e.latlng, edges: undefined },
+            {
+              position: e.latlng,
+              edges: undefined,
+            },
             graph,
             setGraph
           );
@@ -152,12 +161,17 @@ const MapComponent = () => {
       spinning={graph.buildState.state < BuilderStates.Finalized}
       size="large"
       tip={appStrings.spinTip}
-      style={{ maxHeight: '100%' }}
     >
-      <MapContainer center={[0, 0]} zoom={13} scrollWheelZoom={true}>
+      <MapContainer
+        center={[0, 0]}
+        zoom={13}
+        scrollWheelZoom={true}
+        id="leaflet-map-container"
+      >
         <TileLayer
-          attribution='&copy; <a href="https://lutze-it.com" title="For more info visit lutze-it.com" target="_blank">LUTZE-IT</a>'
+          attribution='&copy; <a href="https://lutze-it.com" title="For more info visit lutze-it.com" target="_blank">Lutze-IT</a>'
           url={`${process.env.PUBLIC_URL}/map-tile.png`}
+          data-test="123"
         />
         <FeatureGroup ref={graphFeatureGroup}>
           <GraphLayer

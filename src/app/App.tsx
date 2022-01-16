@@ -10,10 +10,6 @@ const App = () => {
     <Layout>
       <Layout>
         <Sider
-          style={{
-            overflow: 'auto',
-            height: '100vh',
-          }}
           collapsible
           defaultCollapsed={menuCollapsed}
           onCollapse={(collapsed) => {
@@ -25,20 +21,13 @@ const App = () => {
               src={`${process.env.PUBLIC_URL}/${
                 menuCollapsed ? 'logo48' : 'logo168'
               }.png`}
-              width="100%"
-              height="auto"
+              alt="TOLU Pathfinder logo"
             />
           </div>
           <AppMenu />
         </Sider>
         <Layout className="site-layout">
-          <Content
-            className="site-layout-background"
-            style={{
-              margin: 0,
-              minHeight: 280,
-            }}
-          >
+          <Content className="site-layout-content">
             <MapComponent />
           </Content>
         </Layout>

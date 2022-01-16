@@ -25,7 +25,7 @@ export const StatisticsLayer = (params: {
       return (
         <Card className="tolu-statistics collapsed">
           <span className="extend-button">
-            <a onClick={() => setShowStatistics(true)}>
+            <a onClick={() => setShowStatistics(true)} title="Statistics">
               <AreaChartOutlined />
             </a>
           </span>

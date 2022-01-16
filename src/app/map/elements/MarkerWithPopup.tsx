@@ -114,6 +114,7 @@ const MarkerWithPopup = (params: {
 
   return (
     <Marker
+      title={`Node ${params.nodeIdx}`}
       draggable={buildStateReady()}
       position={GraphController.getNode(params.nodeIdx, params.graph).position}
       opacity={
