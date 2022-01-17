@@ -23,7 +23,7 @@ const AppMenu = () => {
         menuType == MenuTypes[MenuTypes.Graph]
       ) {
         const menuItem = (
-          <Menu.Item key={`${currType}`}>
+          <Menu.Item key={currType}>
             {menuParam.strings[menuParam.type[currType]]}
           </Menu.Item>
         );
@@ -87,7 +87,6 @@ const AppMenu = () => {
         AlgoTypes[algoContext.stateVal],
       ]}
       defaultOpenKeys={[MenuTypes[MenuTypes.Graph], MenuTypes[MenuTypes.Algo]]}
-      style={{ borderRight: 0 }}
       onClick={(e) => {
         const menuType = MenuTypes[e.keyPath[1]];
         const menuParam = menuParams[menuType];

@@ -4,6 +4,7 @@ import MapComponent from '../app/map/MapComponent';
 import logo168 from '../assets/logo168.png';
 import logo48 from '../assets/logo48.png';
 import './App.less';
+import { appStrings } from './constants/Strings';
 import AppMenu from './ui/Menu';
 
 const App = () => {
@@ -22,7 +23,7 @@ const App = () => {
           <div className="logo">
             <img
               src={menuCollapsed ? logo48 : logo168}
-              alt="TOLU Pathfinder logo"
+              alt={appStrings.logoAlt}
             />
           </div>
           <AppMenu />

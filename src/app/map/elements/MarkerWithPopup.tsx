@@ -156,13 +156,7 @@ const MarkerWithPopup = (params: {
     >
       {buildStateReady() && (
         <Popup closeButton={false} ref={popupRef}>
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              paddingBottom: '5px',
-            }}
-          >
+          <div className="tolu-popup-header">
             <span>
               <a
                 title={appStrings.removeTooltip}

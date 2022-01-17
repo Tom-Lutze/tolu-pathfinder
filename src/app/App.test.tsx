@@ -1,13 +1,14 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
 import App from './App';
+import { appStrings } from './constants/Strings';
 import MapComponent from './map/MapComponent';
 import Menu from './ui/Menu';
 
 describe('App tests:', () => {
   test('renders sider with logo', async () => {
     render(<App />);
-    const logo = await screen.findByAltText('TOLU Pathfinder logo');
+    const logo = await screen.findByAltText(appStrings.logoAlt);
     expect(logo).toHaveAttribute('src', 'logo168.png');
   });
 });

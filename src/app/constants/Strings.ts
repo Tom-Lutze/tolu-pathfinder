@@ -56,4 +56,11 @@ export const appStrings = {
   closeTooltip: 'Close',
   spinTip: 'Building graph ...',
   resultsTitle: 'Results',
+  logoAlt: 'TOLU Pathfinder logo',
+  attributionTitle: 'For more info visit lutze-it.com',
+  statisticsTitle: 'Statistics',
+  statisticsNodesTitle: 'Nodes',
+  statisticsEdgesTitle: 'Edges',
+  statisticsVisitedTitle: 'Visited',
+  statisticsAlgorithmTitle: 'Algorithm',
 };

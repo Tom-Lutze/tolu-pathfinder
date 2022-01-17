@@ -36,10 +36,8 @@ const MarkerConnection = (params: {
           >
             {buildStateReady && (
               <Popup ref={popupRef} closeButton={false}>
-                <div
-                  style={{ display: 'flex', justifyContent: 'space-between' }}
-                >
-                  <span style={{ marginRight: '6px' }}>
+                <div className="tolu-popup-header-connection">
+                  <span>
                     <a
                       title={appStrings.disconnectTooltip}
                       onClick={() =>

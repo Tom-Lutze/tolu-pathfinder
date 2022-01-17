@@ -87,6 +87,21 @@
           .leaflet-popup-content {
             margin: 8px;
 
+            .tolu-popup-header {
+              display: flex;
+              justify-content: space-between;
+              padding-bottom: 5px;
+            }
+
+            .tolu-popup-header-connection {
+              display: flex;
+              justify-content: space-between;
+
+              & > span:first-child {
+                margin-right: 6px;
+              }
+            }
+
             .tolu-popup-actions {
               padding-top: 8px;
               border-top: solid 1px @tolu-gray;

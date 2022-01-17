@@ -4,7 +4,11 @@ import L from 'leaflet';
 import { useEffect, useRef, useState } from 'react';
 import { CSSTransition, SwitchTransition } from 'react-transition-group';
 import { GraphInterface, PathInterface } from '../../../interfaces';
-import { algoMenuStrings, algoMenuStringsShort } from '../../constants/Strings';
+import {
+  algoMenuStrings,
+  algoMenuStringsShort,
+  appStrings,
+} from '../../constants/Strings';
 
 export const StatisticsLayer = (params: {
   graph: GraphInterface;
@@ -25,7 +29,10 @@ export const StatisticsLayer = (params: {
       return (
         <Card className="tolu-statistics collapsed">
           <span className="extend-button">
-            <a onClick={() => setShowStatistics(true)} title="Statistics">
+            <a
+              onClick={() => setShowStatistics(true)}
+              title={appStrings.statisticsTitle}
+            >
               <AreaChartOutlined />
             </a>
           </span>
@@ -46,13 +53,13 @@ export const StatisticsLayer = (params: {
           <Row gutter={[16, 40]}>
             <Col span={8}>
               <Statistic
-                title="Nodes"
+                title={appStrings.statisticsNodesTitle}
                 value={Object.keys(params.graph.nodes).length}
               />
             </Col>
             <Col span={8}>
               <Statistic
-                title="Edges"
+                title={appStrings.statisticsEdgesTitle}
                 value={
                   Object.keys(params.graph.nodes)
                     .map((key) => Number(key))
@@ -66,7 +73,7 @@ export const StatisticsLayer = (params: {
             </Col>
             <Col span={8}>
               <Statistic
-                title="Visited"
+                title={appStrings.statisticsVisitedTitle}
                 value={params.path.visitedNodesCounter}
               />
             </Col>
@@ -74,7 +81,6 @@ export const StatisticsLayer = (params: {
           <Row style={{ marginTop: '16px' }}>
             <Col span={24}>
               <Table
-                className="tolu-results-table"
                 bordered={true}
                 size="small"
                 tableLayout="auto"
@@ -90,12 +96,12 @@ export const StatisticsLayer = (params: {
                   })}
                 columns={[
                   {
-                    title: 'Visited',
+                    title: appStrings.statisticsVisitedTitle,
                     dataIndex: 'visitedNodes',
                     key: 'visitedNodes',
                   },
                   {
-                    title: 'Algorithm',
+                    title: appStrings.statisticsAlgorithmTitle,
                     render: (algo: number) => (
                       <span key={algo} title={algoMenuStrings[algo]}>
                         {algoMenuStringsShort[algo]}

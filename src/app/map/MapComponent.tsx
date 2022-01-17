@@ -84,8 +84,8 @@ const MapComponent = () => {
 
   const algoContext: any = useContext(SettingContexts[MenuTypes.Algo]);
   const algoType = algoContext.stateVal;
-  const grapContext: any = useContext(SettingContexts[MenuTypes.Graph]);
-  const graphType = grapContext.stateVal;
+  const graphContext: any = useContext(SettingContexts[MenuTypes.Graph]);
+  const graphType = graphContext.stateVal;
   const gridNodesContext: any = useContext(
     SettingContexts[MenuTypes.Settings][SettingTypes.MaxNodesGrid]
   );
@@ -170,7 +170,7 @@ const MapComponent = () => {
         id="leaflet-map-container"
       >
         <TileLayer
-          attribution='&copy; <a href="https://lutze-it.com" title="For more info visit lutze-it.com" target="_blank">Lutze-IT</a>'
+          attribution={`&copy; <a href="https://lutze-it.com" title="${appStrings.attributionTitle}" target="_blank">Lutze-IT</a>`}
           url={map_tile}
         />
         <FeatureGroup ref={graphFeatureGroup}>
