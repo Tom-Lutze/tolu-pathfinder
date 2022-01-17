@@ -23,6 +23,7 @@ import GraphController from './controller/GraphController';
 import GraphLayer from './layers/GraphLayer';
 import PathLayer from './layers/PathLayer';
 import { StatisticsLayer } from './layers/StatisticsLayer';
+import map_tile from '../../assets/map-tile.png';
 
 const MapComponent = () => {
   const initGraph: GraphInterface = {
@@ -170,8 +171,7 @@ const MapComponent = () => {
       >
         <TileLayer
           attribution='&copy; <a href="https://lutze-it.com" title="For more info visit lutze-it.com" target="_blank">Lutze-IT</a>'
-          url={`${process.env.PUBLIC_URL}/map-tile.png`}
-          data-test="123"
+          url={map_tile}
         />
         <FeatureGroup ref={graphFeatureGroup}>
           <GraphLayer

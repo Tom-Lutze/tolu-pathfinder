@@ -1,9 +1,9 @@
 import Leaflet from 'leaflet';
 import MarkerIcon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
-
-const getMarkerIconPath = (color: string) =>
-  `${process.env.PUBLIC_URL}/marker/marker-icon-${color}.png`;
+import marker_icon_green from '../../../assets/marker/marker-icon-green.png';
+import marker_icon_red from '../../../assets/marker/marker-icon-red.png';
+import marker_icon_yellow from '../../../assets/marker/marker-icon-yellow.png';
 
 export const MarkerIconDefault = Leaflet.icon({
   iconUrl: MarkerIcon,
@@ -16,13 +16,13 @@ Leaflet.Marker.prototype.options.icon = MarkerIconDefault;
 
 export const MarkerIconGreen = Leaflet.icon({
   ...MarkerIconDefault.options,
-  iconUrl: getMarkerIconPath('green'),
+  iconUrl: marker_icon_green,
 });
 export const MarkerIconRed = Leaflet.icon({
   ...MarkerIconDefault.options,
-  iconUrl: getMarkerIconPath('red'),
+  iconUrl: marker_icon_red,
 });
 export const MarkerIconYellow = Leaflet.icon({
   ...MarkerIconDefault.options,
-  iconUrl: getMarkerIconPath('yellow'),
+  iconUrl: marker_icon_yellow,
 });

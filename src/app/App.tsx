@@ -2,6 +2,8 @@ import { Layout } from 'antd';
 import React, { useState } from 'react';
 import MapComponent from '../app/map/MapComponent';
 import AppMenu from './ui/Menu';
+import logo48 from '../assets/logo48.png';
+import logo168 from '../assets/logo168.png';
 
 const App = () => {
   const { Content, Sider } = Layout;
@@ -18,9 +20,7 @@ const App = () => {
         >
           <div className="logo">
             <img
-              src={`${process.env.PUBLIC_URL}/${
-                menuCollapsed ? 'logo48' : 'logo168'
-              }.png`}
+              src={menuCollapsed ? logo48 : logo168}
               alt="TOLU Pathfinder logo"
             />
           </div>
