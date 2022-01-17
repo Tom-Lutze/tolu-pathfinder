@@ -1,9 +1,10 @@
 import { Layout } from 'antd';
 import React, { useState } from 'react';
 import MapComponent from '../app/map/MapComponent';
-import AppMenu from './ui/Menu';
-import logo48 from '../assets/logo48.png';
 import logo168 from '../assets/logo168.png';
+import logo48 from '../assets/logo48.png';
+import './App.less';
+import AppMenu from './ui/Menu';
 
 const App = () => {
   const { Content, Sider } = Layout;

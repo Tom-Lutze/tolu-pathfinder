@@ -3,14 +3,11 @@ import ReactDOM from 'react-dom';
 import App from './app/App';
 import reportWebVitals from './reportWebVitals';
 import { SettingsProvider } from './utils/SettingsProvider';
-import './styles/style.less';
 
 ReactDOM.render(
-  // <React.StrictMode>
   <SettingsProvider>
     <App />
   </SettingsProvider>,
-  // </React.StrictMode>,
   document.getElementById('root')
 );
 
