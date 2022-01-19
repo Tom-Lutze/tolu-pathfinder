@@ -1,17 +1,17 @@
 /**
  * Generates a Promise that resolves after a given timeout.
  * @param ms {Number} The timeout duration in milliseconds
- * @returns {Promise} Promise object
+ * @returns Promise object
  */
-export function sleep(ms: number): Promise<any> {
+export function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 /**
  * Generates a random number within a given range.
- * @param {Number} min The lower limit
- * @param {Number} max The upper limit
- * @returns {Number} The generated number
+ * @param min The lower limit
+ * @param max The upper limit
+ * @returns The generated number
  */
 export function getRandomNumber(min: number, max: number) {
   min = Math.ceil(min);
@@ -21,10 +21,10 @@ export function getRandomNumber(min: number, max: number) {
 
 /**
  * Generates a random number within a given range, excluding one other given number.
- * @param {Number} min The lower limit
- * @param {Number} max The upper limit
- * @param {Number} except The number to exclude
- * @returns {Number} The generated number
+ * @param min The lower limit
+ * @param max The upper limit
+ * @param except The number to exclude
+ * @returns The generated number
  */
 export function getRandomNumberExcept(
   min: number,
@@ -41,8 +41,8 @@ export function getRandomNumberExcept(
 
 /**
  * Capitalize the first letter of a given string.
- * @param {String} str The input string
- * @returns {String} The capitalized string
+ * @param str The input string
+ * @returns The capitalized string
  */
 export function capitalizeFirstLetter(str: string) {
   return `${str[0].toUpperCase()}${str.slice(1).toLowerCase()}`;
