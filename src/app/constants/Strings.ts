@@ -5,6 +5,11 @@ import {
   SettingTypes,
 } from '../../interfaces';
 
+/**
+ * This file holds all strings presented to users.
+ * The dictionaries below can also serve as a groundwork for multi-language implementations.
+ */
+
 export const mainMenuStrings = {
   [MenuTypes.Graph]: 'Graph',
   [MenuTypes.Algo]: 'Algorithm',

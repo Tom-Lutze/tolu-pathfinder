@@ -5,7 +5,7 @@ import {
   ProcessIdxInterface,
 } from '../../../interfaces';
 import { getRandomNumber, sleep } from '../../../utils/Helper';
-import { BUILDER_SETTINGS } from '../../constants/Settings';
+import { APP_SETTINGS } from '../../constants/Settings';
 import GraphController from './GraphController';
 
 export default class BuilderController {
@@ -18,7 +18,7 @@ export default class BuilderController {
   ) {
     const startProcess = processIdxRef.current.graphIdx;
     const sleepTime = () =>
-      BUILDER_SETTINGS.baseSleepDuration * (1 - buildSpeed.current / 100);
+      APP_SETTINGS.baseSleepDuration * (1 - buildSpeed.current / 100);
     let newGraph = { ...graph };
     newGraph.buildState.state++;
     for (let i = 0; i < gridNodes; i++) {
@@ -76,17 +76,17 @@ export default class BuilderController {
     buildSpeed: React.MutableRefObject<any>
   ) {
     const startProcess = processIdxRef.current.graphIdx;
-    const SETTINGS = BUILDER_SETTINGS.random;
+    const SETTINGS = APP_SETTINGS.randomGraph;
     let newGraph = { ...graph };
     const sleepTime = () =>
-      BUILDER_SETTINGS.baseSleepDuration * (1 - buildSpeed.current / 100);
+      APP_SETTINGS.baseSleepDuration * (1 - buildSpeed.current / 100);
     newGraph.buildState.state++;
 
     for (let i = 0; i < randomNodes; i++) {
       const randomLat =
-        getRandomNumber(0, BUILDER_SETTINGS.random.latLngMax * 100) / 100;
+        getRandomNumber(0, APP_SETTINGS.randomGraph.latLngMax * 100) / 100;
       const randomLng =
-        getRandomNumber(0, BUILDER_SETTINGS.random.latLngMax * 100) / 100;
+        getRandomNumber(0, APP_SETTINGS.randomGraph.latLngMax * 100) / 100;
       await sleep(sleepTime());
       if (startProcess != processIdxRef.current.graphIdx) return;
       newGraph = GraphController.addNode(

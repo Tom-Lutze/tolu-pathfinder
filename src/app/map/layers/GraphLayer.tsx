@@ -9,7 +9,7 @@ import {
   SettingTypes,
 } from '../../../interfaces';
 import { SettingContexts } from '../../../utils/SettingsProvider';
-import { BUILDER_SETTINGS } from '../../constants/Settings';
+import { APP_SETTINGS } from '../../constants/Settings';
 import BuilderController from '../controller/BuilderController';
 import GraphController from '../controller/GraphController';
 import MarkerConnection from '../elements/MarkerConnection';
@@ -73,8 +73,8 @@ const GraphLayer = (props: {
           map.fitBounds([
             [0, 0],
             [
-              BUILDER_SETTINGS.random.latLngMax / 100,
-              BUILDER_SETTINGS.random.latLngMax / 100,
+              APP_SETTINGS.randomGraph.latLngMax / 100,
+              APP_SETTINGS.randomGraph.latLngMax / 100,
             ],
           ]);
           break;

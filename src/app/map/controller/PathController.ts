@@ -8,7 +8,7 @@ import {
   ProcessIdxInterface,
 } from '../../../interfaces';
 import { sleep } from '../../../utils/Helper';
-import { BUILDER_SETTINGS } from '../../constants/Settings';
+import { APP_SETTINGS } from '../../constants/Settings';
 
 export default class PathController {
   static bfs(
@@ -176,7 +176,7 @@ class PathControllerHelper {
           });
         }
         const sleeptime =
-          BUILDER_SETTINGS.baseSleepDuration * (1 - searchSpeed.current / 100);
+          APP_SETTINGS.baseSleepDuration * (1 - searchSpeed.current / 100);
         await sleep(sleeptime);
       }
     }
@@ -200,7 +200,7 @@ class PathControllerHelper {
       return [];
 
     const sleepTime =
-      BUILDER_SETTINGS.baseSleepDuration * (1 - searchSpeed.current / 100);
+      APP_SETTINGS.baseSleepDuration * (1 - searchSpeed.current / 100);
 
     const unvisitedNodes: { [idx: number]: AStarNodeInterface } = {};
     Object.keys(graph.nodes).forEach((key) => {

@@ -16,6 +16,9 @@ import {
   settingMenuStrings,
 } from './Strings';
 
+/**
+ * Predefined settings and initial configurations that are represented in the sidebar menu.
+ */
 export const menuParams = {
   [MenuTypes.Graph]: {
     type: GraphTypes,
