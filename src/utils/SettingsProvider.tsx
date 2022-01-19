@@ -2,7 +2,12 @@ import React, { createContext, useState } from 'react';
 import { menuParams } from '../app/constants/MenuParams';
 import { MenuTypes, SettingTypes } from '../interfaces';
 
-const SettingContexts: any = {
+/**
+ * Dictionary of settings ({@link MenuTypes}) with their associated {@link React.Context}
+ */
+const SettingContexts: {
+  [index: number]: any;
+} = {
   [MenuTypes.Algo]: createContext({
     stateVal: 0,
     setStateVal: () => {},
@@ -31,7 +36,12 @@ const SettingContexts: any = {
   },
 };
 
-const SettingsProvider = ({ children }: any) => {
+/**
+ * This component initiates and provides settings to all it's child components via {@link React.Context}
+ * @param param0 The child component which is wrapped by {@link SettingsProvider}
+ * @returns SettingsProvider object
+ */
+const SettingsProvider: React.FC<{}> = ({ children }) => {
   let ProviderParent = <>{children}</>;
   for (const menuType in MenuTypes) {
     const currType = Number(menuType);
