@@ -10,6 +10,10 @@ import {
   appStrings,
 } from '../../constants/Strings';
 
+/** A component that shows statistics for the current graph and lists
+ * all results for search algorithms that were performed on the graph.
+ * This component is wrapped by a {@link SwitchTransition} to allow
+ * animations for the toggle event.*/
 export const StatisticsLayer = (params: {
   graph: GraphInterface;
   path: PathInterface;
@@ -17,6 +21,7 @@ export const StatisticsLayer = (params: {
   const [showStatistics, setShowStatistics] = useState(false);
   const controlLayerRef = useRef<any>();
 
+  // prevent forwarding of click events to the map component
   useEffect(() => {
     if (controlLayerRef) {
       L.DomEvent.disableClickPropagation(controlLayerRef.current);

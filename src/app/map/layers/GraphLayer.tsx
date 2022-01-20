@@ -15,12 +15,15 @@ import GraphController from '../controller/GraphController';
 import MarkerConnection from '../elements/MarkerConnection';
 import MarkerWithPopup from '../elements/MarkerWithPopup';
 
+/** This component represents the graph state with Leaflet markers and polylines.
+ * It also enables user actions encapsulated in popups. */
 const GraphLayer = (props: {
   graph: GraphInterface;
   setGraph: React.Dispatch<React.SetStateAction<GraphInterface>>;
   graphType: GraphTypes;
   processIdxRef: React.MutableRefObject<ProcessIdxInterface>;
 }) => {
+  // integrate user setting values from contexts to perform conditional rerendering
   const buildSpeedContext: any = useContext(
     SettingContexts[MenuTypes.Settings][SettingTypes.BuildSpeed]
   );
@@ -39,12 +42,12 @@ const GraphLayer = (props: {
 
   const map = useMap();
 
-  /** Update build speed setting */
+  // updates the build speed setting in reference object
   useEffect(() => {
     buildSpeedRef.current = buildSpeed;
   }, [buildSpeed]);
 
-  /** Build graph */
+  // build graph based on selected type
   useEffect(() => {
     if (props.graph.buildState.state == BuilderStates.Uninitialized) {
       const newGraph = { ...props.graph };
@@ -70,6 +73,7 @@ const GraphLayer = (props: {
             randomNodes,
             buildSpeedRef
           );
+          // set map focus on generated graph
           map.fitBounds([
             [0, 0],
             [
@@ -86,6 +90,7 @@ const GraphLayer = (props: {
             gridNodes,
             buildSpeedRef
           );
+          // set map focus on generated graph
           map.fitBounds([
             [0, 0],
             [gridNodes / 100, gridNodes / 100],

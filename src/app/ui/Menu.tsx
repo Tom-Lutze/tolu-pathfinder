@@ -5,6 +5,7 @@ import { SettingContexts } from '../../utils/SettingsProvider';
 import { menuParams } from '../constants/MenuParams';
 import { mainMenuStrings } from '../constants/Strings';
 
+/** A {@link Menu} component to represent and control the graph, algorithm and setting states. */
 const AppMenu = () => {
   const subMenuitems = [];
 

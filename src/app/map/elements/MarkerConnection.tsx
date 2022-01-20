@@ -5,6 +5,8 @@ import { BuilderStates, GraphInterface } from '../../../interfaces';
 import { appStrings } from '../../constants/Strings';
 import GraphController from '../controller/GraphController';
 
+/** This component represents all graph edges as {@link Polyline}'s
+ * that have {@link Popup}'s attached to allow user actions. */
 const MarkerConnection = (params: {
   nodeIdx: number;
   graph: GraphInterface;
@@ -19,6 +21,7 @@ const MarkerConnection = (params: {
 
   if (node && node.edges && node.edges.size) {
     return Array.from(node.edges).reduce((prevValue: any, edgeIdx: number) => {
+      // filter duplicate edges for bidirectional graph
       if (
         !drawnEdges.has(`${nodeIdx}-${edgeIdx}`) &&
         !drawnEdges.has(`${edgeIdx}-${nodeIdx}`)

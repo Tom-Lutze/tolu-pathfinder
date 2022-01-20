@@ -8,8 +8,11 @@ import {
   MarkerIconDefault,
   MarkerIconGreen,
   MarkerIconRed,
-} from './MarkerIcons';
+} from '../../constants/MarkerIcons';
 
+/** This component represents all nodes as {@link Marker}'s
+ * that have {@link Popup}'s attached to provide additional 
+ * info and allow user actions. */
 const MarkerWithPopup = (params: {
   nodeIdx: number;
   graph: GraphInterface;

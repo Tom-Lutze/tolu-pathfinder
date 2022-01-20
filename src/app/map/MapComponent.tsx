@@ -25,7 +25,10 @@ import PathLayer from './layers/PathLayer';
 import { StatisticsLayer } from './layers/StatisticsLayer';
 import map_tile from '../../assets/map-tile.png';
 
+/** A leaflet {@link MapContainer} wrapped with a {@link Spin} component that
+ * initializes and handles updates on the graph and path states. */
 const MapComponent = () => {
+  // initialize the graph state
   const initGraph: GraphInterface = {
     nodeIndexer: 0,
     nodes: {},
@@ -45,7 +48,9 @@ const MapComponent = () => {
     },
     processIdx: 0,
   };
+  const [graph, setGraph] = useState(initGraph);
 
+  // initialize the path state
   const initPath: PathInterface = {
     found: false,
     nodes: [],
@@ -54,15 +59,16 @@ const MapComponent = () => {
     state: PathSearchStates.Uninitialized,
     history: [],
   };
-  const [graph, setGraph] = useState(initGraph);
   const [path, setPath] = useState(initPath);
 
+  // initialize the process reference
   const processIdx: ProcessIdxInterface = {
     graphIdx: 0,
     pathIdx: 0,
   };
-
   const processIdxRef = useRef(processIdx);
+
+  // reset graph to it's initial values
   const resetGraph = () => {
     const newGraph = { ...initGraph };
     processIdxRef.current = {
@@ -72,6 +78,7 @@ const MapComponent = () => {
     setGraph(newGraph);
   };
 
+  // reset path to it's initial values (optionally can keep the path search history)
   const resetPath = (keepHistory = false) => {
     const newPath = { ...initPath };
     if (keepHistory) newPath.history = path.history;
@@ -82,6 +89,7 @@ const MapComponent = () => {
     setPath(newPath);
   };
 
+  // integrate user setting values from contexts to perform conditional rerendering
   const algoContext: any = useContext(SettingContexts[MenuTypes.Algo]);
   const algoType = algoContext.stateVal;
   const graphContext: any = useContext(SettingContexts[MenuTypes.Graph]);
@@ -90,24 +98,23 @@ const MapComponent = () => {
     SettingContexts[MenuTypes.Settings][SettingTypes.MaxNodesGrid]
   );
   const gridNodes = gridNodesContext.stateVal;
-
   const randomNodesContext: any = useContext(
     SettingContexts[MenuTypes.Settings][SettingTypes.MaxNodesRandom]
   );
   const randomNodes = randomNodesContext.stateVal;
 
-  /** Graph type updated */
+  // Graph type updated
   useEffect(() => {
     resetPath();
     resetGraph();
   }, [graphType]);
 
-  /** Algo type updated */
+  // Algo type updated
   useEffect(() => {
     resetPath(true);
   }, [algoType]);
 
-  /** Max graph nodes setting updated */
+  // Max graph nodes setting updated
   useEffect(() => {
     if (graphType == GraphTypes.Grid) {
       resetPath();
@@ -115,7 +122,7 @@ const MapComponent = () => {
     }
   }, [gridNodes]);
 
-  /** Max random nodes setting updated */
+  // Max random nodes setting updated
   useEffect(() => {
     if (graphType == GraphTypes.Random) {
       resetPath();
@@ -123,7 +130,7 @@ const MapComponent = () => {
     }
   }, [randomNodes]);
 
-  /** Graph state updated */
+  // Graph state updated
   useEffect(() => {
     if (graph.state.updated) {
       setGraph({
@@ -137,8 +144,7 @@ const MapComponent = () => {
     }
   }, [graph.state.updated]);
 
-  const graphFeatureGroup = useRef<any>();
-
+  // handle click events on the map container
   const MapEventHandler = () => {
     useMapEvents({
       click(e) {
@@ -173,14 +179,12 @@ const MapComponent = () => {
           attribution={`&copy; <a href="https://lutze-it.com" title="${appStrings.attributionTitle}" target="_blank">Lutze-IT</a>`}
           url={map_tile}
         />
-        <FeatureGroup ref={graphFeatureGroup}>
-          <GraphLayer
-            graph={graph}
-            setGraph={setGraph}
-            graphType={graphType}
-            processIdxRef={processIdxRef}
-          />
-        </FeatureGroup>
+        <GraphLayer
+          graph={graph}
+          setGraph={setGraph}
+          graphType={graphType}
+          processIdxRef={processIdxRef}
+        />
         <PathLayer
           graph={graph}
           path={path}

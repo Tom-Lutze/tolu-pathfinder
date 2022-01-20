@@ -7,6 +7,7 @@ import './App.less';
 import { appStrings } from './constants/Strings';
 import AppMenu from './ui/Menu';
 
+/** Main app component */
 const App = () => {
   const { Content, Sider } = Layout;
   let [menuCollapsed, setMenuCollapsed] = useState(false);

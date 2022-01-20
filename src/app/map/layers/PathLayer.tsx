@@ -10,10 +10,10 @@ import {
   SettingTypes,
 } from '../../../interfaces';
 import { SettingContexts } from '../../../utils/SettingsProvider';
-// import { SettingContexts } from '../../../utils/SettingsStore';
 import GraphController from '../controller/GraphController';
 import PathController from '../controller/PathController';
 
+/** This component represents the path search state with Leaflet polylines. */
 const PathLayer = (props: {
   graph: GraphInterface;
   path: PathInterface;
@@ -21,19 +21,19 @@ const PathLayer = (props: {
   algoType: AlgoTypes;
   processIdxRef: React.MutableRefObject<ProcessIdxInterface>;
 }) => {
+  // integrate user setting values from contexts to perform conditional rerendering
   const searchSpeedContext: any = useContext(
     SettingContexts[MenuTypes.Settings][SettingTypes.SearchSpeed]
   );
   const searchSpeed = searchSpeedContext.stateVal;
   const searchSpeedRef = useRef(searchSpeed);
 
+  // updates the search speed setting in reference object
   useEffect(() => {
     searchSpeedRef.current = searchSpeed;
   }, [searchSpeed]);
 
-  /**
-   * Build path
-   */
+  // build path based on selected type
   useEffect(() => {
     if (props.path.state == PathSearchStates.Uninitialized) {
       const newPath = { ...props.path };
