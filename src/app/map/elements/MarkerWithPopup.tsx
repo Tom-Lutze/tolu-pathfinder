@@ -11,7 +11,7 @@ import {
 } from '../../constants/MarkerIcons';
 
 /** This component represents all nodes as {@link Marker}'s
- * that have {@link Popup}'s attached to provide additional 
+ * that have {@link Popup}'s attached to provide additional
  * info and allow user actions. */
 const MarkerWithPopup = (params: {
   nodeIdx: number;
