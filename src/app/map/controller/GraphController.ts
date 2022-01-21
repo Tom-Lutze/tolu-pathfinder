@@ -89,13 +89,13 @@ export default class GraphController {
   }
 
   /**
-   * Set's the position parameter for the specified node index.
+   * Set's the location parameter for the specified node index.
    * @param idx Node index that get's the new location assigned
    * @param latlng Location object with latitude and longitude
    * @param graph Current graph state object
    * @param setGraph Graphs set-state function
    */
-  static setNodePosition(
+  static setNodeLocation(
     idx: number,
     latlng: LatLng,
     graph: GraphInterface,
@@ -107,7 +107,7 @@ export default class GraphController {
       ...newGraph,
       nodes: {
         ...newGraph.nodes,
-        [idx]: { ...newGraph.nodes[idx], position: latlng },
+        [idx]: { ...newGraph.nodes[idx], location: latlng },
       },
     });
   }

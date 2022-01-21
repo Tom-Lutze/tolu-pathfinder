@@ -119,7 +119,7 @@ const MarkerWithPopup = (params: {
     <Marker
       title={`Node ${params.nodeIdx}`}
       draggable={buildStateReady()}
-      position={GraphController.getNode(params.nodeIdx, params.graph).position}
+      position={GraphController.getNode(params.nodeIdx, params.graph).location}
       opacity={
         activeNode == params.nodeIdx
           ? 1
@@ -145,7 +145,7 @@ const MarkerWithPopup = (params: {
         },
         dragend: (e) => {
           if (buildStateReady())
-            GraphController.setNodePosition(
+            GraphController.setNodeLocation(
               e.target.options.nodeIdx,
               e.target.getLatLng(),
               params.graph,

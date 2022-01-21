@@ -151,7 +151,7 @@ const MapComponent = () => {
         if (graph.buildState.state === BuilderStates.Finalized) {
           GraphController.addNode(
             {
-              position: e.latlng,
+              location: e.latlng,
               edges: undefined,
             },
             graph,

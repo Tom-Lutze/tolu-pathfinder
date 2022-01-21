@@ -229,11 +229,11 @@ class PathControllerHelper {
         if (!unvisitedNodes[edgeIdx]) return;
         const distToNext =
           nextNode.distanceFromStart +
-          nextNode.position.distanceTo(graph.nodes[edgeIdx].position);
+          nextNode.location.distanceTo(graph.nodes[edgeIdx].location);
 
         const heuristicValue = heuristicFunction(
-          graph.nodes[edgeIdx].position,
-          graph.nodes[endNodeIdx].position
+          graph.nodes[edgeIdx].location,
+          graph.nodes[endNodeIdx].location
         );
 
         const combinedValue = distToNext + heuristicValue;

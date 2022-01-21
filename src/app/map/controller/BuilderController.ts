@@ -40,7 +40,7 @@ export default class BuilderController {
         await sleep(sleepTime());
         if (startProcess != processIdxRef.current.graphIdx) return;
         newGraph = GraphController.addNode(
-          { position: new LatLng(i / 100, j / 100), edges: undefined },
+          { location: new LatLng(i / 100, j / 100), edges: undefined },
           newGraph,
           setGraph,
           false
@@ -114,7 +114,7 @@ export default class BuilderController {
       if (startProcess != processIdxRef.current.graphIdx) return;
       newGraph = GraphController.addNode(
         {
-          position: new LatLng(randomLat / 100, randomLng / 100),
+          location: new LatLng(randomLat / 100, randomLng / 100),
           edges: undefined,
         },
         newGraph,
@@ -132,8 +132,8 @@ export default class BuilderController {
         if (i == j) {
           adjacencyMatrix[i][j] = undefined;
         } else if (!adjacencyMatrix[i][j]) {
-          const dist = newGraph.nodes[i + 1].position.distanceTo(
-            newGraph.nodes[j + 1].position
+          const dist = newGraph.nodes[i + 1].location.distanceTo(
+            newGraph.nodes[j + 1].location
           );
           adjacencyMatrix[i][j] = { idx: j + 1, distance: dist };
           adjacencyMatrix[j][i] = { idx: i + 1, distance: dist };

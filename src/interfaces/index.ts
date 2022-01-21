@@ -36,20 +36,22 @@ export enum SettingTypes {
 
 // Graph interfaces
 
-/** Represents a specific node with it's position and reachable edges. */
+/** Represents a specific node with it's location and edges. */
 export interface NodeInterface {
-  position: LatLng;
+  location: LatLng;
   edges: Set<number> | undefined;
 }
 
-/** Extension of {@link NodeInterface} with additional parameters for the A-Star search algorithm. */
+/** Extension of {@link NodeInterface} with additional parameters
+ * for the A-Star search algorithm. */
 export interface AStarNodeInterface extends NodeInterface {
   distanceFromStart: number;
   combinedDistanceFromStart: number;
   parentNodes: number[];
 }
 
-/** Represents the main graph including all nodes, states and configurations for path finding. */
+/** Represents the main graph including all nodes, states and
+ * configurations for path finding. */
 export interface GraphInterface {
   nodeIndexer: number;
   nodes: {

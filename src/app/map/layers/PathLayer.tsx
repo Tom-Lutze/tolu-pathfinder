@@ -109,7 +109,7 @@ const PathLayer = (props: {
               }}
               positions={props.path.nodes.map(
                 (nodeIdx) =>
-                  GraphController.getNode(nodeIdx, props.graph).position
+                  GraphController.getNode(nodeIdx, props.graph).location
               )}
               interactive={false}
             />
@@ -129,7 +129,7 @@ const PathLayer = (props: {
             }}
             positions={props.path.nodes.map(
               (nodeIdx) =>
-                GraphController.getNode(nodeIdx, props.graph).position
+                GraphController.getNode(nodeIdx, props.graph).location
             )}
             interactive={false}
           />

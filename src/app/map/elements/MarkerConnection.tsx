@@ -32,8 +32,8 @@ const MarkerConnection = (params: {
             key={`polyline-${nodeIdx}-${edgeIdx}`}
             pathOptions={{ color: '#002766' }}
             positions={[
-              node.position,
-              GraphController.getNode(edgeIdx, params.graph).position,
+              node.location,
+              GraphController.getNode(edgeIdx, params.graph).location,
             ]}
             interactive={true}
           >
