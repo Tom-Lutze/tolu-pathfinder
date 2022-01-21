@@ -8,15 +8,13 @@ import { getRandomNumber, sleep } from '../../../utils/Helper';
 import { APP_SETTINGS } from '../../constants/Settings';
 import GraphController from './GraphController';
 
-/**
- * The {@link BuilderController} class provides functions to automatically generate graphs.
- */
+/** Provides program logic to automatically generate graphs. */
 export default class BuilderController {
   /**
    * Generates a graph where nodes and their edges represent a grid.
    * @param graph Current graph state object
    * @param processIdxRef Process index reference object
-   * @param setGraph The graphs setState function
+   * @param setGraph Graphs set-state function
    * @param gridNodes Maximum number of nodes
    * @param buildSpeed Current build speed setting
    * @returns
@@ -87,7 +85,7 @@ export default class BuilderController {
    * Generates a random graph based on user settings and static parameters in {@link APP_SETTINGS}.
    * @param graph Current graph state object
    * @param processIdxRef Process index reference object
-   * @param setGraph The graphs setState function
+   * @param setGraph Graphs set-state function
    * @param gridNodes Maximum number of nodes
    * @param buildSpeed Current build speed setting
    * @returns

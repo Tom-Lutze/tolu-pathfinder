@@ -1,6 +1,16 @@
 import { LatLng } from 'leaflet';
 import { GraphInterface, NodeInterface } from '../../../interfaces';
+
+/** Provides program logic to query and manipulate the graph state. */
 export default class GraphController {
+  /**
+   * Adds a node to the graph.
+   * @param node Node object to be added
+   * @param graph Current graph state object
+   * @param setGraph Graphs set-state function
+   * @param connect Specifies if the new node gets connected to the previously selected
+   * @returns
+   */
   static addNode(
     node: NodeInterface,
     graph: GraphInterface,
@@ -28,6 +38,13 @@ export default class GraphController {
     return newGraph;
   }
 
+  /**
+   * Removes a node from the graph.
+   * @param idx Node index that needs to be removed
+   * @param graph Current graph state object
+   * @param setGraph Graphs set-state function
+   * @returns Updated graph state object
+   */
   static removeNode(
     idx: number,
     graph: GraphInterface,
@@ -52,14 +69,32 @@ export default class GraphController {
     return newGraph;
   }
 
+  /**
+   * Provides all node index values as array.
+   * @param graph Current graph state object
+   * @returns Array of index values
+   */
   static getNodesIdx(graph: GraphInterface) {
     return Object.keys(graph.nodes).map((key) => Number(key));
   }
 
+  /**
+   * Provides the object for the given node index.
+   * @param idx Node index
+   * @param graph Current graph state object
+   * @returns
+   */
   static getNode(idx: number, graph: GraphInterface) {
     return graph.nodes[idx];
   }
 
+  /**
+   * Set's the position parameter for the specified node index.
+   * @param idx Node index that get's the new location assigned
+   * @param latlng Location object with latitude and longitude
+   * @param graph Current graph state object
+   * @param setGraph Graphs set-state function
+   */
   static setNodePosition(
     idx: number,
     latlng: LatLng,
@@ -77,6 +112,12 @@ export default class GraphController {
     });
   }
 
+  /**
+   * Set's the specified node index as currently active node in the graph state.
+   * @param idx Node index that becomes the active node
+   * @param graph Current graph state object
+   * @param setGraph Graphs set-state function
+   */
   static setActiveNode(
     idx: number,
     graph: GraphInterface,
@@ -96,6 +137,12 @@ export default class GraphController {
     }
   }
 
+  /**
+   * Set's the specified node index as start node in the graph state.
+   * @param idx Node index that becomes the start node
+   * @param graph Current graph state object
+   * @param setGraph Graphs set-state function
+   */
   static setStartNode(
     idx: number,
     graph: GraphInterface,
@@ -116,6 +163,12 @@ export default class GraphController {
     }
   }
 
+  /**
+   * Set's the specified node index as end node in the graph state.
+   * @param idx Node index that becomes the end node
+   * @param graph Current graph state object
+   * @param setGraph Graphs set-state function
+   */
   static setEndNode(
     idx: number,
     graph: GraphInterface,
@@ -138,6 +191,13 @@ export default class GraphController {
     }
   }
 
+  /**
+   * Creates edges between all provided {@link nodePairs}.
+   * @param nodePairs Array of node pairs that need to be connected
+   * @param graph Current graph state object
+   * @param setGraph Graphs set-state function
+   * @returns Updated graph state object
+   */
   static connectNodes(
     nodePairs: [number, number][],
     graph: GraphInterface,
@@ -166,6 +226,11 @@ export default class GraphController {
     return newGraph;
   }
 
+  /**
+   * Creates an edge between the current and the previously selected nodes.
+   * @param graph Current graph state object
+   * @param setGraph Graphs set-state function
+   */
   static connectSelectedNodes(
     graph: GraphInterface,
     setGraph: React.Dispatch<React.SetStateAction<GraphInterface>>
@@ -176,6 +241,13 @@ export default class GraphController {
       this.connectNodes([[prevNodeIdx, currNodeIdx]], graph, setGraph);
   }
 
+  /**
+   * Removes an edge from the graph.
+   * @param fromNodeIdx First node index - interchangeable with {@link toNodeIdx}
+   * @param toNodeIdx Second node index - interchangeable with {@link fromNodeIdx}
+   * @param graph Current graph state object
+   * @param setGraph Graphs set-state function
+   */
   static disconnectNodes(
     fromNodeIdx: number,
     toNodeIdx: number,
@@ -202,7 +274,13 @@ export default class GraphController {
   }
 }
 
+/** Helper class for the {@link GraphController} */
 class GraphControllerHelper {
+  /**
+   * Removes the specified node index from all possible graph states.
+   * @param nodeIdx Node index that needs to be removed
+   * @param newGraph New graph state object
+   */
   static removeNodeFromState(nodeIdx: number, newGraph: GraphInterface) {
     if (newGraph.state.activeNode === nodeIdx) {
       newGraph.state.activeNode = undefined;

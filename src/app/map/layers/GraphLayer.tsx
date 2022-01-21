@@ -15,8 +15,7 @@ import GraphController from '../controller/GraphController';
 import MarkerConnection from '../elements/MarkerConnection';
 import MarkerWithPopup from '../elements/MarkerWithPopup';
 
-/** This component represents the graph state with Leaflet markers and polylines.
- * It also enables user actions encapsulated in popups. */
+/** Represents the graph state with Leaflet's markers and polylines. */
 const GraphLayer = (props: {
   graph: GraphInterface;
   setGraph: React.Dispatch<React.SetStateAction<GraphInterface>>;

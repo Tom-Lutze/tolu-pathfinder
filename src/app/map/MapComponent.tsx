@@ -25,7 +25,7 @@ import PathLayer from './layers/PathLayer';
 import { StatisticsLayer } from './layers/StatisticsLayer';
 import map_tile from '../../assets/map-tile.png';
 
-/** A leaflet {@link MapContainer} wrapped with a {@link Spin} component that
+/** A leaflet {@link MapContainer} wrapped by a {@link Spin} component that
  * initializes and handles updates on the graph and path states. */
 const MapComponent = () => {
   // initialize the graph state

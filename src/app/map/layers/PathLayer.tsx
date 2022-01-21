@@ -13,7 +13,7 @@ import { SettingContexts } from '../../../utils/SettingsProvider';
 import GraphController from '../controller/GraphController';
 import PathController from '../controller/PathController';
 
-/** This component represents the path search state with Leaflet polylines. */
+/** Represents the path search state with Leaflet polylines. */
 const PathLayer = (props: {
   graph: GraphInterface;
   path: PathInterface;

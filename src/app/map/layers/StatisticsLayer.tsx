@@ -10,10 +10,10 @@ import {
   appStrings,
 } from '../../constants/Strings';
 
-/** A component that shows statistics for the current graph and lists
- * all results for search algorithms that were performed on the graph.
- * This component is wrapped by a {@link SwitchTransition} to allow
- * animations for the toggle event.*/
+/** Provides statistics for the current graph and lists all results
+ * for search algorithms that were executed on the current graph.
+ * The component is wrapped by a {@link SwitchTransition} to allow
+ * animations for the collapse event. */
 export const StatisticsLayer = (params: {
   graph: GraphInterface;
   path: PathInterface;

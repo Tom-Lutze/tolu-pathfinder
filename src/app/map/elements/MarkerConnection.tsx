@@ -5,8 +5,8 @@ import { BuilderStates, GraphInterface } from '../../../interfaces';
 import { appStrings } from '../../constants/Strings';
 import GraphController from '../controller/GraphController';
 
-/** This component represents all graph edges as {@link Polyline}'s
- * that have {@link Popup}'s attached to allow user actions. */
+/** This component represents all graph edges as {@link Polyline}'s that have
+ *  {@link Popup}'s attached to provide user actions. */
 const MarkerConnection = (params: {
   nodeIdx: number;
   graph: GraphInterface;
