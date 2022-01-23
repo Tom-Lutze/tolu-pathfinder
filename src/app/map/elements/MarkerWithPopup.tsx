@@ -1,6 +1,6 @@
 import { CloseOutlined, DeleteOutlined } from '@ant-design/icons';
 import React, { useRef } from 'react';
-import { Marker, Popup } from 'react-leaflet';
+import { Circle, Marker, Popup } from 'react-leaflet';
 import { BuilderStates, GraphInterface } from '../../../interfaces';
 import { appStrings } from '../../constants/Strings';
 import GraphController from '../controller/GraphController';
@@ -116,86 +116,95 @@ const MarkerWithPopup = (params: {
   const popupRef = useRef<any>();
 
   return (
-    <Marker
-      title={`Node ${params.nodeIdx}`}
-      draggable={buildStateReady()}
-      position={GraphController.getNode(params.nodeIdx, params.graph).location}
-      opacity={
-        activeNode == params.nodeIdx
-          ? 1
-          : prevActiveNode == params.nodeIdx
-          ? 0.75
-          : 0.3
-      }
-      icon={
-        params.nodeIdx === startNode
-          ? MarkerIconRed
-          : params.nodeIdx === endNode
-          ? MarkerIconGreen
-          : MarkerIconDefault
-      }
-      eventHandlers={{
-        click: (e) => {
-          if (buildStateReady())
-            GraphController.setActiveNode(
-              e.target.options.nodeIdx,
-              params.graph,
-              params.setGraph
-            );
-        },
-        dragend: (e) => {
-          if (buildStateReady())
-            GraphController.setNodeLocation(
-              e.target.options.nodeIdx,
-              e.target.getLatLng(),
-              params.graph,
-              params.setGraph
-            );
-        },
-      }}
-      {...{
-        nodeIdx: params.nodeIdx,
-      }}
-    >
-      {buildStateReady() && (
-        <Popup closeButton={false} ref={popupRef}>
-          <div className="tolu-popup-header">
-            <span>
-              <a
-                title={appStrings.removeTooltip}
-                onClick={() =>
-                  GraphController.removeNode(
-                    params.nodeIdx,
-                    params.graph,
-                    params.setGraph
-                  )
-                }
-              >
-                <DeleteOutlined />
-              </a>
-            </span>
-            <span
-              title={appStrings.nodeIdentifierTooltip}
-            >{`${appStrings.nodeIdentifier} ${params.nodeIdx}`}</span>
-            <span>
-              <a
-                title={appStrings.closeTooltip}
-                onClick={() => {
-                  popupRef.current._close();
-                }}
-              >
-                <CloseOutlined />
-              </a>
-            </span>
-          </div>
-          <div className="tolu-popup-actions">
-            <StartButton />
-            <ConnectButton />
-            <EndButton />
-          </div>
-        </Popup>
+    <>
+      <Marker
+        title={`Node ${params.nodeIdx}`}
+        draggable={buildStateReady()}
+        position={
+          GraphController.getNode(params.nodeIdx, params.graph).location
+        }
+        icon={
+          params.nodeIdx === startNode
+            ? MarkerIconRed
+            : params.nodeIdx === endNode
+            ? MarkerIconGreen
+            : MarkerIconDefault
+        }
+        eventHandlers={{
+          click: (e) => {
+            if (buildStateReady())
+              GraphController.setActiveNode(
+                e.target.options.nodeIdx,
+                params.graph,
+                params.setGraph
+              );
+          },
+          dragend: (e) => {
+            if (buildStateReady())
+              GraphController.setNodeLocation(
+                e.target.options.nodeIdx,
+                e.target.getLatLng(),
+                params.graph,
+                params.setGraph
+              );
+          },
+        }}
+        {...{
+          nodeIdx: params.nodeIdx,
+        }}
+      >
+        {buildStateReady() && (
+          <Popup closeButton={false} ref={popupRef}>
+            <div className="tolu-popup-header">
+              <span>
+                <a
+                  title={appStrings.removeTooltip}
+                  onClick={() =>
+                    GraphController.removeNode(
+                      params.nodeIdx,
+                      params.graph,
+                      params.setGraph
+                    )
+                  }
+                >
+                  <DeleteOutlined />
+                </a>
+              </span>
+              <span
+                title={appStrings.nodeIdentifierTooltip}
+              >{`${appStrings.nodeIdentifier} ${params.nodeIdx}`}</span>
+              <span>
+                <a
+                  title={appStrings.closeTooltip}
+                  onClick={() => {
+                    popupRef.current._close();
+                  }}
+                >
+                  <CloseOutlined />
+                </a>
+              </span>
+            </div>
+            <div className="tolu-popup-actions">
+              <StartButton />
+              <ConnectButton />
+              <EndButton />
+            </div>
+          </Popup>
+        )}
+      </Marker>
+      {(activeNode == params.nodeIdx || prevActiveNode == params.nodeIdx) && (
+        <Circle
+          center={
+            GraphController.getNode(params.nodeIdx, params.graph).location
+          }
+          pathOptions={{
+            color: '#002766',
+            fillOpacity: 1,
+          }}
+          radius={150}
+        />
       )}
-    </Marker>
+    </>
   );
 };
 
