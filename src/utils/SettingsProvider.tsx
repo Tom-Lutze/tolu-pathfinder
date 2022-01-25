@@ -1,6 +1,6 @@
 import React, { createContext, useState } from 'react';
 import { menuParams } from '../app/constants/MenuParams';
-import { MenuTypes, SettingTypes } from '../interfaces';
+import { ExtraMenuTypes, MenuTypes, SettingTypes } from '../interfaces';
 
 /**
  * Dictionary of settings ({@link MenuTypes}) with their associated {@link React.Context}
@@ -34,6 +34,10 @@ const SettingContexts: {
       setStateVal: () => {},
     }),
   },
+  [ExtraMenuTypes.UpdateTimestamp]: createContext({
+    stateVal: 0,
+    setStateVal: () => {},
+  }),
 };
 
 /**
@@ -68,6 +72,16 @@ const SettingsProvider: React.FC<{}> = ({ children }) => {
         );
       }
     }
+  }
+
+  for (const menuType in ExtraMenuTypes) {
+    const currType = Number(menuType);
+    if (isNaN(currType)) continue;
+    const [stateVal, setStateVal] = useState(0);
+    const Provider = SettingContexts[currType].Provider;
+    ProviderParent = (
+      <Provider value={{ stateVal, setStateVal }}>{ProviderParent}</Provider>
+    );
   }
 
   return ProviderParent;

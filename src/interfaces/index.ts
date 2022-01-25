@@ -10,6 +10,11 @@ export enum MenuTypes {
   Settings,
 }
 
+/** Additional settings type for internal processing (not visible in menu) */
+export enum ExtraMenuTypes {
+  UpdateTimestamp = 101,
+}
+
 /** Graph menu or setting types. */
 export enum GraphTypes {
   None,

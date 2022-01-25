@@ -6,6 +6,7 @@ import {
 import React from 'react';
 import {
   AlgoTypes,
+  ExtraMenuTypes,
   GraphTypes,
   MenuTypes,
   SettingTypes,

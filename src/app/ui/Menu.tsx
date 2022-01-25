@@ -1,6 +1,11 @@
 import { Menu, Slider } from 'antd';
 import React, { useContext } from 'react';
-import { AlgoTypes, GraphTypes, MenuTypes } from '../../interfaces';
+import {
+  AlgoTypes,
+  ExtraMenuTypes,
+  GraphTypes,
+  MenuTypes,
+} from '../../interfaces';
 import { SettingContexts } from '../../utils/SettingsProvider';
 import { menuParams } from '../constants/MenuParams';
 import { mainMenuStrings } from '../constants/Strings';
@@ -75,6 +80,9 @@ const AppMenu = () => {
     subMenuitems.push(subMenu);
   }
 
+  const updateTimestampContext: any = useContext(
+    SettingContexts[ExtraMenuTypes.UpdateTimestamp]
+  );
   const algoContext: any = useContext(SettingContexts[MenuTypes.Algo]);
   const graphContext: any = useContext(SettingContexts[MenuTypes.Graph]);
 
@@ -92,6 +100,7 @@ const AppMenu = () => {
         const menuType = MenuTypes[e.keyPath[1]];
         const menuParam = menuParams[menuType];
         if (menuType == MenuTypes.Algo) {
+          updateTimestampContext.setStateVal(new Date().getTime());
           algoContext.setStateVal(menuParam.type[e.keyPath[0]]);
         } else if (menuType == MenuTypes.Graph) {
           graphContext.setStateVal(menuParam.type[e.keyPath[0]]);

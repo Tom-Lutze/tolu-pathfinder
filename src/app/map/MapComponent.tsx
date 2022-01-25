@@ -9,6 +9,7 @@ import {
 } from 'react-leaflet';
 import {
   BuilderStates,
+  ExtraMenuTypes,
   GraphInterface,
   GraphTypes,
   MenuTypes,
@@ -90,6 +91,10 @@ const MapComponent = () => {
   };
 
   // integrate user setting values from contexts to perform conditional rerendering
+  const updateTimestampContext: any = useContext(
+    SettingContexts[ExtraMenuTypes.UpdateTimestamp]
+  );
+  const updateTimestamp = updateTimestampContext.stateVal;
   const algoContext: any = useContext(SettingContexts[MenuTypes.Algo]);
   const algoType = algoContext.stateVal;
   const graphContext: any = useContext(SettingContexts[MenuTypes.Graph]);
@@ -112,7 +117,7 @@ const MapComponent = () => {
   // Algo type updated
   useEffect(() => {
     resetPath(true);
-  }, [algoType]);
+  }, [algoType, updateTimestamp]);
 
   // Max graph nodes setting updated
   useEffect(() => {
@@ -201,4 +206,4 @@ const MapComponent = () => {
   );
 };
 
-export default React.memo(MapComponent);
+export default MapComponent;
