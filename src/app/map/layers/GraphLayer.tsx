@@ -99,9 +99,22 @@ const GraphLayer = (props: {
     }
   }, [props.graph.buildState.state]);
 
+  const edgeMap = new Map<string, [number, number]>();
+
   return (
     <>
       {GraphController.getNodesIdx(props.graph).map((nodeIdx: number) => {
+        const node = GraphController.getNode(nodeIdx, props.graph);
+        if (node.edges && node.edges.size > 0) {
+          node.edges.forEach((nodeEdgeIdx: number) => {
+            const mapKey1 = `${nodeIdx}-${nodeEdgeIdx}`;
+            const mapKey2 = `${nodeEdgeIdx}-${nodeIdx}`;
+            if (!edgeMap.has(mapKey1) && !edgeMap.has(mapKey2)) {
+              edgeMap.set(mapKey1, [nodeIdx, nodeEdgeIdx]);
+            }
+          });
+        }
+
         return (
           <React.Fragment key={`marker-${nodeIdx}`}>
             <Node
@@ -109,8 +122,16 @@ const GraphLayer = (props: {
               graph={props.graph}
               setGraph={props.setGraph}
             />
+          </React.Fragment>
+        );
+      })}
+
+      {Array.from(edgeMap.values()).map((value) => {
+        return (
+          <React.Fragment key={`edge-${value[0]}-${value[1]}`}>
             <Edge
-              nodeIdx={nodeIdx}
+              fromNodeIdx={value[0]}
+              toNodeIdx={value[1]}
               graph={props.graph}
               setGraph={props.setGraph}
             />

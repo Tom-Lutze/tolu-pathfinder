@@ -8,78 +8,60 @@ import {
 import { appStrings } from '../../../constants/Strings';
 import GraphController from '../../../controller/GraphController';
 
-/** Represents all graph edges as {@link Polyline}'s with a
- *  {@link Popup} attached to provide user actions. */
+/** Represents an edge as {@link Polyline} with a {@link Popup} attached to it. */
 const Edge = (params: {
-  nodeIdx: number;
+  fromNodeIdx: number;
+  toNodeIdx: number;
   graph: GraphInterface;
   setGraph: React.Dispatch<React.SetStateAction<GraphInterface>>;
 }) => {
-  const nodeIdx = params.nodeIdx;
-  const node = GraphController.getNode(nodeIdx, params.graph);
-  const drawnEdges = new Set<string>();
   const buildStateReady =
     params.graph.buildState.state === BuilderStates.Finalized;
   const popupRef = useRef<any>();
 
-  if (node && node.edges && node.edges.size) {
-    return Array.from(node.edges).reduce((prevValue: any, edgeIdx: number) => {
-      // filter duplicate edges for bidirectional graph
-      if (
-        !drawnEdges.has(`${nodeIdx}-${edgeIdx}`) &&
-        !drawnEdges.has(`${edgeIdx}-${nodeIdx}`)
-      ) {
-        drawnEdges.add(`${nodeIdx}-${edgeIdx}`);
-        const edgePolyline = (
-          <Polyline
-            key={`polyline-${nodeIdx}-${edgeIdx}`}
-            pathOptions={{ color: '#002766' }}
-            positions={[
-              node.location,
-              GraphController.getNode(edgeIdx, params.graph).location,
-            ]}
-            interactive={true}
-          >
-            {buildStateReady && (
-              <Popup ref={popupRef} closeButton={false}>
-                <div className="tolu-popup-header-connection">
-                  <span>
-                    <a
-                      title={appStrings.disconnectTooltip}
-                      onClick={() =>
-                        GraphController.disconnectNodes(
-                          nodeIdx,
-                          edgeIdx,
-                          params.graph,
-                          params.setGraph
-                        )
-                      }
-                    >
-                      {appStrings.disconnect}
-                    </a>
-                  </span>
-                  <span>
-                    <a
-                      title={appStrings.closeTooltip}
-                      onClick={() => {
-                        popupRef.current._close();
-                      }}
-                    >
-                      <CloseOutlined />
-                    </a>
-                  </span>
-                </div>
-              </Popup>
-            )}
-          </Polyline>
-        );
-        prevValue.push(edgePolyline);
-      }
-      return prevValue;
-    }, []);
-  } else {
-    return null;
-  }
+  return (
+    <Polyline
+      key={`polyline-${params.fromNodeIdx}-${params.toNodeIdx}`}
+      pathOptions={{ color: '#002766' }}
+      positions={[
+        GraphController.getNode(params.fromNodeIdx, params.graph).location,
+        GraphController.getNode(params.toNodeIdx, params.graph).location,
+      ]}
+      interactive={true}
+    >
+      {buildStateReady && (
+        <Popup ref={popupRef} closeButton={false}>
+          <div className="tolu-popup-header-connection">
+            <span>
+              <a
+                title={appStrings.disconnectTooltip}
+                onClick={() =>
+                  GraphController.disconnectNodes(
+                    params.fromNodeIdx,
+                    params.toNodeIdx,
+                    params.graph,
+                    params.setGraph
+                  )
+                }
+              >
+                {appStrings.disconnect}
+              </a>
+            </span>
+            <span>
+              <a
+                title={appStrings.closeTooltip}
+                onClick={() => {
+                  popupRef.current._close();
+                }}
+              >
+                <CloseOutlined />
+              </a>
+            </span>
+          </div>
+        </Popup>
+      )}
+    </Polyline>
+  );
 };
 
 export default Edge;
