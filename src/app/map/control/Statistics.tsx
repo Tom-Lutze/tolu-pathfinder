@@ -3,7 +3,7 @@ import { Card, Col, Row, Statistic, Table } from 'antd';
 import L from 'leaflet';
 import { useEffect, useRef, useState } from 'react';
 import { CSSTransition, SwitchTransition } from 'react-transition-group';
-import { GraphInterface, PathInterface } from '../../../interfaces';
+import { GraphInterface, PathInterface } from '../../../interfaces/Interfaces';
 import {
   algoMenuStrings,
   algoMenuStringsShort,
@@ -14,7 +14,7 @@ import {
  * for search algorithms that were executed on the current graph.
  * The component is wrapped by a {@link SwitchTransition} to allow
  * animations for the collapse event. */
-export const StatisticsLayer = (params: {
+export const Statistics = (params: {
   graph: GraphInterface;
   path: PathInterface;
 }) => {

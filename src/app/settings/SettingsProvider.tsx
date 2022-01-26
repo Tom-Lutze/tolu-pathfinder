@@ -1,6 +1,10 @@
 import React, { createContext, useState } from 'react';
-import { menuParams } from '../app/constants/MenuParams';
-import { ExtraMenuTypes, MenuTypes, SettingTypes } from '../interfaces';
+import { settingsParams } from './SettingsParams';
+import {
+  ExtraMenuTypes,
+  MenuTypes,
+  SettingTypes,
+} from '../../interfaces/Interfaces';
 
 /**
  * Dictionary of settings ({@link MenuTypes}) with their associated {@link React.Context}
@@ -62,7 +66,7 @@ const SettingsProvider: React.FC<{}> = ({ children }) => {
         const currSettingType = Number(settingType);
         if (isNaN(currSettingType)) continue;
         const [stateVal, setStateVal] = useState(
-          menuParams[MenuTypes.Settings].children[settingType].initialVal
+          settingsParams[MenuTypes.Settings].children[settingType].initialVal
         );
         const Provider = SettingContexts[menuType][currSettingType].Provider;
         ProviderParent = (

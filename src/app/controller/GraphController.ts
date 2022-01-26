@@ -1,5 +1,5 @@
 import { LatLng } from 'leaflet';
-import { GraphInterface, NodeInterface } from '../../../interfaces';
+import { GraphInterface, NodeInterface } from '../../interfaces/Interfaces';
 
 /** Provides program logic to query and manipulate the graph state. */
 export default class GraphController {

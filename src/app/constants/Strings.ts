@@ -3,7 +3,7 @@ import {
   GraphTypes,
   MenuTypes,
   SettingTypes,
-} from '../../interfaces';
+} from '../../interfaces/Interfaces';
 
 /**
  * This file holds all strings presented to users.

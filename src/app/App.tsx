@@ -1,11 +1,11 @@
 import { Layout } from 'antd';
 import React, { useState } from 'react';
-import MapComponent from '../app/map/MapComponent';
+import MapComponent from './map/Map';
 import logo168 from '../assets/logo168.png';
 import logo48 from '../assets/logo48.png';
-import './App.less';
+import '../styles/Styles.less';
 import { appStrings } from './constants/Strings';
-import AppMenu from './ui/Menu';
+import Sidebar from './menu/Sidebar';
 
 /** Main app component that provides the basic layout structure */
 const App = () => {
@@ -27,7 +27,7 @@ const App = () => {
               alt={appStrings.logoAlt}
             />
           </div>
-          <AppMenu />
+          <Sidebar />
         </Sider>
         <Layout className="site-layout">
           <Content className="site-layout-content">

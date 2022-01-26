@@ -3,9 +3,9 @@ import {
   BuilderStates,
   GraphInterface,
   ProcessIdxInterface,
-} from '../../../interfaces';
-import { getRandomNumber, sleep } from '../../../utils/Helper';
-import { APP_SETTINGS } from '../../constants/Settings';
+} from '../../interfaces/Interfaces';
+import { getRandomNumber, sleep } from '../../utils/Utils';
+import { CONSTANTS } from '../constants/Constants';
 import GraphController from './GraphController';
 
 /** Provides program logic to automatically generate graphs. */
@@ -28,7 +28,7 @@ export default class BuilderController {
   ) {
     const startProcess = processIdxRef.current.graphIdx;
     const sleepTime = () =>
-      APP_SETTINGS.baseSleepDuration * (1 - buildSpeed.current / 100);
+      CONSTANTS.baseSleepDuration * (1 - buildSpeed.current / 100);
     let newGraph = { ...graph };
     newGraph.buildState.state++;
 
@@ -98,18 +98,18 @@ export default class BuilderController {
     buildSpeed: React.MutableRefObject<any>
   ) {
     const startProcess = processIdxRef.current.graphIdx;
-    const SETTINGS = APP_SETTINGS.randomGraph;
+    const SETTINGS = CONSTANTS.randomGraph;
     let newGraph = { ...graph };
     const sleepTime = () =>
-      APP_SETTINGS.baseSleepDuration * (1 - buildSpeed.current / 100);
+      CONSTANTS.baseSleepDuration * (1 - buildSpeed.current / 100);
     newGraph.buildState.state++;
 
     // create random nodes
     for (let i = 0; i < randomNodes; i++) {
       const randomLat =
-        getRandomNumber(0, APP_SETTINGS.randomGraph.latLngMax * 100) / 100;
+        getRandomNumber(0, CONSTANTS.randomGraph.latLngMax * 100) / 100;
       const randomLng =
-        getRandomNumber(0, APP_SETTINGS.randomGraph.latLngMax * 100) / 100;
+        getRandomNumber(0, CONSTANTS.randomGraph.latLngMax * 100) / 100;
       await sleep(sleepTime());
       if (startProcess != processIdxRef.current.graphIdx) return;
       newGraph = GraphController.addNode(

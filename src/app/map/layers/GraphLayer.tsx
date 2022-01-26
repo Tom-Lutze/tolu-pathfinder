@@ -7,15 +7,15 @@ import {
   MenuTypes,
   ProcessIdxInterface,
   SettingTypes,
-} from '../../../interfaces';
-import { SettingContexts } from '../../../utils/SettingsProvider';
-import { APP_SETTINGS } from '../../constants/Settings';
-import BuilderController from '../controller/BuilderController';
-import GraphController from '../controller/GraphController';
-import MarkerConnection from '../elements/MarkerConnection';
-import MarkerWithPopup from '../elements/MarkerWithPopup';
+} from '../../../interfaces/Interfaces';
+import { SettingContexts } from '../../settings/SettingsProvider';
+import { CONSTANTS } from '../../constants/Constants';
+import BuilderController from '../../controller/BuilderController';
+import GraphController from '../../controller/GraphController';
+import Edge from './graph/Edge';
+import Node from './graph/Node';
 
-/** Represents the graph state with Leaflet's markers and polylines. */
+/** Representation of the graph with map markers and polylines. */
 const GraphLayer = (props: {
   graph: GraphInterface;
   setGraph: React.Dispatch<React.SetStateAction<GraphInterface>>;
@@ -76,8 +76,8 @@ const GraphLayer = (props: {
           map.fitBounds([
             [0, 0],
             [
-              APP_SETTINGS.randomGraph.latLngMax / 100,
-              APP_SETTINGS.randomGraph.latLngMax / 100,
+              CONSTANTS.randomGraph.latLngMax / 100,
+              CONSTANTS.randomGraph.latLngMax / 100,
             ],
           ]);
           break;
@@ -104,12 +104,12 @@ const GraphLayer = (props: {
       {GraphController.getNodesIdx(props.graph).map((nodeIdx: number) => {
         return (
           <React.Fragment key={`marker-${nodeIdx}`}>
-            <MarkerWithPopup
+            <Node
               nodeIdx={nodeIdx}
               graph={props.graph}
               setGraph={props.setGraph}
             />
-            <MarkerConnection
+            <Edge
               nodeIdx={nodeIdx}
               graph={props.graph}
               setGraph={props.setGraph}

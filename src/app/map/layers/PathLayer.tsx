@@ -8,10 +8,10 @@ import {
   PathSearchStates,
   ProcessIdxInterface,
   SettingTypes,
-} from '../../../interfaces';
-import { SettingContexts } from '../../../utils/SettingsProvider';
-import GraphController from '../controller/GraphController';
-import PathController from '../controller/PathController';
+} from '../../../interfaces/Interfaces';
+import { SettingContexts } from '../../settings/SettingsProvider';
+import GraphController from '../../controller/GraphController';
+import PathController from '../../controller/PathController';
 
 /** Represents the path search state with Leaflet polylines. */
 const PathLayer = (props: {

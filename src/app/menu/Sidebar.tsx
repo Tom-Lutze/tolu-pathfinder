@@ -11,7 +11,7 @@ import { settingsParams } from '../settings/SettingsParams';
 import { mainMenuStrings } from '../constants/Strings';
 
 /** A {@link Menu} component to represent and control the graph, algorithm and setting states. */
-const AppMenu = () => {
+const Sidebar = () => {
   const subMenuitems = [];
 
   for (const menuType in MenuTypes) {
@@ -111,4 +111,4 @@ const AppMenu = () => {
   );
 };
 
-export default AppMenu;
+export default Sidebar;

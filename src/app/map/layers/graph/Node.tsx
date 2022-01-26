@@ -1,19 +1,22 @@
 import { CloseOutlined, DeleteOutlined } from '@ant-design/icons';
 import React, { useRef } from 'react';
 import { Circle, Marker, Popup } from 'react-leaflet';
-import { BuilderStates, GraphInterface } from '../../../interfaces';
-import { appStrings } from '../../constants/Strings';
-import GraphController from '../controller/GraphController';
+import {
+  BuilderStates,
+  GraphInterface,
+} from '../../../../interfaces/Interfaces';
+import { appStrings } from '../../../constants/Strings';
+import GraphController from '../../../controller/GraphController';
 import {
   MarkerIconDefault,
   MarkerIconGreen,
   MarkerIconRed,
-} from '../../constants/MarkerIcons';
+} from '../../../constants/Markers';
 
-/** This component represents all nodes as {@link Marker}'s
- * that have {@link Popup}'s attached to provide additional
- * info and allow user actions. */
-const MarkerWithPopup = (params: {
+/** Represents all nodes as {@link Marker}'s with a
+ * {@link Popup} attached to provide additional info
+ * and allow user actions. */
+const Node = (params: {
   nodeIdx: number;
   graph: GraphInterface;
   setGraph: React.Dispatch<React.SetStateAction<GraphInterface>>;
@@ -208,4 +211,4 @@ const MarkerWithPopup = (params: {
   );
 };
 
-export default MarkerWithPopup;
+export default Node;

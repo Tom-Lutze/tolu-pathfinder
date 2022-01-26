@@ -6,21 +6,20 @@ import {
 import React from 'react';
 import {
   AlgoTypes,
-  ExtraMenuTypes,
   GraphTypes,
   MenuTypes,
   SettingTypes,
-} from '../../interfaces';
+} from '../../interfaces/Interfaces';
 import {
   algoMenuStrings,
   graphMenuStrings,
   settingMenuStrings,
-} from './Strings';
+} from '../constants/Strings';
 
 /**
- * Predefined settings and initial configurations that are represented in the sidebar menu.
+ * Predefined settings and initial configurations that are displayed in the sidebar menu.
  */
-export const menuParams = {
+export const settingsParams = {
   [MenuTypes.Graph]: {
     type: GraphTypes,
     icon: <BranchesOutlined />,

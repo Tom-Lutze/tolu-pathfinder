@@ -1,9 +1,9 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
-import App from './App';
-import { appStrings } from './constants/Strings';
-import MapComponent from './map/MapComponent';
-import Menu from './ui/Menu';
+import App from '../app/App';
+import { appStrings } from '../app/constants/Strings';
+import MapComponent from '../app/map/Map';
+import Menu from '../app/menu/Sidebar';
 
 describe('App tests:', () => {
   test('renders sider with logo', async () => {

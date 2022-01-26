@@ -1,13 +1,16 @@
 import { CloseOutlined } from '@ant-design/icons';
 import React, { useRef } from 'react';
 import { Polyline, Popup } from 'react-leaflet';
-import { BuilderStates, GraphInterface } from '../../../interfaces';
-import { appStrings } from '../../constants/Strings';
-import GraphController from '../controller/GraphController';
+import {
+  BuilderStates,
+  GraphInterface,
+} from '../../../../interfaces/Interfaces';
+import { appStrings } from '../../../constants/Strings';
+import GraphController from '../../../controller/GraphController';
 
-/** This component represents all graph edges as {@link Polyline}'s that have
- *  {@link Popup}'s attached to provide user actions. */
-const MarkerConnection = (params: {
+/** Represents all graph edges as {@link Polyline}'s with a
+ *  {@link Popup} attached to provide user actions. */
+const Edge = (params: {
   nodeIdx: number;
   graph: GraphInterface;
   setGraph: React.Dispatch<React.SetStateAction<GraphInterface>>;
@@ -79,4 +82,4 @@ const MarkerConnection = (params: {
   }
 };
 
-export default MarkerConnection;
+export default Edge;

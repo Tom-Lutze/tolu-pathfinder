@@ -1,12 +1,8 @@
 import { Spin } from 'antd';
 import 'leaflet/dist/leaflet.css';
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import {
-  FeatureGroup,
-  MapContainer,
-  TileLayer,
-  useMapEvents,
-} from 'react-leaflet';
+import { MapContainer, TileLayer, useMapEvents } from 'react-leaflet';
+import map_tile from '../../assets/map-tile.png';
 import {
   BuilderStates,
   ExtraMenuTypes,
@@ -17,14 +13,13 @@ import {
   PathSearchStates,
   ProcessIdxInterface,
   SettingTypes,
-} from '../../interfaces';
-import { SettingContexts } from '../../utils/SettingsProvider';
+} from '../../interfaces/Interfaces';
 import { appStrings } from '../constants/Strings';
-import GraphController from './controller/GraphController';
+import GraphController from '../controller/GraphController';
+import { SettingContexts } from '../settings/SettingsProvider';
+import { Statistics } from './control/Statistics';
 import GraphLayer from './layers/GraphLayer';
 import PathLayer from './layers/PathLayer';
-import { StatisticsLayer } from './layers/StatisticsLayer';
-import map_tile from '../../assets/map-tile.png';
 
 /** A leaflet {@link MapContainer} wrapped by a {@link Spin} component that
  * initializes and handles updates on the graph and path states. */
@@ -198,7 +193,7 @@ const MapComponent = () => {
           processIdxRef={processIdxRef}
         />
         <div className="leaflet-control-container">
-          <StatisticsLayer graph={graph} path={path} />
+          <Statistics graph={graph} path={path} />
         </div>
         <MapEventHandler />
       </MapContainer>
