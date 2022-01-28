@@ -107,12 +107,12 @@ const MapComponent = () => {
   useEffect(() => {
     resetPath();
     resetGraph();
-  }, [graphType]);
+  }, [graphType, updateTimestamp[MenuTypes.Graph]]);
 
   // Algo type updated
   useEffect(() => {
     resetPath(true);
-  }, [algoType, updateTimestamp]);
+  }, [algoType, updateTimestamp[MenuTypes.Algo]]);
 
   // Max graph nodes setting updated
   useEffect(() => {

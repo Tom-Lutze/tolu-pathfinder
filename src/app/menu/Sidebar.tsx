@@ -99,8 +99,11 @@ const Sidebar = () => {
       onClick={(e) => {
         const menuType = MenuTypes[e.keyPath[1]];
         const menuParam = settingsParams[menuType];
+        updateTimestampContext.setStateVal({
+          ...updateTimestampContext.stateVal,
+          [menuType]: new Date().getTime(),
+        });
         if (menuType == MenuTypes.Algo) {
-          updateTimestampContext.setStateVal(new Date().getTime());
           algoContext.setStateVal(menuParam.type[e.keyPath[0]]);
         } else if (menuType == MenuTypes.Graph) {
           graphContext.setStateVal(menuParam.type[e.keyPath[0]]);
