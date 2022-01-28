@@ -31,7 +31,7 @@ const App = () => {
         </Sider>
         <Layout className="site-layout">
           <Content className="site-layout-content">
-            <MapComponent />
+            <MapComponent menuCollapsed={menuCollapsed} />
           </Content>
         </Layout>
       </Layout>

@@ -23,7 +23,7 @@ import PathLayer from './layers/PathLayer';
 
 /** A leaflet {@link MapContainer} wrapped by a {@link Spin} component that
  * initializes and handles updates on the graph and path states. */
-const MapComponent = () => {
+const MapComponent = (props: { menuCollapsed?: boolean }) => {
   // initialize the graph state
   const initGraph: GraphInterface = {
     nodeIndexer: 0,
@@ -144,6 +144,12 @@ const MapComponent = () => {
     }
   }, [graph.state.updated]);
 
+  //resize map on menu collapse event
+  const mapContainerRef = useRef<any>();
+  useEffect(() => {
+    setTimeout(() => mapContainerRef.current?.invalidateSize(true), 200);
+  }, [props.menuCollapsed]);
+
   // handle click events on the map container
   const MapEventHandler = () => {
     useMapEvents({
@@ -174,6 +180,9 @@ const MapComponent = () => {
         zoom={13}
         scrollWheelZoom={true}
         id="leaflet-map-container"
+        whenCreated={(mapInstance) => {
+          mapContainerRef.current = mapInstance;
+        }}
       >
         <TileLayer
           attribution={`&copy; <a href="https://lutze-it.com" title="${appStrings.attributionTitle}" target="_blank">Lutze-IT</a>`}
