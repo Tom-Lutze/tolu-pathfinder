@@ -178,7 +178,7 @@ export default class BuilderController {
         newGraph.buildState.counterB--;
         await sleep(sleepTime());
         if (startProcess != processIdxRef.current.graphIdx) return;
-        // add edges to node
+        // assign node edges
         newGraph = GraphController.connectNodes(nodePairs, newGraph, setGraph);
       }
     }
