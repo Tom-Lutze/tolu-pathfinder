@@ -3,10 +3,12 @@
 
 @popover-background: #001529;
 @component-background: #000c17;
-@tolu-gray: #595959;
+@tolu-pf-gray: #595959;
+@tolu-pf-blue: #002140;
+@leaflet-blue: #0078a8;
 
 .tolu-text-disabled {
-  color: @tolu-gray;
+  color: @tolu-pf-gray;
 }
 
 .ant-layout {
@@ -19,7 +21,7 @@
 
       .logo {
         padding: 16px;
-        border-bottom: solid 1px #595959;
+        border-bottom: solid 1px @tolu-pf-gray;
 
         img {
           width: 100%;
@@ -36,14 +38,14 @@
     }
 
     .ant-layout-sider-trigger {
-      background-color: #002140;
+      background-color: @tolu-pf-blue;
     }
   }
 
   .site-layout {
     .ant-layout-content {
       &.site-layout-content {
-        background: #fff;
+        background: @white;
         margin: 0;
         min-height: 280px;
 
@@ -51,7 +53,7 @@
           max-height: 100%;
 
           .ant-spin-text {
-            text-shadow: 0 1px 3px #fff;
+            text-shadow: 0 1px 3px @white;
           }
         }
       }
@@ -86,7 +88,7 @@
         .leaflet-popup-content-wrapper {
           border-radius: initial;
           background-color: @component-background;
-          color: @tolu-gray;
+          color: @tolu-pf-gray;
 
           .leaflet-popup-content {
             margin: 8px;
@@ -108,7 +110,7 @@
 
             .tolu-popup-actions {
               padding-top: 8px;
-              border-top: solid 1px @tolu-gray;
+              border-top: solid 1px @tolu-pf-gray;
             }
           }
         }
@@ -122,7 +124,7 @@
 
   .leaflet-control-container {
     .leaflet-bar {
-      border: solid 1px @tolu-gray;
+      border: solid 1px @tolu-pf-gray;
       a,
       a:hover {
         background-color: @component-background;
@@ -171,7 +173,7 @@
       .leaflet-control-attribution {
         a,
         a:hover {
-          color: #0078a8;
+          color: @leaflet-blue;
         }
       }
     }
