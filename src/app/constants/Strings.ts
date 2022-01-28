@@ -57,7 +57,7 @@ export const appStrings = {
   remove: 'Remove',
   removeTooltip: 'Delete this node',
   nodeIdentifier: 'Node',
-  nodeIdentifierTooltip: 'Node identifier',
+  nodeIdentifierTooltip: 'Center node',
   closeTooltip: 'Close',
   spinTip: 'Building graph ...',
   resultsTitle: 'Results',
