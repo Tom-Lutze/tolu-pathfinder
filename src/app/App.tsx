@@ -1,13 +1,13 @@
-import { Layout } from 'antd';
 import React, { useState } from 'react';
+import { Layout } from 'antd';
 import MapComponent from './map/Map';
+import Sidebar from './menu/Sidebar';
+import { appStrings } from './constants/Strings';
 import logo168 from '../assets/logo168.png';
 import logo48 from '../assets/logo48.png';
 import '../styles/Styles.less';
-import { appStrings } from './constants/Strings';
-import Sidebar from './menu/Sidebar';
 
-/** Main app component that provides the basic layout structure */
+/** Main component that provides the basic UI-layout. */
 const App = () => {
   const { Content, Sider } = Layout;
   let [menuCollapsed, setMenuCollapsed] = useState(false);

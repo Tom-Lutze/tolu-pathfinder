@@ -1,9 +1,9 @@
+import React from 'react';
 import {
   BranchesOutlined,
   CompassOutlined,
   SettingOutlined,
 } from '@ant-design/icons';
-import React from 'react';
 import {
   AlgoTypes,
   GraphTypes,
@@ -17,7 +17,7 @@ import {
 } from '../constants/Strings';
 
 /**
- * Predefined settings and initial configurations that are displayed in the sidebar menu.
+ * Parameters and initial configurations for the {@link Sidebar} menu.
  */
 export const settingsParams = {
   [MenuTypes.Graph]: {

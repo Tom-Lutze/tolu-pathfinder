@@ -7,7 +7,7 @@ import {
 } from '../../interfaces/Interfaces';
 
 /**
- * Dictionary of settings ({@link MenuTypes}) with their associated {@link React.Context}
+ * Dictionary of settings ({@link MenuTypes}) with their associated {@link React.Context}.
  */
 const SettingContexts: {
   [index: number]: any;
@@ -45,8 +45,8 @@ const SettingContexts: {
 };
 
 /**
- * This component initiates and provides settings to all it's child components via {@link React.Context}
- * @param param0 The child component which is wrapped by {@link SettingsProvider}
+ * This component initiates and provides settings to all it's child components via the {@link React.Context}
+ * @param param0 The child component which is wrapped by the {@link SettingsProvider}
  * @returns SettingsProvider object
  */
 const SettingsProvider: React.FC<{}> = ({ children }) => {

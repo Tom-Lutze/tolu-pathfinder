@@ -5,9 +5,7 @@ import marker_icon_green from '../../assets/marker/marker-icon-green.png';
 import marker_icon_red from '../../assets/marker/marker-icon-red.png';
 import marker_icon_yellow from '../../assets/marker/marker-icon-yellow.png';
 
-/**
- * This component provides customized leaflet Markers
- */
+// exports customized Leaflet markers
 
 export const MarkerIconDefault = Leaflet.icon({
   iconUrl: MarkerIcon,

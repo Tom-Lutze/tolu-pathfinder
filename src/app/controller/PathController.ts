@@ -10,7 +10,20 @@ import {
 import { sleep } from '../../utils/Utils';
 import { CONSTANTS } from '../constants/Constants';
 
+/**
+ * Provides functions to calculate paths between start and end nodes.
+ */
 export default class PathController {
+  /**
+   * Executes a breadth-first-search on the current graph.
+   *
+   * @param graph Current graph state object
+   * @param path Current path state object
+   * @param setPath Paths set-state function
+   * @param processIdxRef Process index reference object
+   * @param searchSpeed Current search speed setting
+   * @param algoType Current algorithm (for history)
+   */
   static bfs(
     graph: GraphInterface,
     path: PathInterface,
@@ -30,6 +43,16 @@ export default class PathController {
     );
   }
 
+  /**
+   * Executes a depth-first-search on the current graph.
+   *
+   * @param graph Current graph state object
+   * @param path Current path state object
+   * @param setPath Paths set-state function
+   * @param processIdxRef Process index reference object
+   * @param searchSpeed Current search speed setting
+   * @param algoType Current algorithm (for history)
+   */
   static dfs(
     graph: GraphInterface,
     path: PathInterface,
@@ -49,6 +72,18 @@ export default class PathController {
     );
   }
 
+  /**
+   * Executes a Dijkstra-search on the current graph.
+   *
+   * @param graph Current graph state object
+   * @param path Current path state object
+   * @param setPath Paths set-state function
+   * @param processIdxRef Process index reference object
+   * @param searchSpeed Current search speed setting
+   * @param algoType Current algorithm (for history)
+   * @param processAll If true, search continues after path found
+   * (should be false for normal processing)
+   */
   static async dijkstra(
     graph: GraphInterface,
     path: PathInterface,
@@ -70,6 +105,18 @@ export default class PathController {
     );
   }
 
+  /**
+   * Executes a A*-search on the current graph with Manhatten-heuristic.
+   *
+   * @param graph Current graph state object
+   * @param path Current path state object
+   * @param setPath Paths set-state function
+   * @param processIdxRef Process index reference object
+   * @param searchSpeed Current search speed setting
+   * @param algoType Current algorithm (for history)
+   * @param processAll If true, search continues after path found
+   * (should be false for normal processing)
+   */
   static async aStarManhatten(
     graph: GraphInterface,
     path: PathInterface,
@@ -91,6 +138,18 @@ export default class PathController {
     );
   }
 
+  /**
+   * Executes a A*-search on the current graph with Euclidean-heuristic.
+   *
+   * @param graph Current graph state object
+   * @param path Current path state object
+   * @param setPath Paths set-state function
+   * @param processIdxRef Process index reference object
+   * @param searchSpeed Current search speed setting
+   * @param algoType Current algorithm (for history)
+   * @param processAll If true, search continues after path found
+   * (should be false for normal processing)
+   */
   static async aStarEuclidean(
     graph: GraphInterface,
     path: PathInterface,
@@ -113,7 +172,22 @@ export default class PathController {
   }
 }
 
+/**
+ * Helper class for common search algorithm functionalities.
+ */
 class PathControllerHelper {
+  /**
+   * Common search algorithm for BFS and DFS which differs only in the specified {@link arrayOperation}.
+   *
+   * @param graph Current graph state object
+   * @param path Current path state object
+   * @param setPath Paths set-state function
+   * @param processIdxRef Process index reference object
+   * @param arrayOperation Operation on the node array to select the next node
+   * @param searchSpeed Current search speed setting
+   * @param algoType Current algorithm (for history)
+   * @returns
+   */
   static async searchAlgorithm(
     graph: GraphInterface,
     path: PathInterface,
@@ -128,22 +202,27 @@ class PathControllerHelper {
     const startSearchIdx = processIdxRef.current.pathIdx;
     const startNodeIdx = graph.state.startNode;
     const endNodeIdx = graph.state.endNode;
+
     if (!startNodeIdx || !endNodeIdx || Object.keys(graph).length < 1)
-      return [];
+      return []; // nothing to process
+
     const visitedNodes = new Set<number>();
 
     const nodesArray: number[][] = [[startNodeIdx]];
+
+    // loop over nodes (stop if new process was started)
     while (
       nodesArray.length > 0 &&
       startSearchIdx === processIdxRef.current.pathIdx
     ) {
       const currentNode = arrayOperation(nodesArray);
       if (!currentNode || !currentNode[0] || visitedNodes.has(currentNode[0])) {
-        continue;
+        continue; // node has no edges or already visited
       } else {
         visitedNodes.add(currentNode[0]);
         newPath.visitedNodesCounter++;
         if (currentNode[0] == endNodeIdx) {
+          // found path and stop processing
           return setPath({
             ...newPath,
             state: PathSearchStates.Finalized,
@@ -163,6 +242,7 @@ class PathControllerHelper {
             ],
           });
         } else {
+          // set path and continue processing
           setPath({
             ...newPath,
             found: false,
@@ -175,6 +255,8 @@ class PathControllerHelper {
             nodesArray.push([edge, ...currentNode]);
           });
         }
+
+        // slow execution down, based on search speed setting
         const sleeptime =
           CONSTANTS.baseSleepDuration * (1 - searchSpeed.current / 100);
         await sleep(sleeptime);
@@ -182,6 +264,20 @@ class PathControllerHelper {
     }
   }
 
+  /**
+   * Common search algorithm for Dijkstra and A* which differs only in the specified {@link heuristicFunction}.
+   *
+   * @param graph Current graph state object
+   * @param path Current path state object
+   * @param setPath Paths set-state function
+   * @param processIdxRef Process index reference object
+   * @param heuristicFunction Operation used to calculate the heuristics value
+   * @param searchSpeed Current search speed setting
+   * @param algoType Current algorithm (for history)
+   * @param processAll If true, search continues after path found
+   * (should be false for normal processing)
+   * @returns
+   */
   static async aStarAlgorithm(
     graph: GraphInterface,
     path: PathInterface,
@@ -196,12 +292,14 @@ class PathControllerHelper {
     const startSearchIdx = processIdxRef.current.pathIdx;
     const startNodeIdx = graph.state.startNode;
     const endNodeIdx = graph.state.endNode;
+
     if (!startNodeIdx || !endNodeIdx || Object.keys(graph).length < 1)
-      return [];
+      return []; // nothing to process
 
     const sleepTime =
       CONSTANTS.baseSleepDuration * (1 - searchSpeed.current / 100);
 
+    // initialize collection for unvisited nodes
     const unvisitedNodes: { [idx: number]: AStarNodeInterface } = {};
     Object.keys(graph.nodes).forEach((key) => {
       const currNode: AStarNodeInterface = {
@@ -214,9 +312,14 @@ class PathControllerHelper {
       };
       unvisitedNodes[key] = currNode;
     });
+
+    // initialize collection for visited nodes
     const visitedNodes: { [idx: number]: AStarNodeInterface } = {};
 
+    // loop over nodes
     while (Object.keys(unvisitedNodes).length > 0) {
+      // find next node based on heuristic values
+      // TODO: tie breaking rule
       const nextNodeKey = Object.keys(unvisitedNodes).sort(
         (nodeA, nodeB) =>
           unvisitedNodes[nodeA].combinedDistanceFromStart -
@@ -225,6 +328,7 @@ class PathControllerHelper {
 
       const nextNode: AStarNodeInterface = unvisitedNodes[nextNodeKey];
 
+      // calculate heuristic values for all edges
       nextNode?.edges?.forEach((edgeIdx) => {
         if (!unvisitedNodes[edgeIdx]) return;
         const distToNext =
@@ -249,6 +353,7 @@ class PathControllerHelper {
         }
       });
 
+      // move node from unvisited to visited collection
       visitedNodes[nextNodeKey] = nextNode;
       delete unvisitedNodes[nextNodeKey];
 
@@ -256,12 +361,14 @@ class PathControllerHelper {
       newPath.nodes = [...nextNode.parentNodes, Number(nextNodeKey)];
 
       newPath.visitedNodesCounter++;
+
+      // continue processing or stop if found
       if (newPath.found && !processAll) {
         Object.keys(unvisitedNodes).forEach(
           (key) => delete unvisitedNodes[key]
         );
       } else {
-        await sleep(sleepTime);
+        await sleep(sleepTime); // slow execution down
         if (startSearchIdx != processIdxRef.current.pathIdx) return;
         setPath({
           ...newPath,
@@ -269,6 +376,7 @@ class PathControllerHelper {
       }
     }
 
+    // set result of path search
     if (visitedNodes[endNodeIdx].parentNodes[0] === startNodeIdx) {
       newPath.nodes = [...visitedNodes[endNodeIdx].parentNodes, endNodeIdx];
       newPath.found = true;
@@ -277,7 +385,7 @@ class PathControllerHelper {
       newPath.found = false;
     }
 
-    await sleep(sleepTime);
+    await sleep(sleepTime); // slow execution down
     if (startSearchIdx != processIdxRef.current.pathIdx) return;
     setPath({
       ...newPath,
@@ -297,10 +405,17 @@ class PathControllerHelper {
     });
   }
 
-  static manhattenDistance = (pos1: LatLng, pos2: LatLng) => {
-    const haversine = (p1: number, p2: number) => {
+  /**
+   * Calculates the Manhatten-distance between to locations.
+   * @param loc1 The first location
+   * @param loc2 The second location
+   * @returns Manhatten distance
+   */
+  static manhattenDistance = (loc1: LatLng, loc2: LatLng) => {
+    // use haversine formula for earth's spherical coordinates
+    const haversine = (l1: number, l2: number) => {
       const R = 6371000; // earth radius
-      const d = Math.abs(p1 - p2);
+      const d = Math.abs(l1 - l2);
       const a = Math.pow(Math.sin(d / 2), 2);
       const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
       const dist = R * c;
@@ -308,8 +423,8 @@ class PathControllerHelper {
     };
 
     return (
-      Math.abs(haversine(pos1.lat, pos2.lat)) +
-      Math.abs(haversine(pos1.lng, pos2.lng))
+      Math.abs(haversine(loc1.lat, loc2.lat)) +
+      Math.abs(haversine(loc1.lng, loc2.lng))
     );
   };
 }

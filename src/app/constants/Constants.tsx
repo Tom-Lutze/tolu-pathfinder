@@ -1,4 +1,4 @@
-/** Static app settings that are not allowed to be customized by users. */
+/** Static app settings that can't be customized by users. */
 export const CONSTANTS = {
   randomGraph: {
     latLngMax: 10,

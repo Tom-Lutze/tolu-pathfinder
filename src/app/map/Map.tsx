@@ -21,8 +21,10 @@ import { Statistics } from './control/Statistics';
 import GraphLayer from './layers/GraphLayer';
 import PathLayer from './layers/PathLayer';
 
-/** A leaflet {@link MapContainer} wrapped by a {@link Spin} component that
- * initializes and handles updates on the graph and path states. */
+/**
+ * A Leaflet {@link MapContainer} wrapped by a {@link Spin} component.
+ * It initializes and handles updates on the graph and path states.
+ */
 const MapComponent = (props: { menuCollapsed?: boolean }) => {
   // initialize the graph state
   const initGraph: GraphInterface = {

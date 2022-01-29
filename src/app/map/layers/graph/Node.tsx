@@ -1,6 +1,6 @@
-import { CloseOutlined, DeleteOutlined } from '@ant-design/icons';
 import React, { useRef } from 'react';
 import { CircleMarker, Marker, Popup, useMap } from 'react-leaflet';
+import { CloseOutlined, DeleteOutlined } from '@ant-design/icons';
 import {
   BuilderStates,
   GraphInterface,
@@ -13,9 +13,9 @@ import {
 import { appStrings } from '../../../constants/Strings';
 import GraphController from '../../../controller/GraphController';
 
-/** Represents all nodes as {@link Marker}'s with a
- * {@link Popup} attached to provide additional info
- * and allow user actions. */
+/**
+ * Represents a node as {@link Marker} with a {@link Popup} attached to it.
+ */
 const Node = (params: {
   nodeIdx: number;
   graph: GraphInterface;
@@ -117,7 +117,6 @@ const Node = (params: {
   };
 
   const popupRef = useRef<any>();
-
   const map = useMap();
 
   return (

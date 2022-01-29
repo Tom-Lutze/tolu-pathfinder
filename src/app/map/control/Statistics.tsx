@@ -1,7 +1,7 @@
-import { AreaChartOutlined, CaretUpOutlined } from '@ant-design/icons';
-import { Card, Col, Row, Statistic, Table } from 'antd';
-import L from 'leaflet';
 import { useEffect, useRef, useState } from 'react';
+import L from 'leaflet';
+import { Card, Col, Row, Statistic, Table } from 'antd';
+import { AreaChartOutlined, CaretUpOutlined } from '@ant-design/icons';
 import { CSSTransition, SwitchTransition } from 'react-transition-group';
 import { GraphInterface, PathInterface } from '../../../interfaces/Interfaces';
 import {
@@ -10,10 +10,12 @@ import {
   appStrings,
 } from '../../constants/Strings';
 
-/** Provides statistics for the current graph and lists all results
+/**
+ * Provides statistics for the current graph and lists all results
  * for search algorithms that were executed on the current graph.
  * The component is wrapped by a {@link SwitchTransition} to allow
- * animations for the collapse event. */
+ * animations for the collapse event.
+ */
 export const Statistics = (params: {
   graph: GraphInterface;
   path: PathInterface;

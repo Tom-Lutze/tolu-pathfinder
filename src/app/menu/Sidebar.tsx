@@ -10,7 +10,9 @@ import { SettingContexts } from '../settings/SettingsProvider';
 import { settingsParams } from '../settings/SettingsParams';
 import { mainMenuStrings } from '../constants/Strings';
 
-/** A {@link Menu} component to represent and control the graph, algorithm and setting states. */
+/**
+ * Provides an interface to specify the graph type, algorithm and settings with a {@link Menu} component.
+ */
 const Sidebar = () => {
   const subMenuitems = [];
 

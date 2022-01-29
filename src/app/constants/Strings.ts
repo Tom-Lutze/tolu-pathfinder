@@ -5,10 +5,7 @@ import {
   SettingTypes,
 } from '../../interfaces/Interfaces';
 
-/**
- * This file holds all strings presented to users.
- * The dictionaries below can also serve as a groundwork for multi-language implementations.
- */
+// exports all strings that are visible in the UI
 
 export const mainMenuStrings = {
   [MenuTypes.Graph]: 'Graph',
@@ -47,17 +44,17 @@ export const settingMenuStrings = {
 
 export const appStrings = {
   start: 'Start',
-  startTooltip: 'Set as start node',
+  startTooltip: 'Set start node',
   end: 'End',
-  endTooltip: 'Set as end node',
+  endTooltip: 'Set end node',
   connect: 'Connect',
-  connectTooltip: 'Connect with previous node',
+  connectTooltip: 'Connect to previous node',
   disconnect: 'Disconnect',
   disconnectTooltip: 'Disconnect nodes',
   remove: 'Remove',
-  removeTooltip: 'Delete this node',
+  removeTooltip: 'Remove node',
   nodeIdentifier: 'Node',
-  nodeIdentifierTooltip: 'Center node',
+  nodeIdentifierTooltip: 'Center map on node',
   closeTooltip: 'Close',
   spinTip: 'Building graph ...',
   resultsTitle: 'Results',

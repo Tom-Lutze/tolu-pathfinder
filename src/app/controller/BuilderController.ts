@@ -8,7 +8,9 @@ import { getRandomNumber, sleep } from '../../utils/Utils';
 import { CONSTANTS } from '../constants/Constants';
 import GraphController from './GraphController';
 
-/** Provides program logic to automatically generate graphs. */
+/**
+ * Provides program logic to automatically generate a graph.
+ */
 export default class BuilderController {
   /**
    * Generates a graph where nodes and their edges represent a grid.
@@ -127,6 +129,7 @@ export default class BuilderController {
     const adjacencyMatrix = [...Array(randomNodes)].map(() =>
       Array(randomNodes)
     );
+
     for (let i = 0; i < randomNodes; i++) {
       for (let j = 0; j < randomNodes; j++) {
         if (i == j) {
@@ -146,7 +149,7 @@ export default class BuilderController {
       return node
         .filter((node) => node != undefined)
         .sort((a, b) => a.distance - b.distance)
-        .map((node) => node.idx); //TODO improve performance
+        .map((node) => node.idx);
     });
 
     // connect nodes to other randomly selected nodes while prioritizing edges with smaller distances

@@ -1,6 +1,6 @@
-import { CloseOutlined } from '@ant-design/icons';
 import React, { useRef } from 'react';
 import { Polyline, Popup } from 'react-leaflet';
+import { CloseOutlined } from '@ant-design/icons';
 import {
   BuilderStates,
   GraphInterface,
@@ -8,7 +8,9 @@ import {
 import { appStrings } from '../../../constants/Strings';
 import GraphController from '../../../controller/GraphController';
 
-/** Represents an edge as {@link Polyline} with a {@link Popup} attached to it. */
+/**
+ * Represents an edge as {@link Polyline} with a {@link Popup} attached to it.
+ */
 const Edge = (params: {
   fromNodeIdx: number;
   toNodeIdx: number;

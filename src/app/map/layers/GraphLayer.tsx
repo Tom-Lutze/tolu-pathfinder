@@ -15,7 +15,9 @@ import GraphController from '../../controller/GraphController';
 import Edge from './graph/Edge';
 import Node from './graph/Node';
 
-/** Representation of the graph with map markers and polylines. */
+/**
+ * Representation of the graph with Leaflet map markers and polylines.
+ */
 const GraphLayer = (props: {
   graph: GraphInterface;
   setGraph: React.Dispatch<React.SetStateAction<GraphInterface>>;
