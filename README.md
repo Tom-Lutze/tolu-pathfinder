@@ -5,7 +5,7 @@
 [![TypeScript](https://badgen.net/badge/icon/typescript?icon=typescript&label)](https://typescriptlang.org)
 [![jest](https://jestjs.io/img/jest-badge.svg)](https://github.com/facebook/jest)
 
-<p align="center"><img src="public/doc/banner.png" width="100%"/></p>
+<p align="center"><img src="doc/banner.png" width="100%"/></p>
 
 # _TOLU Pathfinder_
 
@@ -15,7 +15,7 @@ The _TOLU Pathfinder_ app demonstrates the execution of several path finding alg
 
 Implemented as a single-page web app, _TOLU Pathfinder_ provides a map view with a collapsible sidebar menu. The following sections take a closer look at all of their subcomponents and how to use them.
 
-![Demo user interface](/public/doc/demo-ui.gif)
+![Demo user interface](/doc/demo-ui.gif)
 
 ### Interactive map
 
@@ -23,13 +23,13 @@ A map view is the core component of the app and allows users to create nodes (ma
 
 In order to run search algorithms on the graph, a start and end node need to be selected which can be achieved by selecting the appropriate option from the nodes popup.
 
-![Demo create a graph](/public/doc/demo-create-graph.gif)
+![Demo create a graph](/doc/demo-create-graph.gif)
 
 ### Graph-builder
 
 To simplify experimenting, a Graph-builder component was implemented which allows to generate either a regular grid or a random graph network. The number of nodes that will be created can be adjusted in the settings menu. Besides that, a setting for the build speed can be found as well.
 
-![Demo graph builder (random)](/public/doc/demo-graph-builder-random.gif)
+![Demo graph builder (random)](/doc/demo-graph-builder-random.gif)
 
 ### Algorithms
 
@@ -41,7 +41,7 @@ The following graph traversal algorithms have been implemented and can be used:
 - A\* (Manhatten) ([wiki](https://en.wikipedia.org/wiki/A*_search_algorithm))
 - A\* (Euclidean) ([wiki](https://en.wikipedia.org/wiki/A*_search_algorithm))
 
-![Demo run algorithm](/public/doc/demo-run-algorithm.gif)
+![Demo run algorithm](/doc/demo-run-algorithm.gif)
 
 ### Statistics
 
@@ -100,7 +100,7 @@ Launch prettier on all files for code formatting:
 
 ### Project structure
 
-![Project structure](/public/doc/project-structure.png)
+![Project structure](/doc/project-structure.png)
 
 ### CRACO for LESS support
 
