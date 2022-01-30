@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "author": "Tom Lutze (lutze-it.com)",
   "license": "MIT",
+  "homepage": "./",
   "private": true,
   "dependencies": {
     "@craco/craco": "^6.4.3",
