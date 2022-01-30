@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Layout } from 'antd';
 import MapComponent from './map/Map';
 import Sidebar from './menu/Sidebar';
@@ -16,7 +16,7 @@ const App = () => {
       <Layout>
         <Sider
           collapsible
-          defaultCollapsed={menuCollapsed}
+          breakpoint="md"
           onCollapse={(collapsed) => {
             setMenuCollapsed(collapsed);
           }}
