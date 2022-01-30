@@ -96,6 +96,10 @@ Launch prettier on all files for code formatting:
 
 > `npm prettier-all`
 
+### Project structure
+
+![Project structure](/public/doc/project-structure.png)
+
 ### CRACO for LESS support
 
 In order to integrate Less files in the project compilation process, [CRACO](https://create-react-app.dev/docs/available-scripts/#npm-run-eject) and [CRACO-Less](https://github.com/DocSpring/craco-less) became part of the project which allow the reconfiguration of [create-react-app](https://create-react-app.dev/) without using `eject`. To switch back to the standard [create-react-app](https://create-react-app.dev/) configuration, simply uninstall the CRACO packages, remove the `craco.config.js` and replace all occurences of `"craco"` with `"react-scripts"` within the `package.json` scripts-section.
