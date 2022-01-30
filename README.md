@@ -49,29 +49,57 @@ A statistics view can be activated on the top-right corner of the map view. It p
 
 ### Main programming language and libraries
 
-The project is written in [TypeScript](https://www.typescriptlang.org/) and as frontend library serves [React](https://reactjs.org/) together with the UI-components of [Ant Design](https://ant.design/). For the realization of the map view, [Leaflet](https://leafletjs.com/) and [React Leaflet](https://react-leaflet.js.org/) were implemented.
+The project is written in [TypeScript](https://www.typescriptlang.org/) and as frontend library serves [React](https://reactjs.org/) together with the UI-components of [Ant Design](https://ant.design/). For the realization of the map view, [Leaflet](https://leafletjs.com/) and [React Leaflet](https://react-leaflet.js.org/) were utilized.
+
+### Setup
+
+Follow the steps below to setup the project on your local machine.
+
+1. Make sure to have [Git](https://git-scm.com/) and [Node](https://nodejs.org/) installed.
+
+2. Clone the project into your local directory:
+
+   > `git clone https://github.com/Tom-Lutze/tolu-pathfinder.git`
+
+3. Install the required node packages within the project directory:
+
+   > `npm i`
+
+4. Run the app in development mode by executing the start script:
+
+   > `npm start`
+
+5. Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 ### Scripts
 
-`npm start`
+The following scripts are available.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Start in development mode:
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+> `npm start`
 
-`npm test`
+Create production build:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+> `npm build`
 
-`npm run build`
+Launch the interactive test runner:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+> `npm test`
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Eject the project to customize the [create-react-app](https://create-react-app.dev/docs/available-scripts/#npm-run-eject) configuration:<br>
+**Note: ONE-WAY operation!**
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+> `npm eject`
+
+Launch prettier on all files for code formatting:
+
+> `npm prettier-all`
+
+### CRACO for LESS support
+
+In order to integrate Less files in the project compilation process, [CRACO](https://create-react-app.dev/docs/available-scripts/#npm-run-eject) and [CRACO-Less](https://github.com/DocSpring/craco-less) became part of the project which allow the reconfiguration of [create-react-app](https://create-react-app.dev/) without using `eject`. To switch back to the standard [create-react-app](https://create-react-app.dev/) configuration, simply uninstall the CRACO packages, remove the `craco.config.js` and replace all occurences of `"craco"` with `"react-scripts"` within the `package.json` scripts-section.
+
+### Info & Contact
+
+For more information and contact visit: [Lutze-IT.com](https://lutze-it.com/)
