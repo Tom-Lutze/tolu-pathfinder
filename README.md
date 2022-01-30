@@ -1,7 +1,9 @@
+[![Node](https://badgen.net/badge/Node/@14.17.6/green)](https://nodejs.org/)
+[![React](https://badgen.net/badge/ReactJS/@17.02/blue)](https://nodejs.org/)
+[![React](https://badgen.net/badge/Licence/MIT/blue)](https://nodejs.org/)
+
 [![TypeScript](https://badgen.net/badge/icon/typescript?icon=typescript&label)](https://typescriptlang.org)
 [![jest](https://jestjs.io/img/jest-badge.svg)](https://github.com/facebook/jest)
-
-<p>&nbsp;</p>
 
 <p align="center"><img src="public/doc/banner.png" width="100%"/></p>
 
