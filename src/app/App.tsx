@@ -32,7 +32,7 @@ const App = () => {
             />
           </div>
           <PerfectScrollbar ref={scrollbar}>
-            <Sidebar scrollbar={scrollbar} />
+            <Sidebar scrollbar={scrollbar} collapsed={menuCollapsed} />
           </PerfectScrollbar>
         </Sider>
         <Layout className="site-layout">

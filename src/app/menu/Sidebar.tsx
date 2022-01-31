@@ -1,5 +1,5 @@
 import { Menu, Slider } from 'antd';
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   AlgoTypes,
   ExtraMenuTypes,
@@ -13,8 +13,26 @@ import { mainMenuStrings } from '../constants/Strings';
 /**
  * Provides an interface to specify the graph type, algorithm and settings with a {@link Menu} component.
  */
-const Sidebar = (props: { scrollbar?: any }) => {
+const Sidebar = (props: { scrollbar?: any; collapsed?: boolean }) => {
   const subMenuitems = [];
+
+  const updateTimestampContext: any = useContext(
+    SettingContexts[ExtraMenuTypes.UpdateTimestamp]
+  );
+  const algoContext: any = useContext(SettingContexts[MenuTypes.Algo]);
+  const graphContext: any = useContext(SettingContexts[MenuTypes.Graph]);
+
+  const defaultOpenKeysState = [
+    MenuTypes[MenuTypes.Graph],
+    MenuTypes[MenuTypes.Algo],
+  ];
+
+  const [openKeys, setOpenKeys] = useState(defaultOpenKeysState);
+
+  useEffect(() => {
+    if (props.collapsed) setOpenKeys([]);
+    else setOpenKeys(defaultOpenKeysState);
+  }, [props.collapsed]);
 
   for (const menuType in MenuTypes) {
     if (!isNaN(Number(menuType))) continue;
@@ -75,7 +93,14 @@ const Sidebar = (props: { scrollbar?: any }) => {
         key={`${menuType}`}
         icon={menuParam.icon}
         title={`${mainMenuStrings[MenuTypes[menuType]]}`}
-        onTitleClick={() => {
+        onTitleClick={(e) => {
+          const newOpenKeys = props.collapsed ? [] : [...openKeys];
+          if (openKeys.includes(e.key)) {
+            newOpenKeys.splice(newOpenKeys.indexOf(e.key), 1);
+          } else {
+            newOpenKeys.push(e.key);
+          }
+          setOpenKeys(newOpenKeys);
           if (props.scrollbar.current)
             setTimeout(() => props.scrollbar.current.updateScroll(), 200);
         }}
@@ -86,12 +111,6 @@ const Sidebar = (props: { scrollbar?: any }) => {
     subMenuitems.push(subMenu);
   }
 
-  const updateTimestampContext: any = useContext(
-    SettingContexts[ExtraMenuTypes.UpdateTimestamp]
-  );
-  const algoContext: any = useContext(SettingContexts[MenuTypes.Algo]);
-  const graphContext: any = useContext(SettingContexts[MenuTypes.Graph]);
-
   return (
     <Menu
       theme="dark"
@@ -101,7 +120,7 @@ const Sidebar = (props: { scrollbar?: any }) => {
         GraphTypes[graphContext.stateVal],
         AlgoTypes[algoContext.stateVal],
       ]}
-      defaultOpenKeys={[MenuTypes[MenuTypes.Graph], MenuTypes[MenuTypes.Algo]]}
+      openKeys={openKeys}
       onClick={(e) => {
         const menuType = MenuTypes[e.keyPath[1]];
         const menuParam = settingsParams[menuType];
