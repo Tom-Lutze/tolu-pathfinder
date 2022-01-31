@@ -1,5 +1,6 @@
 @import '~antd/lib/style/themes/dark.less';
 @import '~antd/dist/antd.less';
+@import '~react-perfect-scrollbar/dist/css/styles.css';
 
 @popover-background: #001529;
 @component-background: #000c17;
@@ -13,32 +14,42 @@
 
 .ant-layout {
   .ant-layout-sider {
-    overflow: auto;
+    display: flex;
+    flex-flow: column;
     height: 100vh;
 
     .ant-layout-sider-children {
-      height: auto;
+      flex: 1 1 auto;
+      display: flex;
+      flex-flow: column;
 
       .logo {
         padding: 16px;
         border-bottom: solid 1px @tolu-pf-gray;
+        flex: 0 1 auto;
 
         img {
           width: 100%;
           height: auto;
         }
       }
-      .ant-menu {
-        .ant-menu-submenu-inline
-          .tolu-settings-slider-parent
-          .ant-menu-title-content {
-          padding: 0 6px;
+
+      .scrollbar-container.ps {
+        flex: 1 1 auto;
+
+        .ant-menu {
+          .ant-menu-submenu-inline
+            .tolu-settings-slider-parent
+            .ant-menu-title-content {
+            padding: 0 6px;
+          }
         }
       }
     }
 
     .ant-layout-sider-trigger {
       background-color: @tolu-pf-blue;
+      flex: 0 1 auto;
     }
   }
 

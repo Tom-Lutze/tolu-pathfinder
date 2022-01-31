@@ -13,7 +13,7 @@ import { mainMenuStrings } from '../constants/Strings';
 /**
  * Provides an interface to specify the graph type, algorithm and settings with a {@link Menu} component.
  */
-const Sidebar = () => {
+const Sidebar = (props: { scrollbar?: any }) => {
   const subMenuitems = [];
 
   for (const menuType in MenuTypes) {
@@ -75,6 +75,10 @@ const Sidebar = () => {
         key={`${menuType}`}
         icon={menuParam.icon}
         title={`${mainMenuStrings[MenuTypes[menuType]]}`}
+        onTitleClick={() => {
+          if (props.scrollbar.current)
+            setTimeout(() => props.scrollbar.current.updateScroll(), 200);
+        }}
       >
         {menuItems}
       </Menu.SubMenu>
