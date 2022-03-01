@@ -6,6 +6,7 @@
 @component-background: #000c17;
 @tolu-pf-gray: #595959;
 @tolu-pf-blue: #002140;
+@tolu-pf-blue-light: #147cdc;
 @leaflet-blue: #0078a8;
 
 .tolu-text-disabled {
@@ -142,49 +143,68 @@
       }
     }
 
-    .leaflet-top.leaflet-right {
-      .tolu-statistics {
-        border: none;
+    .tolu-statistics {
+      border: none;
 
-        &.ant-card,
-        .ant-table,
-        .leaflet-bar a:hover {
-          background-color: @component-background;
-        }
+      &.ant-card,
+      .ant-table,
+      .leaflet-bar a:hover {
+        background-color: @component-background;
+      }
 
-        .ant-card-body {
-          padding: 12px;
-        }
+      .ant-card-body {
+        padding: 12px;
+      }
 
-        .ant-statistic-content {
-          text-align: center;
-        }
+      .ant-statistic-content {
+        text-align: center;
+      }
 
-        .selected-row {
-          background-color: @table-row-hover-bg;
-        }
+      .selected-row {
+        background-color: @table-row-hover-bg;
+      }
 
-        &.collapsed .ant-card-body {
-          padding: 4px;
-        }
+      &.collapsed .ant-card-body {
+        padding: 4px;
+      }
 
-        .extend-button {
-          font-size: 24px;
-        }
+      .extend-button {
+        font-size: 24px;
+      }
 
-        .collapse-button a {
-          height: 20px;
-          width: 15px;
-          line-height: normal;
-        }
+      .collapse-button a {
+        height: 20px;
+        width: 15px;
+        line-height: normal;
       }
     }
 
-    .leaflet-bottom.leaflet-right {
+    .leaflet-bottom {
+      .leaflet-control {
+        border: none;
+      }
+
+      a.tolu-help {
+        color: @tolu-pf-blue;
+        &:hover {
+          color: @tolu-pf-blue-light;
+        }
+
+        font-size: 32px;
+        border-radius: 50%;
+
+        &,
+        &:hover {
+          background-color: rgba(255, 255, 255, 0.65);
+        }
+      }
+
       .leaflet-control-attribution {
-        a,
-        a:hover {
-          color: @leaflet-blue;
+        a {
+          color: @tolu-pf-blue;
+          &:hover {
+            color: @tolu-pf-blue-light;
+          }
         }
       }
     }

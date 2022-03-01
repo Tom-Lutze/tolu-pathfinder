@@ -17,6 +17,7 @@ import {
 import { appStrings } from '../constants/Strings';
 import GraphController from '../controller/GraphController';
 import { SettingContexts } from '../settings/SettingsProvider';
+import { Help } from './control/Help';
 import { Statistics } from './control/Statistics';
 import GraphLayer from './layers/GraphLayer';
 import PathLayer from './layers/PathLayer';
@@ -205,6 +206,7 @@ const MapComponent = (props: { menuCollapsed?: boolean }) => {
         />
         <div className="leaflet-control-container">
           <Statistics graph={graph} path={path} />
+          <Help />
         </div>
         <MapEventHandler />
       </MapContainer>
