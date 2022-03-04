@@ -65,4 +65,10 @@ export const appStrings = {
   statisticsEdgesTitle: 'Edges',
   statisticsVisitedTitle: 'Visited',
   statisticsAlgorithmTitle: 'Algorithm',
+  helpModalTitle: 'About the TOLU Pathfinder application',
+  helpModalText: `<p><i>TOLU Pathfinder</i> illustrates the execution of different graph traversal algorithms on bidirectional weighted graphs in the context of a route planning application.</p>
+    <p>To build a graph, arbitrary nodes can be created and connected using the map view. Alternatively, a <i>Grid</i> or <i>Random</i> graph can be generated automatically by selecting the appropriate options under the <i>Graph</i> menu category.</p>
+    <p>After the graph has been created, two nodes need to be selected and specified as start and destination nodes.</p>
+    <p>The menu item <i>Algorithm</i> provides various search algorithms that can be executed by selecting the corresponding subitem to find a path between the start and destination nodes.</p>
+    <p>The <i>Settings</i> section provides options to adjust parameters used by the automatic graph generation and graph traversal algorithms.</p>`,
 };
