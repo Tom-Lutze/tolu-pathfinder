@@ -65,6 +65,7 @@ export const appStrings = {
   statisticsEdgesTitle: 'Edges',
   statisticsVisitedTitle: 'Visited',
   statisticsAlgorithmTitle: 'Algorithm',
+  helpTooltip: 'About the app',
   helpModalTitle: 'About the TOLU Pathfinder application',
   helpModalText: `<p><i>TOLU Pathfinder</i> illustrates the execution of different graph traversal algorithms on bidirectional weighted graphs in the context of a route planning application.</p>
     <p>To build a graph, arbitrary nodes can be created and connected using the map view. Alternatively, a <i>Grid</i> or <i>Random</i> graph can be generated automatically by selecting the appropriate options under the <i>Graph</i> menu category.</p>

@@ -43,6 +43,7 @@ export const Help = () => {
           <a
             className="tolu-help"
             onClick={() => setIsModalVisible(!isModalVisible)}
+            title={appStrings.helpTooltip}
           >
             <QuestionCircleOutlined />
           </a>
