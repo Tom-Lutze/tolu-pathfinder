@@ -65,11 +65,21 @@ export const appStrings = {
   statisticsEdgesTitle: 'Edges',
   statisticsVisitedTitle: 'Visited',
   statisticsAlgorithmTitle: 'Algorithm',
-  helpTooltip: 'About the app',
-  helpModalTitle: 'About the TOLU Pathfinder application',
-  helpModalText: `<p><i>TOLU Pathfinder</i> illustrates the execution of different graph traversal algorithms on bidirectional weighted graphs in the context of a route planning application.</p>
-    <p>To build a graph, arbitrary nodes can be created and connected using the map view. Alternatively, a <i>Grid</i> or <i>Random</i> graph can be generated automatically by selecting the appropriate options under the <i>Graph</i> menu category.</p>
-    <p>After the graph has been created, two nodes need to be selected and specified as start and destination nodes.</p>
-    <p>The menu item <i>Algorithm</i> provides various search algorithms that can be executed by selecting the corresponding subitem to find a path between the start and destination nodes.</p>
-    <p>The <i>Settings</i> section provides options to adjust parameters used by the automatic graph generation and graph traversal algorithms.</p>`,
+  helpTooltip: 'Info and Instructions',
+  helpModalTitle: 'Info and Instructions',
+  helpModalDividerTitle: 'Getting started',
+  helpModalTextSec1:
+    '<i>TOLU Pathfinder</i> illustrates the execution of different graph traversal algorithms on bidirectional weighted graphs in the context of a route planning application.',
+  helpModalTextSec2:
+    'In order to build a graph, arbitrary nodes can be manually created by simply clicking into the map view. Their locations are adjustable via drag-and-drop. Connections can be established by selecting two nodes in sequence (indicated by two blue circles) and activating the <i>Connect</i> option in the popup. Alternatively, a <i>Grid</i> or <i>Random</i> graph can be generated automatically by selecting the corresponding options under the <i>Graph</i> menu category.',
+  helpModalTextSec3:
+    'After the graph has been created, one node needs to be selected and specified as start and another one as end node.',
+  helpModalTextSec4:
+    'The application then automatically tries to find a path between the start and end nodes. The active search algorithm can be changed under the menu category <i>Algorithm</i>.',
+  helpModalTextSec5:
+    'Parameters for the automatic graph generation and graph traversal algorithms can be adjusted under the <i>Settings</i> category. The <i>Statistics</i> view in the top-right corner keeps track of all search algorithms that were executed on the current graph and therefore allows comparisons regarding their performances.',
+  helpModalTextSec6: 'Thank you and enjoy experimenting!<br>Tom',
+  helpModalStartEndImgAlt: 'Select start and end node via popup',
+  helpModalConnectImgAlt: 'Connect two nodes via popup',
+  helpModalPathResultImgAlt: 'Search result indicated with a green dashed line',
 };
